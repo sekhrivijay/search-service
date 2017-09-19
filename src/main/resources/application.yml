@@ -1,0 +1,83 @@
+server:
+  context-path: /${spring.application.name}
+
+spring:
+  application:
+    name: generic-search
+  cache:
+    type: none
+  profiles:
+    active: local
+  output:
+    ansi:
+      enabled: ALWAYS
+  jackson:
+    default-property-inclusion: non_null
+  cloud:
+    config:
+      allow-override: true
+      override-none: false
+      fail-fast: true
+      override-system-properties: false
+      enabled: false
+  sleuth:
+    web:
+      enabled: true
+    sampler:
+      percentage: 100
+  zipkin:
+    base-url: http://localhost:8680/
+    flush-interval: 15
+    enabled: false
+
+service:
+  metrics:
+    dropwizard:
+      enabled: true
+    prometheus:
+      enabled: true
+  git:
+    enabled: true
+  vip:
+    enabled: true
+  swagger:
+    enabled: true
+#  jsonp:
+#    enabled: false
+  zkEnsembleDestination : solrx460p.stag.ch4.s.com:2184
+  collectionDestination : activecollection
+  zkTimeoutDestination : 20000
+  solrQueryTimeout : 10000
+  queryTimeAllowed : 10000
+  groupLimitValue : 5
+
+
+
+hystrix:
+   command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 2000
+   command.solrCommandKey.circuitBreaker.requestVolumeThreshold: 4
+   command.solrCommandKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.solrCommandKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.solrThreadPoolKey.coreSize: 30
+   threadpool.solrThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+
+memcached:
+  cache:
+    servers: localhost:11111
+    mode: static
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+
+management:
+  security:
+    enabled: false
+
+logging:
+  level:
+    ROOT: INFO
+    org.apache.zookeeper.ClientCnxn: WARN
