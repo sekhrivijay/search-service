@@ -1,14 +1,12 @@
-package com.micro.services.search.main;
+package com.micro.services.search;
 
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//@ComponentScan({"com"})
 @EnableCircuitBreaker
 @EnableHystrixDashboard
 public class ServiceApplication {

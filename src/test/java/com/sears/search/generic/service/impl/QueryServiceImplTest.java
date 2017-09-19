@@ -1,7 +1,7 @@
 package com.sears.search.generic.service.impl;
 
 import com.micro.services.search.api.response.ServiceResponse;
-import com.micro.services.search.main.ServiceApplication;
+import com.micro.services.search.ServiceApplication;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class QueryServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.base = new URL("http://localhost:" + port + "/deals/search?q=*:*");
+        this.base = new URL("http://localhost:" + port + "/generic-search/query?q=*:*");
     }
 
     @Test

@@ -22,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @RefreshScope
-@RequestMapping("/search")
+
 public class ServiceResource {
     @Inject
     private QueryService queryService;
@@ -53,7 +53,7 @@ public class ServiceResource {
             @ApiImplicitParam(name = "sort.order", value = "To modify the sort order as asc and desc", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "debug", value = "To enable debugging ", required = false, dataType = "string", paramType = "query"),
     })
-    @GetMapping
+    @RequestMapping("/query")
     public ServiceResponse search(WebRequest webRequest) {
         Map<String, String[]> queryParams = webRequest.getParameterMap();
         ServiceRequest serviceRequest = ResourceUtil.buildServiceRequest(queryParams);

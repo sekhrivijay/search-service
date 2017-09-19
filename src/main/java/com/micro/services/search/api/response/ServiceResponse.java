@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ServiceResponse implements Serializable {
-    private List<Map<String, String>> deals;
+    private List<Map<String, String>> documents;
     private Debug debug;
     private long numFound;
     private List<FacetGroup> facetGroups;
     private List<ResponseGroup> responseGroups;
 
-    public List<Map<String, String>> getDeals() {
-        return deals;
+    public List<Map<String, String>> getDocuments() {
+        return documents;
     }
 
-    public void setDeals(List<Map<String, String>> deals) {
-        this.deals = deals;
+    public void setDocuments(List<Map<String, String>> documents) {
+        this.documents = documents;
     }
 
     public Debug getDebug() {
@@ -57,7 +57,7 @@ public class ServiceResponse implements Serializable {
     @Override
     public String toString() {
         return "ServiceResponse{" +
-                "deals=" + deals +
+                "documents=" + documents +
                 ", debug=" + debug +
                 ", numFound=" + numFound +
                 ", facetGroups=" + facetGroups +

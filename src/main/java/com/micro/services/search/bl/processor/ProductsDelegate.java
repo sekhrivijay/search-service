@@ -20,9 +20,9 @@ public class ProductsDelegate extends BaseDelegate {
         if(queryResponse.getResults() == null) {
             return serviceResponse;
         }
-        List<Map<String, String>> deals = buildProducts(queryResponse.getResults());
-        if (deals.size() > 0) {
-            serviceResponse.setDeals(deals);
+        List<Map<String, String>> documents = buildProducts(queryResponse.getResults());
+        if (documents.size() > 0) {
+            serviceResponse.setDocuments(documents);
         }
         return serviceResponse;
     }

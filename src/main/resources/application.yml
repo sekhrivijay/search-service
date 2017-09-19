@@ -44,7 +44,7 @@ service:
     enabled: true
 #  jsonp:
 #    enabled: false
-  zkEnsembleDestination : solrx460p.stag.ch4.s.com:2184
+  zkEnsembleDestination : localhost:2184
   collectionDestination : activecollection
   zkTimeoutDestination : 20000
   solrQueryTimeout : 10000

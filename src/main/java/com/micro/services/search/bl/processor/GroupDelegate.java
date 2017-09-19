@@ -56,7 +56,7 @@ public class GroupDelegate extends BaseDelegate {
                     Facet facet = new Facet();
                     facet.setFacetName(group.getGroupValue());
 //                        facet.setFacetCount();
-                    //facet.setDeals(buildProducts(group.getResult()));
+                    //facet.setDocuments(buildProducts(group.getResult()));
                     facets.add(facet);
                 }
                 responseGroup.setFacets(facets);

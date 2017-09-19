@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
 @Named
 public class QueryCommand {
     private static Logger logger = Logger.getLogger(QueryCommand.class.getName());
-    private final String SOLR_REQUEST = "deals.solr." + GlobalConstants.REQUEST;
+    private final String SOLR_REQUEST = "generic-search.solr." + GlobalConstants.REQUEST;
     public static final QueryResponse FALLBACK_QUERY_RESPONSE = SolrUtil.getFallback();
 
     @Inject
