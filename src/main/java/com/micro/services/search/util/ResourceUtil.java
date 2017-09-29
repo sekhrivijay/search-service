@@ -1,6 +1,6 @@
 package com.micro.services.search.util;
 
-import com.micro.services.search.api.request.ServiceRequest;
+import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.From;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -21,13 +21,13 @@ public class ResourceUtil {
     }
 
 
-//    public static ServiceRequest buildServiceRequest(MultivaluedMap<String, String> queryParams) {
-    public static ServiceRequest buildServiceRequest(Map<String, String[]> queryParams) {
-        ServiceRequest serviceRequest = new ServiceRequest();
+//    public static SearchServiceRequest buildServiceRequest(MultivaluedMap<String, String> queryParams) {
+    public static SearchServiceRequest buildServiceRequest(Map<String, String[]> queryParams) {
+        SearchServiceRequest searchServiceRequest = new SearchServiceRequest();
         Map<String, List<String>> parameters = new HashMap<>();
-        serviceRequest.setQ(getFirstIfPresent(queryParams.get(Q)));
-        serviceRequest.setFq(getFirstIfPresent(queryParams.get(FQ)));
-        serviceRequest.setQt(getFirstIfPresent(queryParams.get(GlobalConstants.QT)));
+        searchServiceRequest.setQ(getFirstIfPresent(queryParams.get(Q)));
+        searchServiceRequest.setFq(getFirstIfPresent(queryParams.get(FQ)));
+        searchServiceRequest.setQt(getFirstIfPresent(queryParams.get(GlobalConstants.QT)));
         String rows = getFirstIfPresent(queryParams.get(ROWS));
         String facetFieldParam = getFirstIfPresent(queryParams.get(FACET_FIELDS));
         String facetSortParam = getFirstIfPresent(queryParams.get(FACET_SORT));
@@ -35,34 +35,34 @@ public class ResourceUtil {
 
         String sort = getFirstIfPresent(queryParams.get(SORT));
         if (StringUtils.isNoneEmpty(sort)) {
-            serviceRequest.setSort(sort);
+            searchServiceRequest.setSort(sort);
         }
         String sortOrder = getFirstIfPresent(queryParams.get(SORT_ORDER));
         if (StringUtils.isNoneEmpty(sortOrder)) {
-            serviceRequest.setSortOrder(sortOrder);
+            searchServiceRequest.setSortOrder(sortOrder);
         }
         if (StringUtils.isNumeric(rows)) {
-            serviceRequest.setRows(Integer.parseInt(rows));
+            searchServiceRequest.setRows(Integer.parseInt(rows));
         }
         String start = getFirstIfPresent(queryParams.get(START));
         if (StringUtils.isNumeric(start)) {
-            serviceRequest.setStart(Integer.parseInt(start));
+            searchServiceRequest.setStart(Integer.parseInt(start));
         }
 
         if (StringUtils.isNotEmpty(facetFieldParam)) {
-            serviceRequest.setFacetFields(facetFieldParam.split(COMMA));
+            searchServiceRequest.setFacetFields(facetFieldParam.split(COMMA));
         }
 
         if (StringUtils.isNotEmpty(groupFieldParam)) {
-            serviceRequest.setGroupFields(groupFieldParam.split(COMMA));
+            searchServiceRequest.setGroupFields(groupFieldParam.split(COMMA));
         }
 
         if (StringUtils.isNotEmpty(facetSortParam)) {
-            serviceRequest.setFacetSort(facetSortParam);
+            searchServiceRequest.setFacetSort(facetSortParam);
         }
         String fromParamValue = getFirstIfPresent(queryParams.get(FROM));
         if (StringUtils.isNotEmpty(fromParamValue)) {
-            serviceRequest.setFrom(From.getFrom(fromParamValue));
+            searchServiceRequest.setFrom(From.getFrom(fromParamValue));
         }
 
         String debug = getFirstIfPresent(queryParams.get(DEBUG));
@@ -72,11 +72,11 @@ public class ResourceUtil {
                 parameters.put(paramName, Arrays.asList(queryParams.get(paramName)));
             }
         }
-        serviceRequest.setParameters(parameters);
+        searchServiceRequest.setParameters(parameters);
         if (StringUtils.isNotEmpty(debug) && debug.equals(TRUE)) {
-            serviceRequest.setDebug(true);
-            logger.info(serviceRequest);
+            searchServiceRequest.setDebug(true);
+            logger.info(searchServiceRequest);
         }
-        return serviceRequest;
+        return searchServiceRequest;
     }
 }

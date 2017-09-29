@@ -1,8 +1,8 @@
 package com.micro.services.search.bl.processor;
 
 
-import com.micro.services.search.api.request.ServiceRequest;
-import com.micro.services.search.api.response.ServiceResponse;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -15,16 +15,16 @@ public class FilterDelegate  extends BaseDelegate {
     private static Logger logger = Logger.getLogger(FilterDelegate.class.getName());
 
     @Override
-    public SolrQuery preProcessQuery(SolrQuery solrQuery, ServiceRequest serviceRequest) {
-        if(StringUtils.isNotEmpty(serviceRequest.getFq())) {
-            solrQuery.setFilterQueries(serviceRequest.getFq());
+    public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+        if(StringUtils.isNotEmpty(searchServiceRequest.getFq())) {
+            solrQuery.setFilterQueries(searchServiceRequest.getFq());
         }
         return solrQuery;
     }
 
     @Override
-    public ServiceResponse postProcessResult(ServiceRequest serviceRequest, QueryResponse queryResponse, ServiceResponse serviceResponse) {
-        return serviceResponse;
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+        return searchServiceResponse;
     }
 }
 

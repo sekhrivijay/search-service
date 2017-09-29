@@ -11,11 +11,11 @@ public abstract class BaseDelegate implements Delegate {
         List<Map<String, String>> products = new ArrayList<>();
         for (SolrDocument solrDocument : solrDocuments) {
             Collection<String> fieldNames = solrDocument.getFieldNames();
-            Map<String, String> deal  = new HashMap<>();
+            Map<String, String> product  = new HashMap<>();
             for(String key: fieldNames) {
-                deal.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
+                product.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
             }
-            products.add(deal);
+            products.add(product);
         }
         return products;
     }

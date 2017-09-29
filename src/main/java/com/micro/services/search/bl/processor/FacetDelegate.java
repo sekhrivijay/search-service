@@ -1,10 +1,10 @@
 package com.micro.services.search.bl.processor;
 
 
-import com.micro.services.search.api.request.ServiceRequest;
+import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Facet;
 import com.micro.services.search.api.response.FacetGroup;
-import com.micro.services.search.api.response.ServiceResponse;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -18,19 +18,19 @@ public class FacetDelegate implements Delegate {
     private static Logger logger = Logger.getLogger(SortDelegate.class.getName());
 
     @Override
-    public SolrQuery preProcessQuery(SolrQuery solrQuery, ServiceRequest serviceRequest) {
-        String[] facetFields = serviceRequest.getFacetFields();
+    public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+        String[] facetFields = searchServiceRequest.getFacetFields();
         if (facetFields != null && facetFields.length > 0) {
             solrQuery.setFacet(true);
             solrQuery.setFacetMinCount(1);
             solrQuery.addFacetField(facetFields);
-            solrQuery.setFacetSort(serviceRequest.getFacetSort());
+            solrQuery.setFacetSort(searchServiceRequest.getFacetSort());
         }
         return solrQuery;
     }
 
     @Override
-    public ServiceResponse postProcessResult(ServiceRequest serviceRequest, QueryResponse queryResponse, ServiceResponse serviceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
         List<FacetField> facetFieldList = queryResponse.getFacetFields();
         if (facetFieldList != null) {
             List<FacetGroup> facetGroups = new ArrayList<>();
@@ -47,11 +47,11 @@ public class FacetDelegate implements Delegate {
                 facetGroup.setFacets(facets);
                 facetGroups.add(facetGroup);
             }
-            serviceResponse.setFacetGroups(facetGroups);
+            searchServiceResponse.setFacetGroups(facetGroups);
         }
 
 
-        return serviceResponse;
+        return searchServiceResponse;
     }
 }
 

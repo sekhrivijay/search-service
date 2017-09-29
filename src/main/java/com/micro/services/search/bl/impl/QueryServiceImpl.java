@@ -1,11 +1,11 @@
 package com.micro.services.search.bl.impl;
 
 
-import com.micro.services.search.api.request.ServiceRequest;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.DelegateInitializer;
 import com.micro.services.search.bl.processor.Delegate;
 import com.micro.services.search.bl.task.QueryCommand;
-import com.micro.services.search.api.response.ServiceResponse;
 import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.util.LogUtil;
 import com.micro.services.search.util.SolrUtil;
@@ -36,35 +36,35 @@ public class QueryServiceImpl implements QueryService {
     private QueryCommand queryCommand;
 
 
-    @Cacheable(cacheNames = "default", key = "#serviceRequest.cacheKey", condition = "#serviceRequest.from != T(com.sears.search.service.api.response.From).INDEX", unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
-    public ServiceResponse query(ServiceRequest serviceRequest) throws Exception {
+    @Cacheable(cacheNames = "default", key = "#searchServiceRequest.cacheKey", condition = "#searchServiceRequest.from != T(com.sears.search.service.api.response.From).INDEX", unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
+    public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
         long startTime = System.currentTimeMillis();
-        logger.info(serviceRequest);
-        serviceRequest.setRound(serviceRequest.getRound() + 1);
+        logger.info(searchServiceRequest);
+        searchServiceRequest.setRound(searchServiceRequest.getRound() + 1);
 
-        Map<String, List<Delegate>> delegateMapList = delegateInitializer.buildDelegateMapList(serviceRequest);
+        Map<String, List<Delegate>> delegateMapList = delegateInitializer.buildDelegateMapList(searchServiceRequest);
         Map<String, SolrQuery> solrQueryMap = new HashMap<>();
         for (String key : delegateMapList.keySet()) {
             SolrQuery solrQuery = new SolrQuery();
             for (Delegate delegate : delegateMapList.get(key)) {
-                delegate.preProcessQuery(solrQuery, serviceRequest);
+                delegate.preProcessQuery(solrQuery, searchServiceRequest);
             }
             solrQueryMap.put(key, solrQuery);
         }
         Map<String, Future<QueryResponse>> futureMap = submitQueries(solrQueryMap);
 
-        ServiceResponse serviceResponse = new ServiceResponse();
+        SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
         for (String key : delegateMapList.keySet()) {
             QueryResponse queryResponse = SolrUtil.getQueryResponse(futureMap, key, solrQueryTimeout);
             if (queryResponse == null) {
                 continue;
             }
             for (Delegate delegate : delegateMapList.get(key)) {
-                delegate.postProcessResult(serviceRequest, queryResponse, serviceResponse);
+                delegate.postProcessResult(searchServiceRequest, queryResponse, searchServiceResponse);
             }
         }
         LogUtil.logTotalTimeTaken(logger, "QueryService", startTime);
-        return serviceResponse;
+        return searchServiceResponse;
 
     }
 

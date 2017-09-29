@@ -10,7 +10,7 @@ import java.util.Map;
 
 import static com.micro.services.search.config.GlobalConstants.COUNT;
 
-public class ServiceRequest implements Serializable {
+public class SearchServiceRequest implements Serializable {
     private String q;
     private String sort = GlobalConstants.ID;
     private String sortOrder = GlobalConstants.ASC;
@@ -140,7 +140,7 @@ public class ServiceRequest implements Serializable {
 
     @Override
     public String toString() {
-        return "ServiceRequest{" +
+        return "SearchServiceRequest{" +
                 "q='" + q + '\'' +
                 ", sort='" + sort + '\'' +
                 ", sortOrder='" + sortOrder + '\'' +
@@ -160,7 +160,7 @@ public class ServiceRequest implements Serializable {
 
     public String toCacheKey() {
         System.out.println("INSIDEEEE cacheKEYYYYYYYYYYYYYYYYYY");
-        return "ServiceRequest{" +
+        return "SearchServiceRequest{" +
                 "q='" + q + '\'' +
                 ", sort='" + sort + '\'' +
                 ", sortOrder='" + sortOrder + '\'' +

@@ -1,10 +1,10 @@
 package com.micro.services.search.bl.processor;
 
 
-import com.micro.services.search.api.request.ServiceRequest;
+import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Facet;
 import com.micro.services.search.api.response.ResponseGroup;
-import com.micro.services.search.api.response.ServiceResponse;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.Group;
@@ -28,8 +28,8 @@ public class GroupDelegate extends BaseDelegate {
     private int groupLimitValue;
 
     @Override
-    public SolrQuery preProcessQuery(SolrQuery solrQuery, ServiceRequest serviceRequest) {
-        String[] groupFields = serviceRequest.getGroupFields();
+    public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+        String[] groupFields = searchServiceRequest.getGroupFields();
         if (groupFields != null && groupFields.length > 0) {
             solrQuery.set(GROUP, true);
             solrQuery.set(GROUP_LIMIT, groupLimitValue);
@@ -41,7 +41,7 @@ public class GroupDelegate extends BaseDelegate {
     }
 
     @Override
-    public ServiceResponse postProcessResult(ServiceRequest serviceRequest, QueryResponse queryResponse, ServiceResponse serviceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
         GroupResponse groupResponse = queryResponse.getGroupResponse();
         if (groupResponse != null) {
 
@@ -64,12 +64,12 @@ public class GroupDelegate extends BaseDelegate {
             }
 //                    responseGroup.setGroupName(facetField.getName());
 //                    List<Facet> facets = new ArrayList<>();
-            serviceResponse.setResponseGroups(responseGroups);
+            searchServiceResponse.setResponseGroups(responseGroups);
 
         }
 //                group.setFacets(facets);
 //                responseGroups.add(group);
-        return serviceResponse;
+        return searchServiceResponse;
     }
 
 

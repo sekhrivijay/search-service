@@ -2,8 +2,8 @@ package com.micro.services.search.resource;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-import com.micro.services.search.api.request.ServiceRequest;
-import com.micro.services.search.api.response.ServiceResponse;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.util.ResourceUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
@@ -38,7 +37,7 @@ public class ServiceResource {
     @ApiOperation(
             value = "Get commercial search results ",
             notes = "Pass q and other parameters to get relevant suggestions back ",
-            response = ServiceResponse.class
+            response = SearchServiceResponse.class
     )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "q", value = "Search keyword parameter ", required = true, dataType = "string", paramType = "query"),
@@ -54,11 +53,11 @@ public class ServiceResource {
             @ApiImplicitParam(name = "debug", value = "To enable debugging ", required = false, dataType = "string", paramType = "query"),
     })
     @RequestMapping("/query")
-    public ServiceResponse search(WebRequest webRequest) {
+    public SearchServiceResponse search(WebRequest webRequest) {
         Map<String, String[]> queryParams = webRequest.getParameterMap();
-        ServiceRequest serviceRequest = ResourceUtil.buildServiceRequest(queryParams);
+        SearchServiceRequest searchServiceRequest = ResourceUtil.buildServiceRequest(queryParams);
         try {
-            return queryService.query(serviceRequest);
+            return queryService.query(searchServiceRequest);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
 //            throw new WebApplicationException(ex);

@@ -7,10 +7,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class ServiceResponse implements Serializable {
+public class SearchServiceResponse implements Serializable {
     private List<Map<String, String>> documents;
     private Debug debug;
     private long numFound;
+    private String redirect;
     private List<FacetGroup> facetGroups;
     private List<ResponseGroup> responseGroups;
 
@@ -54,12 +55,21 @@ public class ServiceResponse implements Serializable {
         this.responseGroups = responseGroups;
     }
 
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
+    }
+
     @Override
     public String toString() {
-        return "ServiceResponse{" +
+        return "SearchServiceResponse{" +
                 "documents=" + documents +
                 ", debug=" + debug +
                 ", numFound=" + numFound +
+                ", redirect='" + redirect + '\'' +
                 ", facetGroups=" + facetGroups +
                 ", responseGroups=" + responseGroups +
                 '}';

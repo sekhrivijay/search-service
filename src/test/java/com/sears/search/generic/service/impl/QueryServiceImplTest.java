@@ -1,6 +1,6 @@
 package com.sears.search.generic.service.impl;
 
-import com.micro.services.search.api.response.ServiceResponse;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.ServiceApplication;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class QueryServiceImplTest {
 
     @Test
     public void testGetHello() throws Exception {
-        ResponseEntity<ServiceResponse> response = template.getForEntity(base.toString(), ServiceResponse.class);
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(base.toString(), SearchServiceResponse.class);
         System.out.println(response);
 //        assertThat(response.getBody(), equalTo("Greetings from Spring Boot!"));
     }

@@ -1,6 +1,6 @@
 package com.micro.services.search.bl;
 
-import com.micro.services.search.api.request.ServiceRequest;
+import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.bl.processor.DebugDelegate;
 import com.micro.services.search.bl.processor.Delegate;
 import org.apache.log4j.Logger;
@@ -53,7 +53,7 @@ public class DelegateInitializer {
     private Delegate groupDelegate;
 
 
-    public Map<String, List<Delegate>> buildDelegateMapList(ServiceRequest serviceRequest) {
+    public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
         List<Delegate> mainDelegateList = new ArrayList<>();
         mainDelegateList.add(queryTermDelegate);
 //        mainDelegateList.add(requestHandlerDelegate);
@@ -69,7 +69,7 @@ public class DelegateInitializer {
         mainDelegateList.add(parameterDelegate);
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();
 
-        if(serviceRequest.isDebug()) {
+        if(searchServiceRequest.isDebug()) {
             mainDelegateList.add(new DebugDelegate());
             logger.info("Delegate Map List is " + mainDelegateList);
         }

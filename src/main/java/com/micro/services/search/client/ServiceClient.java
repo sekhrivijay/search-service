@@ -18,7 +18,7 @@ public class ServiceClient {
 //        SpringApplication.run(ServiceClient.class, args);
 //    }
     public void run(String... string) throws Exception {
-//        ResponseEntity<ServiceResponse> response = this.restTemplate.getForEntity("http://commercial/commercial/search?q=*:*", ServiceResponse.class);
+//        ResponseEntity<SearchServiceResponse> response = this.restTemplate.getForEntity("http://commercial/commercial/search?q=*:*", SearchServiceResponse.class);
 //        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + response);
     }
 }

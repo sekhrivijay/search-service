@@ -1,9 +1,9 @@
 package com.micro.services.search.bl;
 
 
-import com.micro.services.search.api.request.ServiceRequest;
-import com.micro.services.search.api.response.ServiceResponse;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.SearchServiceResponse;
 
 public interface QueryService {
-    ServiceResponse query(ServiceRequest serviceRequest) throws Exception;
+    SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception;
 }

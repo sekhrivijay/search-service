@@ -1,6 +1,6 @@
 package com.micro.services.search.api.response;
 
-import com.micro.services.search.api.request.ServiceRequest;
+import com.micro.services.search.api.request.SearchServiceRequest;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,7 +9,7 @@ public class Debug implements Serializable {
     private String gitInformation;
     private List<String> queries;
     private int round;
-    private ServiceRequest serviceRequest;
+    private SearchServiceRequest searchServiceRequest;
 
     public String getGitInformation() {
         return gitInformation;
@@ -35,11 +35,11 @@ public class Debug implements Serializable {
         this.round = round;
     }
 
-    public ServiceRequest getServiceRequest() {
-        return serviceRequest;
+    public SearchServiceRequest getSearchServiceRequest() {
+        return searchServiceRequest;
     }
 
-    public void setServiceRequest(ServiceRequest serviceRequest) {
-        this.serviceRequest = serviceRequest;
+    public void setSearchServiceRequest(SearchServiceRequest searchServiceRequest) {
+        this.searchServiceRequest = searchServiceRequest;
     }
 }
