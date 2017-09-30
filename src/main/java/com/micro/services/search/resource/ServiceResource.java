@@ -6,6 +6,7 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.util.ResourceUtil;
+import com.services.micro.commons.logging.annotation.LogExecutionTime;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -35,24 +36,69 @@ public class ServiceResource {
     @ExceptionMetered
 
     @ApiOperation(
-            value = "Get commercial search results ",
+            value = "Get search results ",
             notes = "Pass q and other parameters to get relevant suggestions back ",
             response = SearchServiceResponse.class
     )
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "q", value = "Search keyword parameter ", required = true, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "fq", value = "Provide solr filter capabilities  ", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "qt", value = "Provide solr handler capabilities ", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "facet.fields", value = "comma seperated list of fields that we need to return facet on ", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "facet.sort", value = "To sort facet response", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "rows", value = "To limit the number of rows returned", required = false, dataType = "integer", paramType = "query"),
-            @ApiImplicitParam(name = "start", value = "To return documents starting from that number . To help with pagination", required = false, dataType = "integer", paramType = "query"),
-            @ApiImplicitParam(name = "from", value = "To bypass cache by sending value from=index", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "sort", value = "To sort the returned response", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "sort.order", value = "To modify the sort order as asc and desc", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "debug", value = "To enable debugging ", required = false, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "q",
+                    value = "Search keyword parameter ",
+                    required = true,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "fq",
+                    value = "Provide solr filter capabilities ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "qt",
+                    value = "Provide solr handler capabilities ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "facet.fields",
+                    value = "comma seperated list of fields that we need to return facet on ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "facet.sort",
+                    value = "To sort facet response",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "rows",
+                    value = "To limit the number of rows returned",
+                    required = false,
+                    dataType = "integer",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "start",
+                    value = "To return documents starting from that number . To help with pagination",
+                    required = false,
+                    dataType = "integer",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "from",
+                    value = "To bypass cache by sending value from=index",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "sort",
+                    value = "To sort the returned response",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "sort.order",
+                    value = "To modify the sort order as asc and desc",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "debug",
+                    value = "To enable debugging ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
     })
     @RequestMapping("/query")
+    @LogExecutionTime
     public SearchServiceResponse search(WebRequest webRequest) {
         Map<String, String[]> queryParams = webRequest.getParameterMap();
         SearchServiceRequest searchServiceRequest = ResourceUtil.buildServiceRequest(queryParams);

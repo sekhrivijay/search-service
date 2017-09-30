@@ -21,8 +21,8 @@ public enum From  implements Serializable {
     }
 
     public static From getFrom(String name) {
-        for(From from: From.values()) {
-            if(from.getName().equals(name)) {
+        for (From from: From.values()) {
+            if (from.getName().equals(name)) {
                 return from;
             }
         }

@@ -1,11 +1,12 @@
 package com.micro.services.search.util;
 
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,7 +17,8 @@ import java.util.concurrent.TimeoutException;
 
 public class SolrUtil {
 
-    private static Logger logger = Logger.getLogger(SolrUtil.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolrUtil.class);
+
     public static QueryResponse runSolrCommand(SolrClient solrClient, SolrQuery solrQuery) throws RuntimeException {
         QueryResponse queryResponse = null;
         try {
@@ -24,21 +26,24 @@ public class SolrUtil {
             long startTime = System.currentTimeMillis();
             queryResponse = solrClient.query(solrQuery, SolrRequest.METHOD.POST);
             long endTime = System.currentTimeMillis();
-            logger.info("For query " + solrQuery + " Total Query Time " + (endTime - startTime) + " milli seconds");
+            LOGGER.info("For query " + solrQuery + " Total Query Time " + (endTime - startTime) + " milli seconds");
         } catch (SolrServerException | IOException solrServerException) {
-            logger.error("Could not execute solr query " + solrQuery);
-            logger.error(solrServerException);
+            LOGGER.error("Could not execute solr query " + solrQuery, solrServerException);
             throw new RuntimeException(solrServerException);
         }
         return queryResponse;
     }
 
     public static QueryResponse getFallback() {
-        logger.error("Going to fallback. Empty query response ");
+        LOGGER.error("Going to fallback. Empty query response ");
         return new QueryResponse();
     }
 
-    public static QueryResponse getQueryResponse(Map<String, Future<QueryResponse>> futureMap, String key, long timeout) throws InterruptedException, ExecutionException, TimeoutException {
+    public static QueryResponse getQueryResponse(Map<String,
+                                                Future<QueryResponse>> futureMap,
+                                                 String key,
+                                                 long timeout)
+            throws InterruptedException, ExecutionException, TimeoutException {
         QueryResponse queryResponse;
         try {
             queryResponse = futureMap.get(key).get(timeout, TimeUnit.MILLISECONDS);

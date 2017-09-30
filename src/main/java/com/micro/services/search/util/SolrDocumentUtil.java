@@ -11,23 +11,23 @@ public class SolrDocumentUtil {
 
     public static String getFieldValue(SolrDocument solrDocument, String field) {
         Object object = solrDocument.getFieldValue(field);
-        if(object == null) {
+        if (object == null) {
             return null;
         }
         return String.valueOf(object);
     }
 
     public static List<String> getFieldValues(SolrDocument solrDocument, String field) {
-        if(solrDocument == null) {
+        if (solrDocument == null) {
             return null;
         }
         Object o = solrDocument.getFieldValues(field);
-        if(o == null) {
+        if (o == null) {
             return null;
         }
         List<String> toReturn = new ArrayList<>();
-        for(Object object: solrDocument.getFieldValues(field)) {
-            if(object != null) {
+        for (Object object: solrDocument.getFieldValues(field)) {
+            if (object != null) {
                 toReturn.add(String.valueOf(object));
             }
         }

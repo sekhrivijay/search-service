@@ -5,17 +5,19 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Facet;
 import com.micro.services.search.api.response.FacetGroup;
 import com.micro.services.search.api.response.SearchServiceResponse;
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+
 @Named("facetDelegate")
 public class FacetDelegate implements Delegate {
-    private static Logger logger = Logger.getLogger(SortDelegate.class.getName());
+//    private static final Logger LOGGER = LoggerFactory.getLogger(FacetDelegate.class);
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -30,7 +32,9 @@ public class FacetDelegate implements Delegate {
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                   SearchServiceResponse searchServiceResponse) {
         List<FacetField> facetFieldList = queryResponse.getFacetFields();
         if (facetFieldList != null) {
             List<FacetGroup> facetGroups = new ArrayList<>();

@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 @Named("queryTermDelegate")
 public class QueryTermDelegate  extends BaseDelegate {
-    private static Logger logger = Logger.getLogger(QueryTermDelegate.class.getName());
+//    private static Logger logger = Logger.getLogger(QueryTermDelegate.class.getName());
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -19,7 +19,9 @@ public class QueryTermDelegate  extends BaseDelegate {
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                   SearchServiceResponse searchServiceResponse) {
         return searchServiceResponse;
     }
 }

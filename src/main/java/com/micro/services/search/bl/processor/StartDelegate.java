@@ -3,16 +3,16 @@ package com.micro.services.search.bl.processor;
 
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 
 @Named("startDelegate")
 public class StartDelegate  extends BaseDelegate {
-    private static Logger logger = Logger.getLogger(StartDelegate.class.getName());
-
+//    private static final Logger LOGGER = LoggerFactory.getLogger(StartDelegate.class);
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         if (searchServiceRequest.getStart() != 0) {
@@ -22,7 +22,10 @@ public class StartDelegate  extends BaseDelegate {
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                   SearchServiceResponse searchServiceResponse) {
+
         return searchServiceResponse;
     }
 }

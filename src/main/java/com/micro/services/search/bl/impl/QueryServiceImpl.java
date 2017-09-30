@@ -7,11 +7,10 @@ import com.micro.services.search.bl.DelegateInitializer;
 import com.micro.services.search.bl.processor.Delegate;
 import com.micro.services.search.bl.task.QueryCommand;
 import com.micro.services.search.bl.QueryService;
-import com.micro.services.search.util.LogUtil;
 import com.micro.services.search.util.SolrUtil;
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,10 +23,15 @@ import java.util.concurrent.Future;
 
 @Service("queryService")
 public class QueryServiceImpl implements QueryService {
-    private static Logger logger = Logger.getLogger(QueryServiceImpl.class.getName());
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(QueryServiceImpl.class);
+
+
+    private DelegateInitializer delegateInitializer;
 
     @Inject
-    DelegateInitializer delegateInitializer;
+    public void setDelegateInitializer(DelegateInitializer delegateInitializer) {
+        this.delegateInitializer = delegateInitializer;
+    }
 
     @Value("${service.solrQueryTimeout}")
     private long solrQueryTimeout;
@@ -36,10 +40,13 @@ public class QueryServiceImpl implements QueryService {
     private QueryCommand queryCommand;
 
 
-    @Cacheable(cacheNames = "default", key = "#searchServiceRequest.cacheKey", condition = "#searchServiceRequest.from != T(com.sears.search.service.api.response.From).INDEX", unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
+    @Cacheable(cacheNames = "default",
+            key = "#searchServiceRequest.cacheKey",
+            condition = "#searchServiceRequest.from != T(com.sears.search.service.api.response.From).INDEX",
+            unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
     public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
-        long startTime = System.currentTimeMillis();
-        logger.info(searchServiceRequest);
+//        long startTime = System.currentTimeMillis();
+        LOGGER.info(searchServiceRequest.toString());
         searchServiceRequest.setRound(searchServiceRequest.getRound() + 1);
 
         Map<String, List<Delegate>> delegateMapList = delegateInitializer.buildDelegateMapList(searchServiceRequest);
@@ -63,7 +70,6 @@ public class QueryServiceImpl implements QueryService {
                 delegate.postProcessResult(searchServiceRequest, queryResponse, searchServiceResponse);
             }
         }
-        LogUtil.logTotalTimeTaken(logger, "QueryService", startTime);
         return searchServiceResponse;
 
     }

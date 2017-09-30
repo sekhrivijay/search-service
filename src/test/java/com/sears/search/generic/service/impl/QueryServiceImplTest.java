@@ -33,7 +33,9 @@ public class QueryServiceImplTest {
 
     @Test
     public void testGetHello() throws Exception {
-        ResponseEntity<SearchServiceResponse> response = template.getForEntity(base.toString(), SearchServiceResponse.class);
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
+                base.toString(),
+                SearchServiceResponse.class);
         System.out.println(response);
 //        assertThat(response.getBody(), equalTo("Greetings from Spring Boot!"));
     }

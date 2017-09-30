@@ -16,21 +16,24 @@ public class DebugDelegate  extends BaseDelegate {
     private static Logger logger = Logger.getLogger(DebugDelegate.class.getName());
 
     private SolrQuery solrQuery;
+
     @Override
-    public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+    public SolrQuery preProcessQuery(SolrQuery solrQueryInput, SearchServiceRequest searchServiceRequest) {
         logger.info("Debug enabled");
-        this.solrQuery = solrQuery;
-        return solrQuery;
+        this.solrQuery = solrQueryInput;
+        return solrQueryInput;
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                    SearchServiceResponse searchServiceResponse) {
         Debug debug = searchServiceResponse.getDebug();
-        if(debug == null) {
+        if (debug == null) {
             debug = new Debug();
         }
         List<String> queries = debug.getQueries();
-        if(queries == null) {
+        if (queries == null) {
             queries = new ArrayList<>();
             debug.setQueries(queries);
         }

@@ -7,7 +7,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 
 import javax.inject.Named;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+
 @Named("productsDelegate")
 public class ProductsDelegate extends BaseDelegate {
     @Override
@@ -16,8 +18,10 @@ public class ProductsDelegate extends BaseDelegate {
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
-        if(queryResponse.getResults() == null) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                   SearchServiceResponse searchServiceResponse) {
+        if (queryResponse.getResults() == null) {
             return searchServiceResponse;
         }
         List<Map<String, String>> documents = buildProducts(queryResponse.getResults());

@@ -4,7 +4,11 @@ import com.micro.services.search.util.SolrDocumentUtil;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
-import java.util.*;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public abstract class BaseDelegate implements Delegate {
     protected List<Map<String, String>> buildProducts(SolrDocumentList solrDocuments) {
@@ -12,7 +16,7 @@ public abstract class BaseDelegate implements Delegate {
         for (SolrDocument solrDocument : solrDocuments) {
             Collection<String> fieldNames = solrDocument.getFieldNames();
             Map<String, String> product  = new HashMap<>();
-            for(String key: fieldNames) {
+            for (String key: fieldNames) {
                 product.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
             }
             products.add(product);

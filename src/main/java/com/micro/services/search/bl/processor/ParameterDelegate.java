@@ -10,14 +10,14 @@ import javax.inject.Named;
 
 @Named("parameterDelegate")
 public class ParameterDelegate extends BaseDelegate {
-    private static Logger logger = Logger.getLogger(ParameterDelegate.class.getName());
+//    private static Logger logger = Logger.getLogger(ParameterDelegate.class.getName());
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         if (searchServiceRequest.getParameters() != null) {
             for (String key : searchServiceRequest.getParameters().keySet()) {
                 if (key != null && searchServiceRequest.getParameters().get(key) != null) {
-                    for(String value : searchServiceRequest.getParameters().get(key)) {
+                    for (String value : searchServiceRequest.getParameters().get(key)) {
                         solrQuery.add(key, value);
                     }
                 }
@@ -27,7 +27,9 @@ public class ParameterDelegate extends BaseDelegate {
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                   SearchServiceResponse searchServiceResponse) {
         return searchServiceResponse;
     }
 }

@@ -5,24 +5,27 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Facet;
 import com.micro.services.search.api.response.ResponseGroup;
 import com.micro.services.search.api.response.SearchServiceResponse;
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.Group;
 import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.GroupResponse;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.micro.services.search.config.GlobalConstants.*;
+import static com.micro.services.search.config.GlobalConstants.GROUP_FIELD;
+import static com.micro.services.search.config.GlobalConstants.GROUP;
+import static com.micro.services.search.config.GlobalConstants.GROUP_LIMIT;
 
 @Named("groupDelegate")
 public class GroupDelegate extends BaseDelegate {
 
-    private static Logger logger = Logger.getLogger(SortDelegate.class.getName());
+//    private static final Logger LOGGER = LoggerFactory.getLogger(GroupDelegate.class);
 
     @Value("${service.groupLimitValue}")
     private int groupLimitValue;
@@ -41,7 +44,9 @@ public class GroupDelegate extends BaseDelegate {
     }
 
     @Override
-    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse) {
+    public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                                   QueryResponse queryResponse,
+                                                   SearchServiceResponse searchServiceResponse) {
         GroupResponse groupResponse = queryResponse.getGroupResponse();
         if (groupResponse != null) {
 

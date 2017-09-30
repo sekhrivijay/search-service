@@ -24,7 +24,7 @@ public class SearchServiceRequest implements Serializable {
     private String[] facetFields;
     private String[] groupFields;
     private From from = From.DEFAULT;
-    private Map<String, List<String>> parameters ;
+    private Map<String, List<String>> parameters;
 
     public String getQ() {
         return q;
@@ -149,7 +149,7 @@ public class SearchServiceRequest implements Serializable {
                 ", fq='" + fq + '\'' +
                 ", debug=" + debug +
                 ", round=" + round +
-                ", qt=" + qt +
+                ", qt='" + qt + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +
@@ -159,7 +159,6 @@ public class SearchServiceRequest implements Serializable {
     }
 
     public String toCacheKey() {
-        System.out.println("INSIDEEEE cacheKEYYYYYYYYYYYYYYYYYY");
         return "SearchServiceRequest{" +
                 "q='" + q + '\'' +
                 ", sort='" + sort + '\'' +
@@ -169,7 +168,7 @@ public class SearchServiceRequest implements Serializable {
                 ", fq='" + fq + '\'' +
                 ", debug=" + debug +
                 ", round=" + round +
-                ", qt=" + qt +
+                ", qt='" + qt + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +

@@ -3,7 +3,8 @@ package com.micro.services.search.bl;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.bl.processor.DebugDelegate;
 import com.micro.services.search.bl.processor.Delegate;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,13 +15,15 @@ import java.util.Map;
 
 @Named
 public class DelegateInitializer {
-    private static Logger logger = Logger.getLogger(DelegateInitializer.class.getName());
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DelegateInitializer.class);
+
     @Inject
     @Named("queryTermDelegate")
     private Delegate queryTermDelegate;
-    @Inject
-    @Named("requestHandlerDelegate")
-    private Delegate requestHandlerDelegate;
+//    @Inject
+//    @Named("requestHandlerDelegate")
+//    private Delegate requestHandlerDelegate;
     @Inject
     @Named("productsDelegate")
     private Delegate productsDelegate;
@@ -30,9 +33,9 @@ public class DelegateInitializer {
     @Inject
     @Named("filterDelegate")
     private Delegate filterDelegate;
-    @Inject
-    @Named("sortDelegate")
-    private Delegate sortDelegate;
+//    @Inject
+//    @Named("sortDelegate")
+//    private Delegate sortDelegate;
     @Inject
     @Named("rowsDelegate")
     private Delegate rowsDelegate;
@@ -69,9 +72,9 @@ public class DelegateInitializer {
         mainDelegateList.add(parameterDelegate);
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();
 
-        if(searchServiceRequest.isDebug()) {
+        if (searchServiceRequest.isDebug()) {
             mainDelegateList.add(new DebugDelegate());
-            logger.info("Delegate Map List is " + mainDelegateList);
+            LOGGER.info("Delegate Map List is " + mainDelegateList);
         }
         delegateMapList.put("", mainDelegateList);
         return delegateMapList;

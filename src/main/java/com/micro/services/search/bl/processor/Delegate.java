@@ -8,5 +8,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 
 public interface Delegate {
     SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest);
-    SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest, QueryResponse queryResponse, SearchServiceResponse searchServiceResponse);
+    SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
+                                            QueryResponse queryResponse,
+                                            SearchServiceResponse searchServiceResponse);
 }

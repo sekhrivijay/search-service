@@ -6,9 +6,25 @@ import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
 
 import static com.micro.services.search.config.GlobalConstants.*;
+//import static com.micro.services.search.config.GlobalConstants.FQ;
+//import static com.micro.services.search.config.GlobalConstants.FACET_FIELDS;
+//import static com.micro.services.search.config.GlobalConstants.FACET_SORT;
+//import static com.micro.services.search.config.GlobalConstants.SORT;
+//import static com.micro.services.search.config.GlobalConstants.SORT_ORDER;
+//import static com.micro.services.search.config.GlobalConstants.ROWS;
+//import static com.micro.services.search.config.GlobalConstants.GROUP_FIELDS;
+//import static com.micro.services.search.config.GlobalConstants.START;
+//import static com.micro.services.search.config.GlobalConstants.COMMA;
+//import static com.micro.services.search.config.GlobalConstants.DEBUG;
+//import static com.micro.services.search.config.GlobalConstants.TRUE;
+//import static com.micro.services.search.config.GlobalConstants.FROM;
 
 public class ResourceUtil {
     private static Logger logger = Logger.getLogger(ResourceUtil.class.getName());

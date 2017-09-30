@@ -13,10 +13,10 @@ public class GlobalConstants {
     public static final String SELECT_HANDLER = "select";
     public static final String QT = "qt";
     public static final String ASC = "asc";
-    public static List<String> KNOWN_PARAMETERS;
-    public static String INDEX = "index";
-    public static String CACHE = "cache";
-    public static String DEFAULT = "default";
+    public static final List<String> KNOWN_PARAMETERS;
+    public static final String INDEX = "index";
+    public static final String CACHE = "cache";
+    public static final String DEFAULT = "default";
     public static final String GROUP = "group";
     public static final String GROUP_LIMIT = "group.limit";
     public static final String GROUP_FIELD = "group.field";
