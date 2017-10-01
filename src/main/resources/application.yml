@@ -50,7 +50,8 @@ service:
   solrQueryTimeout : 10000
   queryTimeAllowed : 10000
   groupLimitValue : 5
-
+  rulesService:
+    baseUrl: http://localhost:8080/demo/rules
 
 
 hystrix:
