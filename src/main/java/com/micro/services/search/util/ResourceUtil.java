@@ -4,7 +4,8 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.From;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Set;
 
-import static com.micro.services.search.config.GlobalConstants.*;
+//import com.micro.services.search.config.GlobalConstants;
 //import static com.micro.services.search.config.GlobalConstants.FQ;
 //import static com.micro.services.search.config.GlobalConstants.FACET_FIELDS;
 //import static com.micro.services.search.config.GlobalConstants.FACET_SORT;
@@ -27,7 +28,7 @@ import static com.micro.services.search.config.GlobalConstants.*;
 //import static com.micro.services.search.config.GlobalConstants.FROM;
 
 public class ResourceUtil {
-    private static Logger logger = Logger.getLogger(ResourceUtil.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceUtil.class);
 
     public static String getFirstIfPresent(String[] inputList) {
         if (inputList == null || inputList.length == 0) {
@@ -41,47 +42,47 @@ public class ResourceUtil {
     public static SearchServiceRequest buildServiceRequest(Map<String, String[]> queryParams) {
         SearchServiceRequest searchServiceRequest = new SearchServiceRequest();
         Map<String, List<String>> parameters = new HashMap<>();
-        searchServiceRequest.setQ(getFirstIfPresent(queryParams.get(Q)));
-        searchServiceRequest.setFq(getFirstIfPresent(queryParams.get(FQ)));
+        searchServiceRequest.setQ(getFirstIfPresent(queryParams.get(GlobalConstants.Q)));
+        searchServiceRequest.setFq(getFirstIfPresent(queryParams.get(GlobalConstants.FQ)));
         searchServiceRequest.setQt(getFirstIfPresent(queryParams.get(GlobalConstants.QT)));
-        String rows = getFirstIfPresent(queryParams.get(ROWS));
-        String facetFieldParam = getFirstIfPresent(queryParams.get(FACET_FIELDS));
-        String facetSortParam = getFirstIfPresent(queryParams.get(FACET_SORT));
-        String groupFieldParam = getFirstIfPresent(queryParams.get(GROUP_FIELDS));
+        String rows = getFirstIfPresent(queryParams.get(GlobalConstants.ROWS));
+        String facetFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.FACET_FIELDS));
+        String facetSortParam = getFirstIfPresent(queryParams.get(GlobalConstants.FACET_SORT));
+        String groupFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.GROUP_FIELDS));
 
-        String sort = getFirstIfPresent(queryParams.get(SORT));
+        String sort = getFirstIfPresent(queryParams.get(GlobalConstants.SORT));
         if (StringUtils.isNoneEmpty(sort)) {
             searchServiceRequest.setSort(sort);
         }
-        String sortOrder = getFirstIfPresent(queryParams.get(SORT_ORDER));
+        String sortOrder = getFirstIfPresent(queryParams.get(GlobalConstants.SORT_ORDER));
         if (StringUtils.isNoneEmpty(sortOrder)) {
             searchServiceRequest.setSortOrder(sortOrder);
         }
         if (StringUtils.isNumeric(rows)) {
             searchServiceRequest.setRows(Integer.parseInt(rows));
         }
-        String start = getFirstIfPresent(queryParams.get(START));
+        String start = getFirstIfPresent(queryParams.get(GlobalConstants.START));
         if (StringUtils.isNumeric(start)) {
             searchServiceRequest.setStart(Integer.parseInt(start));
         }
 
         if (StringUtils.isNotEmpty(facetFieldParam)) {
-            searchServiceRequest.setFacetFields(facetFieldParam.split(COMMA));
+            searchServiceRequest.setFacetFields(facetFieldParam.split(GlobalConstants.COMMA));
         }
 
         if (StringUtils.isNotEmpty(groupFieldParam)) {
-            searchServiceRequest.setGroupFields(groupFieldParam.split(COMMA));
+            searchServiceRequest.setGroupFields(groupFieldParam.split(GlobalConstants.COMMA));
         }
 
         if (StringUtils.isNotEmpty(facetSortParam)) {
             searchServiceRequest.setFacetSort(facetSortParam);
         }
-        String fromParamValue = getFirstIfPresent(queryParams.get(FROM));
+        String fromParamValue = getFirstIfPresent(queryParams.get(GlobalConstants.FROM));
         if (StringUtils.isNotEmpty(fromParamValue)) {
             searchServiceRequest.setFrom(From.getFrom(fromParamValue));
         }
 
-        String debug = getFirstIfPresent(queryParams.get(DEBUG));
+        String debug = getFirstIfPresent(queryParams.get(GlobalConstants.DEBUG));
         Set<String> parameterNames = queryParams.keySet();
         for (String paramName : parameterNames) {
             if (!GlobalConstants.KNOWN_PARAMETERS.contains(paramName)) {
@@ -89,9 +90,9 @@ public class ResourceUtil {
             }
         }
         searchServiceRequest.setParameters(parameters);
-        if (StringUtils.isNotEmpty(debug) && debug.equals(TRUE)) {
+        if (StringUtils.isNotEmpty(debug) && debug.equals(GlobalConstants.TRUE)) {
             searchServiceRequest.setDebug(true);
-            logger.info(searchServiceRequest);
+            LOGGER.info(searchServiceRequest.toString());
         }
         return searchServiceRequest;
     }

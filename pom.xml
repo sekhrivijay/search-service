@@ -198,9 +198,9 @@
                     <check>
                         <haltOnFailure>true</haltOnFailure>
                         <!--<branchRate>95</branchRate>-->
-                        <lineRate>5</lineRate>
+                        <lineRate>0</lineRate>
                         <!--<totalBranchRate>5</totalBranchRate>-->
-                        <totalLineRate>5</totalLineRate>
+                        <totalLineRate>0</totalLineRate>
                     </check>
                 </configuration>
                 <executions>
