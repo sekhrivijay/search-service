@@ -1,11 +1,15 @@
 server:
   context-path: /${spring.application.name}
+  tomcat:
+    accesslog:
+      enabled: false
+    basedir: .
 
 spring:
   application:
     name: generic-search
-  cache:
-    type: none
+#  cache:
+#    type: none
   profiles:
     active: local
   output:
@@ -42,10 +46,14 @@ service:
     enabled: true
   swagger:
     enabled: true
-#  jsonp:
-#    enabled: false
-  zkEnsembleDestination : localhost:2184
-  collectionDestination : activecollection
+  logging:
+    enabled: true
+
+
+
+
+  zkEnsembleDestination : localhost:9983
+  collectionDestination : products
   zkTimeoutDestination : 20000
   solrQueryTimeout : 10000
   queryTimeAllowed : 10000
@@ -53,6 +61,11 @@ service:
   rulesService:
     baseUrl: http://localhost:8080/demo/rules
 
+
+memcached:
+  cache:
+    servers: localhost:11211
+    mode: static
 
 hystrix:
    command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 2000
@@ -63,10 +76,8 @@ hystrix:
    threadpool.solrThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
 
 
-memcached:
-  cache:
-    servers: localhost:11111
-    mode: static
+
+
 
 endpoints:
   restart:
@@ -81,4 +92,9 @@ management:
 logging:
   level:
     ROOT: INFO
-    org.apache.zookeeper.ClientCnxn: WARN
+    com.amazonaws: DEBUG
+
+#logging:
+#  level:
+#    ROOT: INFO
+#    org.apache.zookeeper.ClientCnxn: WARN

@@ -1,7 +1,7 @@
 package com.micro.services.search.util;
 
 import com.micro.services.search.api.request.SearchServiceRequest;
-import com.micro.services.search.api.response.From;
+import com.micro.services.search.api.request.From;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

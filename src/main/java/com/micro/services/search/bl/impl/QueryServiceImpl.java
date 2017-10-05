@@ -42,7 +42,7 @@ public class QueryServiceImpl implements QueryService {
 
     @Cacheable(cacheNames = "default",
             key = "#searchServiceRequest.cacheKey",
-            condition = "#searchServiceRequest.from != T(com.sears.search.service.api.response.From).INDEX",
+            condition = "#searchServiceRequest.from != T(com.micro.services.search.api.request.From).INDEX",
             unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
     public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
 //        long startTime = System.currentTimeMillis();

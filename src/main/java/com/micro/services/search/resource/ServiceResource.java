@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,13 +25,17 @@ import java.util.Map;
 @RefreshScope
 
 public class ServiceResource {
-    @Inject
     private QueryService queryService;
+
     private Logger logger = LoggerFactory.getLogger(ServiceResource.class.getName());
 
     public ServiceResource() {
     }
 
+    @Autowired
+    public void setQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
 
     @Timed
     @ExceptionMetered

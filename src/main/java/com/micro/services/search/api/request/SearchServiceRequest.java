@@ -1,6 +1,5 @@
 package com.micro.services.search.api.request;
 
-import com.micro.services.search.api.response.From;
 import com.micro.services.search.config.GlobalConstants;
 
 import java.io.Serializable;
