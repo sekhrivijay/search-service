@@ -1,16 +1,16 @@
 package com.micro.services.search.util;
 
-import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.request.From;
+import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 
 //import com.micro.services.search.config.GlobalConstants;
@@ -38,12 +38,13 @@ public class ResourceUtil {
     }
 
 
-//    public static SearchServiceRequest buildServiceRequest(MultivaluedMap<String, String> queryParams) {
+    //    public static SearchServiceRequest buildServiceRequest(MultivaluedMap<String, String> queryParams) {
     public static SearchServiceRequest buildServiceRequest(Map<String, String[]> queryParams) {
         SearchServiceRequest searchServiceRequest = new SearchServiceRequest();
         Map<String, List<String>> parameters = new HashMap<>();
+        Map<String, String[]> originalParameters = new HashMap<>();
         searchServiceRequest.setQ(getFirstIfPresent(queryParams.get(GlobalConstants.Q)));
-        searchServiceRequest.setFq(getFirstIfPresent(queryParams.get(GlobalConstants.FQ)));
+        searchServiceRequest.setFq(queryParams.get(GlobalConstants.FQ));
         searchServiceRequest.setQt(getFirstIfPresent(queryParams.get(GlobalConstants.QT)));
         String rows = getFirstIfPresent(queryParams.get(GlobalConstants.ROWS));
         String facetFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.FACET_FIELDS));
@@ -90,6 +91,11 @@ public class ResourceUtil {
             }
         }
         searchServiceRequest.setParameters(parameters);
+
+        for (String paramName : parameterNames) {
+            originalParameters.put(paramName, queryParams.get(paramName));
+        }
+        searchServiceRequest.setParametersOriginal(originalParameters);
         if (StringUtils.isNotEmpty(debug) && debug.equals(GlobalConstants.TRUE)) {
             searchServiceRequest.setDebug(true);
             LOGGER.info(searchServiceRequest.toString());

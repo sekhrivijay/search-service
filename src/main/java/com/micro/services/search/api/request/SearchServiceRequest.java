@@ -15,7 +15,7 @@ public class SearchServiceRequest implements Serializable {
     private String sortOrder = GlobalConstants.ASC;
     private int rows;
     private int start;
-    private String fq;
+    private String[] fq;
     private boolean debug;
     private int round;
     private String qt;
@@ -24,6 +24,7 @@ public class SearchServiceRequest implements Serializable {
     private String[] groupFields;
     private From from = From.DEFAULT;
     private Map<String, List<String>> parameters;
+    private Map<String, String[]> parametersOriginal;
 
     public String getQ() {
         return q;
@@ -81,11 +82,11 @@ public class SearchServiceRequest implements Serializable {
         this.start = start;
     }
 
-    public String getFq() {
+    public String[] getFq() {
         return fq;
     }
 
-    public void setFq(String fq) {
+    public void setFq(String[] fq) {
         this.fq = fq;
     }
 
@@ -135,6 +136,14 @@ public class SearchServiceRequest implements Serializable {
 
     public void setFrom(From from) {
         this.from = from;
+    }
+
+    public Map<String, String[]> getParametersOriginal() {
+        return parametersOriginal;
+    }
+
+    public void setParametersOriginal(Map<String, String[]> parametersOriginal) {
+        this.parametersOriginal = parametersOriginal;
     }
 
     @Override

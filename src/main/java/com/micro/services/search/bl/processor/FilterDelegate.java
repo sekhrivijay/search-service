@@ -17,7 +17,7 @@ public class FilterDelegate  extends BaseDelegate {
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        if (StringUtils.isNotEmpty(searchServiceRequest.getFq())) {
+        if (searchServiceRequest.getFq() != null) {
             solrQuery.setFilterQueries(searchServiceRequest.getFq());
         }
         return solrQuery;

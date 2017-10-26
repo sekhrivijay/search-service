@@ -1,5 +1,7 @@
 package com.micro.services.search.bl.processor;
 
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrDocumentUtil;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -11,16 +13,19 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public abstract class BaseDelegate implements Delegate {
-    protected List<Map<String, String>> buildProducts(SolrDocumentList solrDocuments) {
-        List<Map<String, String>> products = new ArrayList<>();
-        for (SolrDocument solrDocument : solrDocuments) {
-            Collection<String> fieldNames = solrDocument.getFieldNames();
-            Map<String, String> product  = new HashMap<>();
-            for (String key: fieldNames) {
-                product.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
+
+    protected String buildOriginalQuery(SearchServiceRequest searchServiceRequest) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String paramName : searchServiceRequest.getParametersOriginal().keySet()) {
+            for(String value : searchServiceRequest.getParametersOriginal().get(paramName) ) {
+                stringBuilder
+                        .append(GlobalConstants.AMPERSAND)
+                        .append(paramName)
+                        .append(GlobalConstants.EQUAL)
+                        .append(value);
             }
-            products.add(product);
         }
-        return products;
+        return stringBuilder.toString();
     }
+
 }

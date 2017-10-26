@@ -20,6 +20,7 @@ public class SearchServiceResponse implements Serializable {
     private Pagination pagination;
     private BreadCrumbTrail breadCrumbTrail;
     private List<Document> documentList;
+    private String originalQuery;
 
 
 
@@ -119,6 +120,14 @@ public class SearchServiceResponse implements Serializable {
         this.documentList = documentList;
     }
 
+    public String getOriginalQuery() {
+        return originalQuery;
+    }
+
+    public void setOriginalQuery(String originalQuery) {
+        this.originalQuery = originalQuery;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceResponse{" +
@@ -134,6 +143,7 @@ public class SearchServiceResponse implements Serializable {
                 ", pagination=" + pagination +
                 ", breadCrumbTrail=" + breadCrumbTrail +
                 ", documentList=" + documentList +
+                ", originalQuery='" + originalQuery + '\'' +
                 '}';
     }
 }

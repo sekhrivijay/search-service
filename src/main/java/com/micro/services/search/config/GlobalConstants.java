@@ -21,7 +21,9 @@ public class GlobalConstants {
     public static final String GROUP_LIMIT = "group.limit";
     public static final String GROUP_FIELD = "group.field";
     public static final String FQ = "fq";
+    public static final String AMPERSAND = "&";
     public static final String Q = "q";
+    public static final String EQUAL = "=";
     public static final String FACET_FIELDS = "facet.fields";
     public static final String FACET_SORT = "facet.sort";
     public static final String GROUP_FIELDS = "group.fields";
@@ -33,6 +35,7 @@ public class GlobalConstants {
     public static final String DEBUG = "debug";
     public static final String FROM = "from";
     public static final String COMMA = ",";
+    public static final String COLON = ":";
 
     static {
         KNOWN_PARAMETERS = Arrays.asList(
