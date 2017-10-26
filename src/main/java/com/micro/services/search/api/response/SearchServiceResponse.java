@@ -11,9 +11,17 @@ public class SearchServiceResponse implements Serializable {
     private List<Map<String, String>> documents;
     private Debug debug;
     private long numFound;
-    private String redirect;
+    private long rows;
     private List<FacetGroup> facetGroups;
     private List<ResponseGroup> responseGroups;
+    private Redirect redirect;
+    private List<AutoCorrect> autoCorrectList;
+    private List<DidYouMean> didYouMeanList;
+    private Pagination pagination;
+    private BreadCrumbTrail breadCrumbTrail;
+    private List<Document> documentList;
+
+
 
     public List<Map<String, String>> getDocuments() {
         return documents;
@@ -55,12 +63,60 @@ public class SearchServiceResponse implements Serializable {
         this.responseGroups = responseGroups;
     }
 
-    public String getRedirect() {
+    public List<AutoCorrect> getAutoCorrectList() {
+        return autoCorrectList;
+    }
+
+    public void setAutoCorrectList(List<AutoCorrect> autoCorrectList) {
+        this.autoCorrectList = autoCorrectList;
+    }
+
+    public List<DidYouMean> getDidYouMeanList() {
+        return didYouMeanList;
+    }
+
+    public void setDidYouMeanList(List<DidYouMean> didYouMeanList) {
+        this.didYouMeanList = didYouMeanList;
+    }
+
+    public long getRows() {
+        return rows;
+    }
+
+    public void setRows(long rows) {
+        this.rows = rows;
+    }
+
+    public Redirect getRedirect() {
         return redirect;
     }
 
-    public void setRedirect(String redirect) {
+    public void setRedirect(Redirect redirect) {
         this.redirect = redirect;
+    }
+
+    public Pagination getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
+    }
+
+    public BreadCrumbTrail getBreadCrumbTrail() {
+        return breadCrumbTrail;
+    }
+
+    public void setBreadCrumbTrail(BreadCrumbTrail breadCrumbTrail) {
+        this.breadCrumbTrail = breadCrumbTrail;
+    }
+
+    public List<Document> getDocumentList() {
+        return documentList;
+    }
+
+    public void setDocumentList(List<Document> documentList) {
+        this.documentList = documentList;
     }
 
     @Override
@@ -69,9 +125,15 @@ public class SearchServiceResponse implements Serializable {
                 "documents=" + documents +
                 ", debug=" + debug +
                 ", numFound=" + numFound +
-                ", redirect='" + redirect + '\'' +
+                ", rows=" + rows +
                 ", facetGroups=" + facetGroups +
                 ", responseGroups=" + responseGroups +
+                ", redirect=" + redirect +
+                ", autoCorrectList=" + autoCorrectList +
+                ", didYouMeanList=" + didYouMeanList +
+                ", pagination=" + pagination +
+                ", breadCrumbTrail=" + breadCrumbTrail +
+                ", documentList=" + documentList +
                 '}';
     }
 }

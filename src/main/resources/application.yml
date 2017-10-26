@@ -52,7 +52,7 @@ service:
 
 
 
-  zkEnsembleDestination : localhost:9983
+  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
   collectionDestination : products
   zkTimeoutDestination : 20000
   solrQueryTimeout : 10000
