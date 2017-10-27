@@ -54,6 +54,12 @@ public class DelegateInitializer {
     @Inject
     @Named("groupDelegate")
     private Delegate groupDelegate;
+    @Inject
+    @Named("paginationDelegate")
+    private Delegate paginationDelegate;
+    @Inject
+    @Named("breadCrumbDelegate")
+    private Delegate breadCrumbDelegate;
 
 
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
@@ -64,10 +70,12 @@ public class DelegateInitializer {
         mainDelegateList.add(startDelegate);
         mainDelegateList.add(timeAllowedDelegate);
         mainDelegateList.add(productsDelegate);
+        mainDelegateList.add(paginationDelegate);
         mainDelegateList.add(filterDelegate);
+        mainDelegateList.add(facetDelegate);
+        mainDelegateList.add(breadCrumbDelegate);
 //        mainDelegateList.add(sortDelegate);
         mainDelegateList.add(rowsDelegate);
-        mainDelegateList.add(facetDelegate);
         mainDelegateList.add(groupDelegate);
         mainDelegateList.add(parameterDelegate);
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();

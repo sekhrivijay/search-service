@@ -59,6 +59,8 @@ service:
   queryTimeAllowed : 10000
   groupLimitValue : 5
   defaultRows: 10
+  breadCrumbList: index_name
+
   pagination:
     first:
       size: 3

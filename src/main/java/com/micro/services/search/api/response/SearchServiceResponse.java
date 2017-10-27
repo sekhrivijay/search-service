@@ -18,7 +18,7 @@ public class SearchServiceResponse implements Serializable {
     private List<AutoCorrect> autoCorrectList;
     private List<DidYouMean> didYouMeanList;
     private Pagination pagination;
-    private BreadCrumbTrail breadCrumbTrail;
+    private List<BreadCrumbTrail> breadCrumbTrail;
     private List<Document> documentList;
     private String originalQuery;
 
@@ -104,11 +104,11 @@ public class SearchServiceResponse implements Serializable {
         this.pagination = pagination;
     }
 
-    public BreadCrumbTrail getBreadCrumbTrail() {
+    public List<BreadCrumbTrail> getBreadCrumbTrail() {
         return breadCrumbTrail;
     }
 
-    public void setBreadCrumbTrail(BreadCrumbTrail breadCrumbTrail) {
+    public void setBreadCrumbTrail(List<BreadCrumbTrail> breadCrumbTrail) {
         this.breadCrumbTrail = breadCrumbTrail;
     }
 

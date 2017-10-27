@@ -36,4 +36,10 @@ public abstract class BaseDelegate implements Delegate {
         return query;
     }
 
+    protected  int getRows(int rowsInput, int rows) {
+        if (rowsInput != 0) {
+            return rowsInput;
+        }
+        return rows;
+    }
 }
