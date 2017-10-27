@@ -1,6 +1,7 @@
 package com.micro.services.search.bl.processor;
 
 import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrDocumentUtil;
 import org.apache.solr.common.SolrDocument;
@@ -26,6 +27,13 @@ public abstract class BaseDelegate implements Delegate {
             }
         }
         return stringBuilder.toString();
+    }
+
+    protected String getQuery(SearchServiceResponse searchServiceResponse, String query) {
+        if(searchServiceResponse.getOriginalQuery().contains(query)) {
+            return searchServiceResponse.getOriginalQuery();
+        }
+        return query;
     }
 
 }

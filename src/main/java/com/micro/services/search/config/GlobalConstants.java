@@ -36,6 +36,14 @@ public class GlobalConstants {
     public static final String FROM = "from";
     public static final String COMMA = ",";
     public static final String COLON = ":";
+    public static final String FQ_PREFIX = AMPERSAND +
+            FQ +
+            EQUAL;
+    public static final String ID_FIELD_FILTER = GlobalConstants.FQ_PREFIX +
+            ID +
+            COLON;
+
+
 
     static {
         KNOWN_PARAMETERS = Arrays.asList(

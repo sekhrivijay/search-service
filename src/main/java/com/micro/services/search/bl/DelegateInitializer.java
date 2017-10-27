@@ -60,13 +60,13 @@ public class DelegateInitializer {
         List<Delegate> mainDelegateList = new ArrayList<>();
         mainDelegateList.add(queryTermDelegate);
 //        mainDelegateList.add(requestHandlerDelegate);
+        mainDelegateList.add(numFoundDelegate);
+        mainDelegateList.add(startDelegate);
         mainDelegateList.add(timeAllowedDelegate);
         mainDelegateList.add(productsDelegate);
         mainDelegateList.add(filterDelegate);
 //        mainDelegateList.add(sortDelegate);
         mainDelegateList.add(rowsDelegate);
-        mainDelegateList.add(startDelegate);
-        mainDelegateList.add(numFoundDelegate);
         mainDelegateList.add(facetDelegate);
         mainDelegateList.add(groupDelegate);
         mainDelegateList.add(parameterDelegate);

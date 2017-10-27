@@ -20,11 +20,7 @@ import java.util.Map;
 
 @Named("productsDelegate")
 public class ProductsDelegate extends BaseDelegate {
-    public static final String ID_FIELD = GlobalConstants.AMPERSAND +
-            GlobalConstants.FQ +
-            GlobalConstants.EQUAL +
-            GlobalConstants.ID +
-            GlobalConstants.COLON;
+
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -39,7 +35,8 @@ public class ProductsDelegate extends BaseDelegate {
             return searchServiceResponse;
         }
 //        List<Map<String, String>> documents = buildProducts(queryResponse.getResults());
-        List<Document> documents = buildProducts(searchServiceRequest, queryResponse.getResults());
+        searchServiceResponse.setOriginalQuery(buildOriginalQuery(searchServiceRequest));
+        List<Document> documents = buildProducts(searchServiceResponse, queryResponse.getResults());
         if (documents.size() > 0) {
 //            searchServiceResponse.setDocuments(documents);
             searchServiceResponse.setDocumentList(documents);
@@ -49,7 +46,7 @@ public class ProductsDelegate extends BaseDelegate {
 
 
 //    private List<Map<String, String>> buildProducts(SolrDocumentList solrDocuments) {
-    private List<Document> buildProducts(SearchServiceRequest searchServiceRequest, SolrDocumentList solrDocuments) {
+    private List<Document> buildProducts(SearchServiceResponse searchServiceResponse, SolrDocumentList solrDocuments) {
 //        List<Map<String, String>> products = new ArrayList<>();
         List<Document> documentList = new ArrayList<>();
         for (SolrDocument solrDocument : solrDocuments) {
@@ -60,13 +57,23 @@ public class ProductsDelegate extends BaseDelegate {
             }
             Document document = new Document();
             document.setRecord(record);
-            document.setUrl(buildOriginalQuery(searchServiceRequest) + ID_FIELD +  SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID));
+            setUrl(searchServiceResponse, solrDocument, document);
             documentList.add(document);
 
 //            products.add(record);
         }
 //        return products;
         return documentList;
+    }
+
+    private void setUrl(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument, Document document) {
+        document.setUrl(getQuery(searchServiceResponse, getQuery(searchServiceResponse, solrDocument)));
+    }
+
+    private String getQuery(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument) {
+        return searchServiceResponse.getOriginalQuery()
+                + GlobalConstants.ID_FIELD_FILTER
+                +  SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID);
     }
 
 }

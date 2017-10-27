@@ -5,6 +5,7 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Facet;
 import com.micro.services.search.api.response.FacetGroup;
 import com.micro.services.search.api.response.SearchServiceResponse;
+import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named("facetDelegate")
-public class FacetDelegate implements Delegate {
+public class FacetDelegate  extends BaseDelegate {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(FacetDelegate.class);
 
     @Override
@@ -46,6 +47,7 @@ public class FacetDelegate implements Delegate {
                     Facet facet = new Facet();
                     facet.setFacetName(count.getName());
                     facet.setFacetCount(count.getCount());
+                    setUrl(searchServiceResponse, facetField, count, facet);
                     facets.add(facet);
                 }
                 facetGroup.setFacets(facets);
@@ -56,6 +58,17 @@ public class FacetDelegate implements Delegate {
 
 
         return searchServiceResponse;
+    }
+
+    private void setUrl(SearchServiceResponse searchServiceResponse, FacetField facetField, FacetField.Count count, Facet facet) {
+        facet.setUrl(getQuery(searchServiceResponse, getQuery(facetField, count)));
+    }
+
+    private String getQuery(FacetField facetField, FacetField.Count count) {
+        return GlobalConstants.FQ_PREFIX +
+                facetField.getName() +
+                GlobalConstants.COLON +
+                count.getName();
     }
 }
 

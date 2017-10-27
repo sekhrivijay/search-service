@@ -58,6 +58,17 @@ service:
   solrQueryTimeout : 10000
   queryTimeAllowed : 10000
   groupLimitValue : 5
+  defaultRows: 10
+  pagination:
+    first:
+      size: 3
+    last:
+      size: 2
+    previous:
+      size: 3
+    next:
+      size: 2
+
   rulesService:
     baseUrl: http://localhost:8080/demo/rules
 
