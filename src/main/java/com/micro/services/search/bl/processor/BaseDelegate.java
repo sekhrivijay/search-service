@@ -30,10 +30,14 @@ public abstract class BaseDelegate implements Delegate {
     }
 
     protected String getQuery(SearchServiceResponse searchServiceResponse, String query) {
-        if(searchServiceResponse.getOriginalQuery().contains(query)) {
+        if(queryContains(searchServiceResponse, query)) {
             return searchServiceResponse.getOriginalQuery();
         }
-        return query;
+        return searchServiceResponse.getOriginalQuery() + query;
+    }
+
+    protected boolean queryContains(SearchServiceResponse searchServiceResponse, String query) {
+        return searchServiceResponse.getOriginalQuery().contains(query);
     }
 
     protected  int getRows(int rowsInput, int rows) {

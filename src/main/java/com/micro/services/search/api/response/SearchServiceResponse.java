@@ -21,6 +21,7 @@ public class SearchServiceResponse implements Serializable {
     private List<BreadCrumbTrail> breadCrumbTrail;
     private List<Document> documentList;
     private String originalQuery;
+    private List<SortTerm> sortTermList;
 
 
 
@@ -128,6 +129,14 @@ public class SearchServiceResponse implements Serializable {
         this.originalQuery = originalQuery;
     }
 
+    public List<SortTerm> getSortTermList() {
+        return sortTermList;
+    }
+
+    public void setSortTermList(List<SortTerm> sortTermList) {
+        this.sortTermList = sortTermList;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceResponse{" +
@@ -144,6 +153,7 @@ public class SearchServiceResponse implements Serializable {
                 ", breadCrumbTrail=" + breadCrumbTrail +
                 ", documentList=" + documentList +
                 ", originalQuery='" + originalQuery + '\'' +
+                ", sortTermList=" + sortTermList +
                 '}';
     }
 }

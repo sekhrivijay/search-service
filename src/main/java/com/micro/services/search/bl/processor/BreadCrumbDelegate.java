@@ -20,7 +20,7 @@ public class BreadCrumbDelegate extends BaseDelegate {
 
 
     @Value("${service.breadCrumbList}")
-    private List<String> breadCrumbs;
+    private List<String> breadCrumbList;
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -34,7 +34,7 @@ public class BreadCrumbDelegate extends BaseDelegate {
 
 
         List<BreadCrumbTrail> breadCrumbTrailList = new ArrayList<>();
-        for(String breadCrumbName: breadCrumbs) {
+        for(String breadCrumbName: breadCrumbList) {
             BreadCrumbTrail breadCrumbTrail = getBreadCrumbTrail(breadCrumbName, searchServiceResponse);
             breadCrumbTrailList.add(breadCrumbTrail);
         }
@@ -52,7 +52,6 @@ public class BreadCrumbDelegate extends BaseDelegate {
 
     private List<BreadCrumbElement> getBreadCrumbElements(String breadCrumbName, SearchServiceResponse searchServiceResponse) {
         List<BreadCrumbElement> breadCrumbElementList = new ArrayList<>();
-//        BreadCrumbElement breadCrumbElement = getBreadCrumbElement(breadCrumbName, searchServiceResponse);
 
         List<FacetGroup> facetGroupList = searchServiceResponse.getFacetGroups();
         if(facetGroupList == null) {
@@ -74,23 +73,6 @@ public class BreadCrumbDelegate extends BaseDelegate {
         return breadCrumbElementList;
     }
 
-//    private BreadCrumbElement getBreadCrumbElement(String breadCrumbName, SearchServiceResponse searchServiceResponse) {
-////        BreadCrumbElement breadCrumbElement = new BreadCrumbElement();
-////        breadCrumbElement.setName(breadCrumbName);
-//        List<FacetGroup> facetGroupList = searchServiceResponse.getFacetGroups();
-//        Optional<FacetGroup> facetGroup = facetGroupList.stream()
-//                .filter(e -> e.getGroupName().equals(breadCrumbName))
-//                .findFirst();
-//        if(facetGroup.isPresent()) {
-//            List<Facet> facetList = facetGroup.get().getFacets();
-//            for(Facet facet: facetList) {
-//                BreadCrumbElement breadCrumbElement = new BreadCrumbElement();
-//                breadCrumbElement.setName(facet.getFacetName());
-//                breadCrumbElement.setFacet(facet);
-//            }
-//        }
-//        return breadCrumbElement;
-//    }
 
 
 }

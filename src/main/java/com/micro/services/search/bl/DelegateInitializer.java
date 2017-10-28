@@ -33,9 +33,9 @@ public class DelegateInitializer {
     @Inject
     @Named("filterDelegate")
     private Delegate filterDelegate;
-//    @Inject
-//    @Named("sortDelegate")
-//    private Delegate sortDelegate;
+    @Inject
+    @Named("sortDelegate")
+    private Delegate sortDelegate;
     @Inject
     @Named("rowsDelegate")
     private Delegate rowsDelegate;
@@ -73,8 +73,8 @@ public class DelegateInitializer {
         mainDelegateList.add(paginationDelegate);
         mainDelegateList.add(filterDelegate);
         mainDelegateList.add(facetDelegate);
-        mainDelegateList.add(breadCrumbDelegate);
-//        mainDelegateList.add(sortDelegate);
+//        mainDelegateList.add(breadCrumbDelegate);
+        mainDelegateList.add(sortDelegate);
         mainDelegateList.add(rowsDelegate);
         mainDelegateList.add(groupDelegate);
         mainDelegateList.add(parameterDelegate);

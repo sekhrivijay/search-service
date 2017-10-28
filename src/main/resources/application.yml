@@ -60,6 +60,7 @@ service:
   groupLimitValue : 5
   defaultRows: 10
   breadCrumbList: index_name
+  sortList: id
 
   pagination:
     first:
@@ -107,7 +108,3 @@ logging:
     ROOT: INFO
     com.amazonaws: DEBUG
 
-#logging:
-#  level:
-#    ROOT: INFO
-#    org.apache.zookeeper.ClientCnxn: WARN

@@ -9,6 +9,8 @@ import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ import java.util.concurrent.Future;
 
 @Named
 public class QueryCommand {
-//    private static final Logger LOGGER = LoggerFactory.getLogger(QueryCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryCommand.class);
     private static final String SOLR_REQUEST = "generic-search.solr." + GlobalConstants.REQUEST;
     public static final QueryResponse FALLBACK_QUERY_RESPONSE = SolrUtil.getFallback();
 
@@ -38,6 +40,7 @@ public class QueryCommand {
                 new AsyncResult<QueryResponse>() {
                     @Override
                     public QueryResponse invoke() {
+                        LOGGER.info("Solr Query is " + solrQuery.toQueryString());
                         return SolrUtil.runSolrCommand(solrClient, solrQuery);
                     }
                 };
