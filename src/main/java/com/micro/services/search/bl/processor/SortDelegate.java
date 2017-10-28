@@ -66,6 +66,8 @@ public class SortDelegate  extends BaseDelegate {
             } else {
                 sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery() + ascUrl);
             }
+        } else {
+            sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery());
         }
 
         if(!queryContains(searchServiceResponse , descUrl) ) {
@@ -74,6 +76,8 @@ public class SortDelegate  extends BaseDelegate {
             } else {
                 sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery() + descUrl);
             }
+        } else {
+            sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery());
         }
         sortTerm.setSortOrder(SortOrder.ASCENDING);
         return sortTerm;

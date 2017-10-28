@@ -26,7 +26,7 @@ import java.util.Map;
 public class ServiceResource {
     private QueryService queryService;
 
-    private Logger logger = LoggerFactory.getLogger(ServiceResource.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceResource.class.getName());
 
     public ServiceResource() {
     }
@@ -109,7 +109,7 @@ public class ServiceResource {
         try {
             return queryService.query(searchServiceRequest);
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            LOGGER.error( "Search exception ", ex );
 //            throw new WebApplicationException(ex);
         }
         return null;
