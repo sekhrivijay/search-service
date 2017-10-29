@@ -60,6 +60,9 @@ public class DelegateInitializer {
     @Inject
     @Named("breadCrumbDelegate")
     private Delegate breadCrumbDelegate;
+    @Inject
+    @Named("didYouMeanDelegate")
+    private Delegate didYouMeanDelegate;
 
 
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
@@ -78,6 +81,7 @@ public class DelegateInitializer {
         mainDelegateList.add(rowsDelegate);
         mainDelegateList.add(groupDelegate);
         mainDelegateList.add(parameterDelegate);
+        mainDelegateList.add(didYouMeanDelegate);
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();
 
         if (searchServiceRequest.isDebug()) {

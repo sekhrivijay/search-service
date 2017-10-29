@@ -110,6 +110,11 @@
             <artifactId>solr-solrj</artifactId>
             <version>7.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.languagetool</groupId>
+            <artifactId>language-en</artifactId>
+            <version>3.9</version>
+        </dependency>
 
 
         <dependency>

@@ -100,7 +100,11 @@ public class PaginationDelegate  extends BaseDelegate {
                 Page page = new Page();
                 page.setActive(pageIndex == activePageNumber);
                 page.setNumber(pageIndex);
-                page.setUrl(url + GlobalConstants.START + GlobalConstants.EQUAL + ((pageIndex - 1) * numberOfRecordsPerPage));
+                page.setUrl(url
+                        + GlobalConstants.AMPERSAND
+                        + GlobalConstants.START
+                        + GlobalConstants.EQUAL
+                        + ((pageIndex - 1) * numberOfRecordsPerPage));
                 pageList.add(page);
             }
         }

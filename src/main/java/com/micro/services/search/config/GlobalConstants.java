@@ -24,6 +24,7 @@ public class GlobalConstants {
     public static final String AMPERSAND = "&";
     public static final String Q = "q";
     public static final String EQUAL = "=";
+    public static final String SPACE = " ";
     public static final String FACET_FIELDS = "facet.fields";
     public static final String FACET_SORT = "facet.sort";
     public static final String GROUP_FIELDS = "group.fields";
