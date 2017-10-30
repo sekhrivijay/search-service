@@ -64,6 +64,10 @@ public class DelegateInitializer {
     @Named("didYouMeanDelegate")
     private Delegate didYouMeanDelegate;
 
+    @Inject
+    @Named("mustMatchDelegate")
+    private Delegate mustMatchDelegate;
+
 
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
         List<Delegate> mainDelegateList = new ArrayList<>();
@@ -82,6 +86,7 @@ public class DelegateInitializer {
         mainDelegateList.add(groupDelegate);
         mainDelegateList.add(parameterDelegate);
         mainDelegateList.add(didYouMeanDelegate);
+        mainDelegateList.add(mustMatchDelegate);
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();
 
         if (searchServiceRequest.isDebug()) {

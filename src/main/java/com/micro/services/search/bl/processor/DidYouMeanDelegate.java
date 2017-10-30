@@ -13,6 +13,7 @@ import org.languagetool.rules.RuleMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ public class DidYouMeanDelegate extends BaseDelegate {
 
     @Autowired
     private SpellCorrectUtil spellCorrectUtil;
+
+    @Value("${service.spellCheckNumfoundThreshhold:0}")
+    private long spellCheckNumfoundThreshhold;
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -37,16 +41,18 @@ public class DidYouMeanDelegate extends BaseDelegate {
 
         if(queryResponse == null
                 || queryResponse.getResults() == null
-                || queryResponse.getResults().getNumFound() > 0
+//                || queryResponse.getResults().getNumFound() > spellCheckNumfoundThreshhold
                 || searchServiceRequest == null
                 || searchServiceRequest.getQ() == null) {
             return searchServiceResponse;
         }
 
-        List<DidYouMean> didYouMeanList = getDidYouMeansFromJLanguageTools(searchServiceResponse, searchServiceRequest.getQ());
-        queryResponse.getSpellCheckResponse();
-
-
+        List<DidYouMean> didYouMeanList ;
+        if(searchServiceRequest.isFuzzyCompare()) {
+            didYouMeanList = getDidYouMeansFromJLanguageTools(searchServiceResponse, searchServiceRequest.getQ());
+        } else {
+            didYouMeanList = getDidYouMeansFromSolr(queryResponse, searchServiceResponse, searchServiceRequest.getQ());
+        }
         searchServiceResponse.setDidYouMeanList(didYouMeanList);
         return searchServiceResponse;
     }
@@ -55,14 +61,29 @@ public class DidYouMeanDelegate extends BaseDelegate {
 
     @NotNull
     private List<DidYouMean> getDidYouMeansFromJLanguageTools(SearchServiceResponse searchServiceResponse, String term) {
+        String originalQuery = GlobalConstants.Q_PREFIX  + term;
         List<RuleMatch> ruleMatchList = spellCorrectUtil.getRuleMatchList(term);
         List<DidYouMean> didYouMeanList = new ArrayList<>();
         for (RuleMatch ruleMatch : ruleMatchList) {
             List<String> suggestedReplacements = ruleMatch.getSuggestedReplacements();
             for(String suggestion: suggestedReplacements) {
+                int fromIndex = ruleMatch.getFromPos() ;
+                int toIndex = ruleMatch.getToPos() ;
+                int endIndex = toIndex;
+                while(endIndex < term.length() ) {
+                    if(term.charAt(endIndex) == ' ') {
+                        break;
+                    }
+                    endIndex++;
+                }
+                String finalSuggestion = term.substring(0, fromIndex)
+                        + GlobalConstants.SPACE
+                        +  suggestion
+                        + term.substring(endIndex, term.length()).trim();
+
                 DidYouMean didYouMean = new DidYouMean();
-                didYouMean.setSuggestedTerm(suggestion);
-                didYouMean.setUrl(searchServiceResponse.getOriginalQuery() + "&q=" + suggestion);
+                didYouMean.setSuggestedTerm(finalSuggestion);
+                didYouMean.setUrl(searchServiceResponse.getOriginalQuery().replace(originalQuery,  GlobalConstants.Q_PREFIX  + finalSuggestion));
                 didYouMeanList.add(didYouMean);
             }
         }
@@ -70,22 +91,31 @@ public class DidYouMeanDelegate extends BaseDelegate {
     }
 
 
-    public  List<DidYouMean> getDidYouMeansFromSolr(SpellCheckResponse spellCheckResponse, SearchServiceResponse searchServiceResponse, String term) {
+    public  List<DidYouMean> getDidYouMeansFromSolr(QueryResponse queryResponse, SearchServiceResponse searchServiceResponse, String term) {
+        String originalQuery = GlobalConstants.Q_PREFIX  + term;
+        SpellCheckResponse spellCheckResponse = queryResponse.getSpellCheckResponse();
         List<DidYouMean> didYouMeanList = new ArrayList<>();
-        if (!term.contains(GlobalConstants.SPACE) || spellCheckResponse.getCollatedResults() == null || spellCheckResponse.getCollatedResults().size() == 0) {
+        if (!term.contains(GlobalConstants.SPACE)
+                || spellCheckResponse.getCollatedResults() == null
+                || spellCheckResponse.getCollatedResults().size() == 0) {
             List<SpellCheckResponse.Suggestion> suggestions = spellCheckResponse.getSuggestions();
             if (suggestions != null) {
                 for (SpellCheckResponse.Suggestion suggestion : suggestions) {
+                    List<Integer> alternativeFrequencies = suggestion.getAlternativeFrequencies();
                     List<String> alternatives = suggestion.getAlternatives();
-                    if (alternatives != null) {
+                    if (alternatives != null && alternativeFrequencies != null && alternatives.size() == alternativeFrequencies.size()) {
+                        int count = 0;
                         for (String alternative : alternatives) {
                             if (!alternative.contains(GlobalConstants.SPACE)) {
                                 LOGGER.info("Spell check alternative " + alternative);
                                 DidYouMean didYouMean = new DidYouMean();
                                 didYouMean.setSuggestedTerm(alternative);
-                                spellCorrectedServiceRequest.setIsSpellCheck(true);
-                                return spellCorrectedServiceRequest;
+                                didYouMean.setNumberOfResults(alternativeFrequencies.get(count));
+
+                                didYouMean.setUrl(searchServiceResponse.getOriginalQuery().replace(originalQuery,  GlobalConstants.Q_PREFIX + alternative));
+                                didYouMeanList.add(didYouMean);
                             }
+                            count++;
                         }
                     }
                 }
@@ -95,12 +125,15 @@ public class DidYouMeanDelegate extends BaseDelegate {
             if (collations != null) {
                 for (SpellCheckResponse.Collation collation : collations) {
                     LOGGER.info("Spell check collation " + collation.getCollationQueryString());
-                    spellCorrectedServiceRequest.setTerm(collation.getCollationQueryString());
-                    spellCorrectedServiceRequest.setIsSpellCheck(true);
-                    return spellCorrectedServiceRequest;
+                    DidYouMean didYouMean = new DidYouMean();
+                    didYouMean.setSuggestedTerm(collation.getCollationQueryString());
+                    didYouMean.setNumberOfResults(collation.getNumberOfHits());
+                    didYouMean.setUrl(searchServiceResponse.getOriginalQuery().replace(originalQuery,   GlobalConstants.Q_PREFIX + collation.getCollationQueryString()));
+                    didYouMeanList.add(didYouMean);
                 }
             }
         }
+        return didYouMeanList;
     }
 
 }

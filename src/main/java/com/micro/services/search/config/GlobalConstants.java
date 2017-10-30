@@ -24,6 +24,7 @@ public class GlobalConstants {
     public static final String AMPERSAND = "&";
     public static final String Q = "q";
     public static final String EQUAL = "=";
+    public static final String TILDE = "~";
     public static final String SPACE = " ";
     public static final String FACET_FIELDS = "facet.fields";
     public static final String FACET_SORT = "facet.sort";
@@ -37,8 +38,20 @@ public class GlobalConstants {
     public static final String FROM = "from";
     public static final String COMMA = ",";
     public static final String COLON = ":";
+    public static final String PERCENT = "%";
+    public static final String MM = "mm";
+    public static final String RELAXED_MUST_MATCH_FIFTY_PERCENT = "50" + PERCENT;
+    public static final String RELAXED_MUST_MATCH_SEVENTY_FIVE_PERCENT = "75" + PERCENT;
+    public static final String MUST_MATCH_HUNDRED_PERCENT = "100" + PERCENT;
+    public static final int SPELL_CORRECT_LANGUAGE_TOOL_ROUND = 4;
+    public static final int MUST_MATCH_ROUND_1 = 2;
+    public static final int MUST_MATCH_ROUND_2 = 3;
+    public static final int SPELL_CORRECT_SOLR_ROUND = 1;
     public static final String FQ_PREFIX = AMPERSAND +
             FQ +
+            EQUAL;
+    public static final String Q_PREFIX = AMPERSAND +
+            Q +
             EQUAL;
     public static final String ID_FIELD_FILTER = GlobalConstants.FQ_PREFIX +
             ID +

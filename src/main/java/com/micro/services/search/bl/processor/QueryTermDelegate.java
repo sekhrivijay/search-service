@@ -2,6 +2,7 @@ package com.micro.services.search.bl.processor;
 
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
+import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 //import org.slf4j.Logger;
@@ -15,7 +16,11 @@ public class QueryTermDelegate  extends BaseDelegate {
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        solrQuery.setQuery(searchServiceRequest.getQ());
+        if (searchServiceRequest.isFuzzyCompare()) {
+            solrQuery.setQuery(searchServiceRequest.getQ() + GlobalConstants.TILDE);
+        } else {
+            solrQuery.setQuery(searchServiceRequest.getQ());
+        }
         return solrQuery;
     }
 

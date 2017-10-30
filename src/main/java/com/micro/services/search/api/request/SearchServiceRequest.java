@@ -18,10 +18,15 @@ public class SearchServiceRequest implements Serializable {
     private String[] fq;
     private boolean debug;
     private int round;
+    private SearchServiceRequest parent;
     private String qt;
-    private String facetSort =  COUNT;
+    private String facetSort = COUNT;
     private String[] facetFields;
     private String[] groupFields;
+    private boolean isFuzzyCompare;
+    private boolean isSpellCheck;
+    private boolean isMustMatchFiftyPercent;
+    private boolean isMustMatchSeventyFivePercent;
     private From from = From.DEFAULT;
     private Map<String, List<String>> parameters;
     private Map<String, String[]> parametersOriginal;
@@ -146,6 +151,46 @@ public class SearchServiceRequest implements Serializable {
         this.parametersOriginal = parametersOriginal;
     }
 
+    public boolean isFuzzyCompare() {
+        return isFuzzyCompare;
+    }
+
+    public void setFuzzyCompare(boolean fuzzyCompare) {
+        isFuzzyCompare = fuzzyCompare;
+    }
+
+    public boolean isSpellCheck() {
+        return isSpellCheck;
+    }
+
+    public void setSpellCheck(boolean spellCheck) {
+        isSpellCheck = spellCheck;
+    }
+
+    public boolean isMustMatchFiftyPercent() {
+        return isMustMatchFiftyPercent;
+    }
+
+    public void setMustMatchFiftyPercent(boolean mustMatchFiftyPercent) {
+        isMustMatchFiftyPercent = mustMatchFiftyPercent;
+    }
+
+    public boolean isMustMatchSeventyFivePercent() {
+        return isMustMatchSeventyFivePercent;
+    }
+
+    public void setMustMatchSeventyFivePercent(boolean mustMatchSeventyFivePercent) {
+        isMustMatchSeventyFivePercent = mustMatchSeventyFivePercent;
+    }
+
+    public SearchServiceRequest getParent() {
+        return parent;
+    }
+
+    public void setParent(SearchServiceRequest parent) {
+        this.parent = parent;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceRequest{" +
@@ -154,15 +199,21 @@ public class SearchServiceRequest implements Serializable {
                 ", sortOrder='" + sortOrder + '\'' +
                 ", rows=" + rows +
                 ", start=" + start +
-                ", fq='" + fq + '\'' +
+                ", fq=" + Arrays.toString(fq) +
                 ", debug=" + debug +
                 ", round=" + round +
+                ", parent=" + parent +
                 ", qt='" + qt + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +
+                ", isFuzzyCompare=" + isFuzzyCompare +
+                ", isSpellCheck=" + isSpellCheck +
+                ", isMustMatchFiftyPercent=" + isMustMatchFiftyPercent +
+                ", isMustMatchSeventyFivePercent=" + isMustMatchSeventyFivePercent +
                 ", from=" + from +
                 ", parameters=" + parameters +
+                ", parametersOriginal=" + parametersOriginal +
                 '}';
     }
 
@@ -187,4 +238,6 @@ public class SearchServiceRequest implements Serializable {
     public String getCacheKey() {
         return String.valueOf(toCacheKey().hashCode());
     }
+
+
 }

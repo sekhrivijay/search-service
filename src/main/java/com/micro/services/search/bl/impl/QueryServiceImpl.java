@@ -7,9 +7,13 @@ import com.micro.services.search.bl.DelegateInitializer;
 import com.micro.services.search.bl.processor.Delegate;
 import com.micro.services.search.bl.task.QueryCommand;
 import com.micro.services.search.bl.QueryService;
+import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrUtil;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,7 +27,7 @@ import java.util.concurrent.Future;
 
 @Service("queryService")
 public class QueryServiceImpl implements QueryService {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(QueryServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryServiceImpl.class);
 
 
     private DelegateInitializer delegateInitializer;
@@ -36,16 +40,24 @@ public class QueryServiceImpl implements QueryService {
     @Value("${service.solrQueryTimeout}")
     private long solrQueryTimeout;
 
+    @Value("${service.maxQueryRounds:5}")
+    private long maxQueryRounds;
+
+    @Value("${service.spellCheckNumfoundThreshhold:0}")
+    private long spellCheckNumfoundThreshhold;
+
+    @Value("${service.mustMatchNumfoundThreshhold:0}")
+    private long mustMatchNumfoundThreshhold;
+
     @Inject
     private QueryCommand queryCommand;
 
 
     @Cacheable(cacheNames = "default",
-            key = "#searchServiceRequest.cacheKey",
+            key = "T(com.micro.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
             condition = "#searchServiceRequest.from != T(com.micro.services.search.api.request.From).INDEX",
             unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
     public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
-//        long startTime = System.currentTimeMillis();
         LOGGER.info(searchServiceRequest.toString());
         searchServiceRequest.setRound(searchServiceRequest.getRound() + 1);
 
@@ -66,6 +78,10 @@ public class QueryServiceImpl implements QueryService {
             if (queryResponse == null) {
                 continue;
             }
+            SearchServiceResponse preProcessedServiceResponse = preProcessResponse(searchServiceRequest, key, queryResponse);
+            if (preProcessedServiceResponse != null) {
+                return preProcessedServiceResponse;
+            }
             for (Delegate delegate : delegateMapList.get(key)) {
                 delegate.postProcessResult(searchServiceRequest, queryResponse, searchServiceResponse);
             }
@@ -83,5 +99,60 @@ public class QueryServiceImpl implements QueryService {
         return toReturn;
     }
 
+
+
+    public SearchServiceResponse preProcessResponse(SearchServiceRequest serviceRequest, String key, QueryResponse queryResponse) throws Exception {
+
+        long numberOfResults = queryResponse.getResults().getNumFound();
+        int round = serviceRequest.getRound();
+        if (round >= maxQueryRounds) {
+            return null;
+        }
+
+        if (numberOfResults <= spellCheckNumfoundThreshhold && round == GlobalConstants.SPELL_CORRECT_SOLR_ROUND) {
+            if(!serviceRequest.isSpellCheck()) {
+                SearchServiceRequest spellCorrectServiceRequest = cloneRequest(serviceRequest);
+                spellCorrectServiceRequest.setFuzzyCompare(true);
+                spellCorrectServiceRequest.setSpellCheck(true);
+                return query(spellCorrectServiceRequest);
+            } else {
+                serviceRequest.setRound(++round);
+            }
+        }
+
+        int numberOfTermTokens = serviceRequest.getQ().split(GlobalConstants.SPACE).length;
+        if (numberOfResults <= mustMatchNumfoundThreshhold && round == GlobalConstants.MUST_MATCH_ROUND_1) {
+            if (!serviceRequest.isMustMatchSeventyFivePercent() && numberOfTermTokens > 1) {
+                SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
+                mustMatchServiceRequest.setMustMatchSeventyFivePercent(true);
+                return query(mustMatchServiceRequest);
+            } else {
+                serviceRequest.setRound(++round);
+            }
+        }
+        if (numberOfResults <= mustMatchNumfoundThreshhold && round == GlobalConstants.MUST_MATCH_ROUND_2) {
+            if (!serviceRequest.isMustMatchFiftyPercent() && numberOfTermTokens > 1) {
+                SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
+                mustMatchServiceRequest.setMustMatchFiftyPercent(true);
+                return query(mustMatchServiceRequest);
+            } else {
+                serviceRequest.setRound(++round);
+            }
+        }
+//        if (numberOfResults < spellCheckNumfoundThreshhold && round == GlobalConstants.SPELL_CORRECT_LANGUAGE_TOOL_ROUND) {
+//            SearchServiceRequest spellCorrectServiceRequest = spellCorrectService.buildCorrectSpellingsServiceRequest(queryResponse.getSpellCheckResponse(), serviceRequest);
+//            if (spellCorrectServiceRequest.isSpellCheck()) {
+//                return query(spellCorrectServiceRequest);
+//            }
+//        }
+        return null;
+    }
+
+    @NotNull
+    private SearchServiceRequest cloneRequest(SearchServiceRequest serviceRequest) {
+        SearchServiceRequest spellCorrectServiceRequest = SerializationUtils.clone(serviceRequest);
+        spellCorrectServiceRequest.setParent(serviceRequest);
+        return spellCorrectServiceRequest;
+    }
 
 }

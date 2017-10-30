@@ -61,7 +61,9 @@ service:
   defaultRows: 10
   breadCrumbList: index_name
   sortList: id
-
+  maxQueryRounds: 5
+  spellCheckNumfoundThreshhold: 0
+  mustMatchNumfoundThreshhold: 1
   pagination:
     first:
       size: 3
