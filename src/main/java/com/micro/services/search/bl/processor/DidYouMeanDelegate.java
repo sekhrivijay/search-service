@@ -95,6 +95,9 @@ public class DidYouMeanDelegate extends BaseDelegate {
         String originalQuery = GlobalConstants.Q_PREFIX  + term;
         SpellCheckResponse spellCheckResponse = queryResponse.getSpellCheckResponse();
         List<DidYouMean> didYouMeanList = new ArrayList<>();
+        if(spellCheckResponse == null) {
+            return didYouMeanList;
+        }
         if (!term.contains(GlobalConstants.SPACE)
                 || spellCheckResponse.getCollatedResults() == null
                 || spellCheckResponse.getCollatedResults().size() == 0) {

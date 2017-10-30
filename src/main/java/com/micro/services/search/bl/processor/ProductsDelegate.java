@@ -1,6 +1,7 @@
 package com.micro.services.search.bl.processor;
 
 
+import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Document;
 import com.micro.services.search.api.response.SearchServiceResponse;
@@ -35,7 +36,7 @@ public class ProductsDelegate extends BaseDelegate {
             return searchServiceResponse;
         }
         searchServiceResponse.setOriginalQuery(buildOriginalQuery(searchServiceRequest));
-        List<Document> documents = buildProducts(searchServiceResponse, queryResponse.getResults());
+        List<Document> documents = buildProducts(searchServiceRequest, searchServiceResponse, queryResponse.getResults());
         if (documents.size() > 0) {
             searchServiceResponse.setDocumentList(documents);
         }
@@ -43,7 +44,7 @@ public class ProductsDelegate extends BaseDelegate {
     }
 
 
-    private List<Document> buildProducts(SearchServiceResponse searchServiceResponse, SolrDocumentList solrDocuments) {
+    private List<Document> buildProducts(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse, SolrDocumentList solrDocuments) {
         List<Document> documentList = new ArrayList<>();
         for (SolrDocument solrDocument : solrDocuments) {
             Collection<String> fieldNames = solrDocument.getFieldNames();
@@ -53,7 +54,9 @@ public class ProductsDelegate extends BaseDelegate {
             }
             Document document = new Document();
             document.setRecord(record);
-            setUrl(searchServiceResponse, solrDocument, document);
+            if(searchServiceRequest.getRequestType() != RequestType.AUTOFILL) {
+                setUrl(searchServiceResponse, solrDocument, document);
+            }
             documentList.add(document);
 
         }

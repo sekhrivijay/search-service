@@ -1,5 +1,6 @@
 package com.micro.services.search.bl;
 
+import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.bl.processor.DebugDelegate;
 import com.micro.services.search.bl.processor.Delegate;
@@ -21,9 +22,13 @@ public class DelegateInitializer {
     @Inject
     @Named("queryTermDelegate")
     private Delegate queryTermDelegate;
-//    @Inject
-//    @Named("requestHandlerDelegate")
-//    private Delegate requestHandlerDelegate;
+
+    @Inject
+    @Named("fuzzySearchDelegate")
+    private Delegate fuzzySearchDelegate;
+    @Inject
+    @Named("requestHandlerDelegate")
+    private Delegate requestHandlerDelegate;
     @Inject
     @Named("productsDelegate")
     private Delegate productsDelegate;
@@ -72,21 +77,19 @@ public class DelegateInitializer {
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
         List<Delegate> mainDelegateList = new ArrayList<>();
         mainDelegateList.add(queryTermDelegate);
-//        mainDelegateList.add(requestHandlerDelegate);
+        mainDelegateList.add(requestHandlerDelegate);
         mainDelegateList.add(numFoundDelegate);
-        mainDelegateList.add(startDelegate);
         mainDelegateList.add(timeAllowedDelegate);
         mainDelegateList.add(productsDelegate);
-        mainDelegateList.add(paginationDelegate);
-        mainDelegateList.add(filterDelegate);
-        mainDelegateList.add(facetDelegate);
 //        mainDelegateList.add(breadCrumbDelegate);
-        mainDelegateList.add(sortDelegate);
         mainDelegateList.add(rowsDelegate);
-        mainDelegateList.add(groupDelegate);
-        mainDelegateList.add(parameterDelegate);
-        mainDelegateList.add(didYouMeanDelegate);
         mainDelegateList.add(mustMatchDelegate);
+        mainDelegateList.add(parameterDelegate);
+
+        if(searchServiceRequest.getRequestType() == RequestType.SEARCH
+                || searchServiceRequest.getRequestType() == RequestType.BROWSE) {
+            addSecondaryDelegates(mainDelegateList);
+        }
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();
 
         if (searchServiceRequest.isDebug()) {
@@ -96,6 +99,17 @@ public class DelegateInitializer {
         delegateMapList.put("", mainDelegateList);
         return delegateMapList;
 
+    }
+
+    private void addSecondaryDelegates(List<Delegate> mainDelegateList) {
+        mainDelegateList.add(fuzzySearchDelegate);
+        mainDelegateList.add(filterDelegate);
+        mainDelegateList.add(facetDelegate);
+        mainDelegateList.add(startDelegate);
+        mainDelegateList.add(groupDelegate);
+        mainDelegateList.add(paginationDelegate);
+        mainDelegateList.add(sortDelegate);
+        mainDelegateList.add(didYouMeanDelegate);
     }
 
 }

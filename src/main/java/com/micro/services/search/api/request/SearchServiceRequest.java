@@ -28,6 +28,7 @@ public class SearchServiceRequest implements Serializable {
     private boolean isMustMatchFiftyPercent;
     private boolean isMustMatchSeventyFivePercent;
     private From from = From.DEFAULT;
+    private RequestType requestType = RequestType.SEARCH;
     private Map<String, List<String>> parameters;
     private Map<String, String[]> parametersOriginal;
 
@@ -191,6 +192,15 @@ public class SearchServiceRequest implements Serializable {
         this.parent = parent;
     }
 
+
+    public RequestType getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(RequestType requestType) {
+        this.requestType = requestType;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceRequest{" +
@@ -212,6 +222,7 @@ public class SearchServiceRequest implements Serializable {
                 ", isMustMatchFiftyPercent=" + isMustMatchFiftyPercent +
                 ", isMustMatchSeventyFivePercent=" + isMustMatchSeventyFivePercent +
                 ", from=" + from +
+                ", requestType=" + requestType +
                 ", parameters=" + parameters +
                 ", parametersOriginal=" + parametersOriginal +
                 '}';
@@ -227,6 +238,7 @@ public class SearchServiceRequest implements Serializable {
                 ", fq='" + fq + '\'' +
                 ", debug=" + debug +
                 ", round=" + round +
+                ", requestType=" + requestType +
                 ", qt='" + qt + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +

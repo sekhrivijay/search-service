@@ -5,18 +5,18 @@ import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 
-@Named("queryTermDelegate")
-public class QueryTermDelegate  extends BaseDelegate {
-//    private static final Logger LOGGER = LoggerFactory.getLogger(QueryTermDelegate.class);
+@Named("fuzzySearchDelegate")
+public class FuzzySearchDelegate  extends BaseDelegate {
+//    private static final Logger LOGGER = LoggerFactory.getLogger(FuzzySearchDelegate.class);
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        solrQuery.setQuery(searchServiceRequest.getQ());
+        if (searchServiceRequest.isFuzzyCompare()) {
+            solrQuery.setQuery(searchServiceRequest.getQ() + GlobalConstants.TILDE);
+        }
         return solrQuery;
     }
 
@@ -27,4 +27,3 @@ public class QueryTermDelegate  extends BaseDelegate {
         return searchServiceResponse;
     }
 }
-

@@ -1,5 +1,6 @@
 package com.micro.services.search.bl.processor;
 
+import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.Page;
 import com.micro.services.search.api.response.Pagination;
@@ -22,6 +23,9 @@ public class RowsDelegate extends BaseDelegate {
     @Value("${service.defaultRows}")
     private int rows;
 
+    @Value("${service.defaultMobileRows}")
+    private int mobileRows;
+
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         solrQuery.setRows(getRows(searchServiceRequest.getRows(), rows));
@@ -33,7 +37,11 @@ public class RowsDelegate extends BaseDelegate {
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
 
-        searchServiceResponse.setRows(getRows(searchServiceRequest.getRows(), rows));
+        int rowsToUse = rows;
+        if(searchServiceRequest.getRequestType() == RequestType.AUTOFILL) {
+            rowsToUse = mobileRows;
+        }
+        searchServiceResponse.setRows(getRows(searchServiceRequest.getRows(), rowsToUse));
         return searchServiceResponse;
     }
 

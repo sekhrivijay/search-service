@@ -17,7 +17,7 @@ public class RequestHandlerDelegate  extends BaseDelegate {
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        String requestHandler = GlobalConstants.SELECT_HANDLER;
+        String requestHandler = searchServiceRequest.getRequestType().getName();
         if (searchServiceRequest.getQt() != null) {
             requestHandler = searchServiceRequest.getQt();
         }

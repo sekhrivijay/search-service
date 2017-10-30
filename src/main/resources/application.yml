@@ -59,6 +59,7 @@ service:
   queryTimeAllowed : 10000
   groupLimitValue : 5
   defaultRows: 10
+  defaultMobileRows: 5
   breadCrumbList: index_name
   sortList: id
   maxQueryRounds: 5
