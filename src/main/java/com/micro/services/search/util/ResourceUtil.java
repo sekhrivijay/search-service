@@ -3,6 +3,7 @@ package com.micro.services.search.util;
 import com.micro.services.search.api.request.From;
 import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.request.Site;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -55,6 +56,11 @@ public class ResourceUtil {
         String type = getFirstIfPresent(queryParams.get(GlobalConstants.TYPE));
         if (StringUtils.isNoneEmpty(type)) {
             searchServiceRequest.setRequestType(RequestType.getRequestType(type));
+        }
+
+        String site = getFirstIfPresent(queryParams.get(GlobalConstants.SITE));
+        if (StringUtils.isNoneEmpty(site)) {
+            searchServiceRequest.setSite(Site.getSite(site));
         }
 
         String sort = getFirstIfPresent(queryParams.get(GlobalConstants.SORT));

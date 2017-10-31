@@ -58,13 +58,33 @@ service:
   solrQueryTimeout : 10000
   queryTimeAllowed : 10000
   groupLimitValue : 5
-  defaultRows: 10
-  defaultMobileRows: 5
   breadCrumbList: index_name
   sortList: id
-  maxQueryRounds: 5
+  maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
+  document:
+    autofill:
+      desktop:
+        size: 5
+      mobile:
+        size: 3
+    search:
+      desktop:
+        size: 10
+      mobile:
+        size: 8
+    browse:
+      desktop:
+        size: 50
+      mobile:
+        size: 30
+    spell:
+      desktop:
+        size: 3
+      mobile:
+        size: 3
+
   pagination:
     first:
       size: 3

@@ -68,18 +68,17 @@ public class DidYouMeanDelegate extends BaseDelegate {
             List<String> suggestedReplacements = ruleMatch.getSuggestedReplacements();
             for(String suggestion: suggestedReplacements) {
                 int fromIndex = ruleMatch.getFromPos() ;
-                int toIndex = ruleMatch.getToPos() ;
-                int endIndex = toIndex;
+                int endIndex = ruleMatch.getToPos();
                 while(endIndex < term.length() ) {
                     if(term.charAt(endIndex) == ' ') {
                         break;
                     }
                     endIndex++;
                 }
-                String finalSuggestion = term.substring(0, fromIndex)
+                String finalSuggestion = (term.substring(0, fromIndex).trim()
                         + GlobalConstants.SPACE
                         +  suggestion
-                        + term.substring(endIndex, term.length()).trim();
+                        + term.substring(endIndex, term.length()).trim()).trim();
 
                 DidYouMean didYouMean = new DidYouMean();
                 didYouMean.setSuggestedTerm(finalSuggestion);

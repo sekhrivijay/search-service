@@ -16,6 +16,8 @@ public class GlobalConstants {
     public static final String ASC = "asc";
     public static final List<String> KNOWN_PARAMETERS;
     public static final String INDEX = "index";
+    public static final String DESKTOP = "desktop";
+    public static final String MOBILE = "mobile";
     public static final String CACHE = "cache";
     public static final String DEFAULT = "default";
     public static final String GROUP = "group";
