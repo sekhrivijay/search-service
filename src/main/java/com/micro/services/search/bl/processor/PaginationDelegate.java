@@ -17,8 +17,8 @@ import java.util.List;
 public class PaginationDelegate  extends BaseDelegate {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(RowsDelegate.class);
 
-    @Value("${service.defaultRows}")
-    private int rows;
+//    @Value("${service.defaultRows}")
+//    private int rows;
 
 
     @Value("${service.pagination.first.size}")
@@ -45,7 +45,7 @@ public class PaginationDelegate  extends BaseDelegate {
 
         long recordOffset = searchServiceRequest.getStart();
         long totalNumberOfRecords = searchServiceResponse.getNumFound();
-        long numberOfRecordsPerPage = getRows(searchServiceRequest.getRows(), rows);
+        long numberOfRecordsPerPage = getRows(searchServiceRequest.getRows(), getRows(searchServiceRequest));
         long totalNumberOfPages = Math.round(Math.ceil(((double) totalNumberOfRecords / (double) numberOfRecordsPerPage)));
         long actualNumberOfNextPages = Math.min(numberOfNextPages, Math.round(Math.ceil(((double) (totalNumberOfRecords - recordOffset) / (double) numberOfRecordsPerPage)) + 1));
         long actualNumberOfFirstPages = Math.min(numberOfFirstPages, totalNumberOfPages);

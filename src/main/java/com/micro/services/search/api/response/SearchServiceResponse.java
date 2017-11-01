@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchServiceResponse implements Serializable {
-    private List<Map<String, String>> documents;
     private Debug debug;
     private long numFound;
     private long rows;
@@ -23,15 +22,6 @@ public class SearchServiceResponse implements Serializable {
     private String originalQuery;
     private List<SortTerm> sortTermList;
 
-
-
-    public List<Map<String, String>> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(List<Map<String, String>> documents) {
-        this.documents = documents;
-    }
 
     public Debug getDebug() {
         return debug;
@@ -140,8 +130,7 @@ public class SearchServiceResponse implements Serializable {
     @Override
     public String toString() {
         return "SearchServiceResponse{" +
-                "documents=" + documents +
-                ", debug=" + debug +
+                "debug=" + debug +
                 ", numFound=" + numFound +
                 ", rows=" + rows +
                 ", facetGroups=" + facetGroups +

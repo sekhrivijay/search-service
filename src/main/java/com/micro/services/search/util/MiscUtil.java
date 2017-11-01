@@ -16,8 +16,8 @@ public class MiscUtil {
 
     public static boolean isValidResponse(SearchServiceResponse searchServiceResponse) {
         return searchServiceResponse != null
-                && searchServiceResponse.getDocuments() != null
-                && searchServiceResponse.getDocuments().size() > 0;
+                && searchServiceResponse.getDocumentList() != null
+                && searchServiceResponse.getDocumentList().size() > 0;
     }
 
     public static String filterNonAlphaNumeric(String input, String pattern, String delimiter) {

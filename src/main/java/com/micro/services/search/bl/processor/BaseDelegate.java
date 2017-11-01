@@ -1,11 +1,14 @@
 package com.micro.services.search.bl.processor;
 
+import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.request.Site;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrDocumentUtil;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Map;
 import java.util.List;
@@ -14,6 +17,24 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public abstract class BaseDelegate implements Delegate {
+
+    @Value("${service.document.search.desktop.size}")
+    protected int searchDesktopRows;
+
+    @Value("${service.document.search.mobile.size}")
+    protected int searchMobileRows;
+
+    @Value("${service.document.browse.desktop.size}")
+    protected int browseDesktopRows;
+
+    @Value("${service.document.browse.mobile.size}")
+    protected int browseMobileRows;
+
+    @Value("${service.document.autofill.desktop.size}")
+    protected int autofillDesktopRows;
+
+    @Value("${service.document.autofill.mobile.size}")
+    protected int autofillMobileRows;
 
     protected String buildOriginalQuery(SearchServiceRequest searchServiceRequest) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -45,5 +66,32 @@ public abstract class BaseDelegate implements Delegate {
             return rowsInput;
         }
         return rows;
+    }
+
+    public int getRows(SearchServiceRequest searchServiceRequest) {
+        RequestType requestType = searchServiceRequest.getRequestType();
+        Site site = searchServiceRequest.getSite();
+        if(site == Site.DESKTOP && requestType == RequestType.SEARCH) {
+            return searchDesktopRows;
+        }
+        if(site == Site.MOBILE && requestType == RequestType.SEARCH) {
+            return searchMobileRows;
+        }
+
+        if(site == Site.DESKTOP && requestType == RequestType.AUTOFILL) {
+            return autofillDesktopRows;
+        }
+        if(site == Site.MOBILE && requestType == RequestType.AUTOFILL) {
+            return autofillMobileRows;
+        }
+
+        if(site == Site.DESKTOP && requestType == RequestType.BROWSE) {
+            return browseDesktopRows;
+        }
+        if(site == Site.MOBILE && requestType == RequestType.BROWSE) {
+            return browseMobileRows;
+        }
+
+        return searchDesktopRows;
     }
 }
