@@ -23,6 +23,10 @@ import java.util.Map;
 public class ProductsDelegate extends BaseDelegate {
 
 
+    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD
+            + GlobalConstants.TYPE_PREFIX
+            + RequestType.PDP.getName();
+
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         return solrQuery;
@@ -64,12 +68,14 @@ public class ProductsDelegate extends BaseDelegate {
     }
 
     private void setUrl(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument, Document document) {
-        document.setUrl(getQuery(searchServiceResponse, getQuery(searchServiceResponse, solrDocument)));
+//        document.setUrl(getQuery(searchServiceResponse, getQuery(searchServiceResponse, solrDocument)));
+        document.setUrl(getQuery(searchServiceResponse, solrDocument));
     }
 
     private String getQuery(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument) {
         return GlobalConstants.ID_FIELD_FILTER
-                +  SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID);
+                + SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
+                + PDP_QUERY_SUFFIX;
     }
 
 }

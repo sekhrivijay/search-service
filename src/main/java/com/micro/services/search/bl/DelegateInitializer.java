@@ -81,6 +81,7 @@ public class DelegateInitializer {
         mainDelegateList.add(numFoundDelegate);
         mainDelegateList.add(timeAllowedDelegate);
         mainDelegateList.add(productsDelegate);
+        mainDelegateList.add(filterDelegate);
 //        mainDelegateList.add(breadCrumbDelegate);
         mainDelegateList.add(rowsDelegate);
         mainDelegateList.add(mustMatchDelegate);
@@ -103,7 +104,7 @@ public class DelegateInitializer {
 
     private void addSecondaryDelegates(List<Delegate> mainDelegateList) {
         mainDelegateList.add(fuzzySearchDelegate);
-        mainDelegateList.add(filterDelegate);
+
         mainDelegateList.add(facetDelegate);
         mainDelegateList.add(startDelegate);
         mainDelegateList.add(groupDelegate);

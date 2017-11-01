@@ -29,6 +29,7 @@ public class GlobalConstants {
     public static final String EQUAL = "=";
     public static final String TILDE = "~";
     public static final String SPACE = " ";
+    public static final String STAR = "*";
     public static final String FACET_FIELDS = "facet.fields";
     public static final String FACET_SORT = "facet.sort";
     public static final String GROUP_FIELDS = "group.fields";
@@ -55,12 +56,16 @@ public class GlobalConstants {
     public static final String FQ_PREFIX = AMPERSAND +
             FQ +
             EQUAL;
+    public static final String TYPE_PREFIX = AMPERSAND +
+            TYPE +
+            EQUAL;
     public static final String Q_PREFIX = AMPERSAND +
             Q +
             EQUAL;
     public static final String ID_FIELD_FILTER = GlobalConstants.FQ_PREFIX +
             ID +
             COLON;
+    public static final String Q_STAR_FIELD = Q_PREFIX + STAR + COLON + STAR;
 
 
 

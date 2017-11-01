@@ -3,7 +3,8 @@ package com.micro.services.search.api.request;
 public enum RequestType {
     SEARCH("search"),
     BROWSE("browse"),
-    AUTOFILL("autofill");
+    AUTOFILL("autofill"),
+    PDP("pdp");
     private String name;
 
     RequestType(String name) {
