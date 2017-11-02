@@ -15,7 +15,7 @@ import java.util.List;
 
 @Named("paginationDelegate")
 public class PaginationDelegate  extends BaseDelegate {
-//    private static final Logger LOGGER = LoggerFactory.getLogger(RowsDelegate.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(PaginationDelegate.class);
 
 //    @Value("${service.defaultRows}")
 //    private int rows;
@@ -45,22 +45,50 @@ public class PaginationDelegate  extends BaseDelegate {
 
         long recordOffset = searchServiceRequest.getStart();
         long totalNumberOfRecords = searchServiceResponse.getNumFound();
-        long numberOfRecordsPerPage = getRows(searchServiceRequest.getRows(), getRows(searchServiceRequest));
-        long totalNumberOfPages = Math.round(Math.ceil(((double) totalNumberOfRecords / (double) numberOfRecordsPerPage)));
-        long actualNumberOfNextPages = Math.min(numberOfNextPages, Math.round(Math.ceil(((double) (totalNumberOfRecords - recordOffset) / (double) numberOfRecordsPerPage)) + 1));
+        long numberOfRecordsPerPage = getRows(
+                searchServiceRequest.getRows(),
+                getRows(searchServiceRequest));
+        long totalNumberOfPages = Math.round(
+                Math.ceil((double) totalNumberOfRecords / (double) numberOfRecordsPerPage));
+        long actualNumberOfNextPages = Math.min(
+                numberOfNextPages,
+                Math.round(Math.ceil(
+                        (double) (totalNumberOfRecords - recordOffset) / (double) numberOfRecordsPerPage)) + 1);
         long actualNumberOfFirstPages = Math.min(numberOfFirstPages, totalNumberOfPages);
         long actualNumberOfLastPages = Math.min(numberOfLastPages, totalNumberOfPages);
-        long actualNumberOfPreviousPages = Math.min(numberOfPreviousPages, Math.round(Math.ceil(((double) recordOffset / (double) numberOfRecordsPerPage))));
-        long activePageNumber = Math.round(Math.ceil((((double) (recordOffset) / numberOfRecordsPerPage)) + 1));
+        long actualNumberOfPreviousPages = Math.min(
+                numberOfPreviousPages,
+                Math.round(Math.ceil((double) recordOffset / (double) numberOfRecordsPerPage)));
+        long activePageNumber = Math.round(Math.ceil((double) (recordOffset) / numberOfRecordsPerPage) + 1);
 
 
         String url = searchServiceResponse.getOriginalQuery();
 
         Pagination pagination = new Pagination();
-        pagination.setNextPageList(buildPageList(activePageNumber, actualNumberOfNextPages + activePageNumber, activePageNumber, numberOfRecordsPerPage, totalNumberOfRecords, url));
-        pagination.setPreviousPageList(buildPageList(activePageNumber - actualNumberOfPreviousPages, activePageNumber, activePageNumber, numberOfRecordsPerPage, totalNumberOfRecords, url));
-        pagination.setFirstPageList(buildPageList(1, actualNumberOfFirstPages, activePageNumber, numberOfRecordsPerPage, totalNumberOfRecords, url));
-        pagination.setLastPageList(buildPageList(totalNumberOfPages - actualNumberOfLastPages, totalNumberOfPages, activePageNumber, numberOfRecordsPerPage, totalNumberOfRecords, url));
+        pagination.setNextPageList(buildPageList(activePageNumber,
+                actualNumberOfNextPages + activePageNumber,
+                activePageNumber,
+                numberOfRecordsPerPage,
+                totalNumberOfRecords,
+                url));
+        pagination.setPreviousPageList(buildPageList(activePageNumber - actualNumberOfPreviousPages,
+                activePageNumber,
+                activePageNumber,
+                numberOfRecordsPerPage,
+                totalNumberOfRecords,
+                url));
+        pagination.setFirstPageList(buildPageList(1,
+                actualNumberOfFirstPages,
+                activePageNumber,
+                numberOfRecordsPerPage,
+                totalNumberOfRecords,
+                url));
+        pagination.setLastPageList(buildPageList(totalNumberOfPages - actualNumberOfLastPages,
+                totalNumberOfPages,
+                activePageNumber,
+                numberOfRecordsPerPage,
+                totalNumberOfRecords,
+                url));
         pagination.setActivePageNumber(activePageNumber);
         pagination.setTotalNumberOfPages(totalNumberOfPages);
         pagination.setNumberOfRecordsPerPage(numberOfRecordsPerPage);

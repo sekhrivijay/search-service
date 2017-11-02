@@ -78,9 +78,9 @@ public class QueryServiceImpl implements QueryService {
             if (queryResponse == null) {
                 continue;
             }
-            SearchServiceResponse preProcessedServiceResponse = preProcessResponse(searchServiceRequest, key, queryResponse);
-            if (preProcessedServiceResponse != null) {
-                return preProcessedServiceResponse;
+            SearchServiceResponse preProcessResponse = preProcessResponse(searchServiceRequest, key, queryResponse);
+            if (preProcessResponse != null) {
+                return preProcessResponse;
             }
             for (Delegate delegate : delegateMapList.get(key)) {
                 delegate.postProcessResult(searchServiceRequest, queryResponse, searchServiceResponse);
@@ -99,9 +99,10 @@ public class QueryServiceImpl implements QueryService {
         return toReturn;
     }
 
-
-
-    public SearchServiceResponse preProcessResponse(SearchServiceRequest serviceRequest, String key, QueryResponse queryResponse) throws Exception {
+    public SearchServiceResponse preProcessResponse(
+            SearchServiceRequest serviceRequest,
+            String key,
+            QueryResponse queryResponse) throws Exception {
 
         long numberOfResults = queryResponse.getResults().getNumFound();
         int round = serviceRequest.getRound();
@@ -110,7 +111,7 @@ public class QueryServiceImpl implements QueryService {
         }
 
         if (numberOfResults <= spellCheckNumfoundThreshhold && round == GlobalConstants.SPELL_CORRECT_SOLR_ROUND) {
-            if(!serviceRequest.isSpellCheck()) {
+            if (!serviceRequest.isSpellCheck()) {
                 SearchServiceRequest spellCorrectServiceRequest = cloneRequest(serviceRequest);
                 spellCorrectServiceRequest.setFuzzyCompare(true);
                 spellCorrectServiceRequest.setSpellCheck(true);
@@ -121,7 +122,8 @@ public class QueryServiceImpl implements QueryService {
         }
 
         int numberOfTermTokens = serviceRequest.getQ().split(GlobalConstants.SPACE).length;
-        if (numberOfResults <= mustMatchNumfoundThreshhold && round == GlobalConstants.MUST_MATCH_ROUND_1) {
+        if (numberOfResults <= mustMatchNumfoundThreshhold
+                && round == GlobalConstants.MUST_MATCH_ROUND_1) {
             if (!serviceRequest.isMustMatchSeventyFivePercent() && numberOfTermTokens > 1) {
                 SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
                 mustMatchServiceRequest.setMustMatchSeventyFivePercent(true);
@@ -130,7 +132,8 @@ public class QueryServiceImpl implements QueryService {
                 serviceRequest.setRound(++round);
             }
         }
-        if (numberOfResults <= mustMatchNumfoundThreshhold && round == GlobalConstants.MUST_MATCH_ROUND_2) {
+        if (numberOfResults <= mustMatchNumfoundThreshhold
+                && round == GlobalConstants.MUST_MATCH_ROUND_2) {
             if (!serviceRequest.isMustMatchFiftyPercent() && numberOfTermTokens > 1) {
                 SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
                 mustMatchServiceRequest.setMustMatchFiftyPercent(true);
@@ -139,8 +142,10 @@ public class QueryServiceImpl implements QueryService {
                 serviceRequest.setRound(++round);
             }
         }
-//        if (numberOfResults < spellCheckNumfoundThreshhold && round == GlobalConstants.SPELL_CORRECT_LANGUAGE_TOOL_ROUND) {
-//            SearchServiceRequest spellCorrectServiceRequest = spellCorrectService.buildCorrectSpellingsServiceRequest(queryResponse.getSpellCheckResponse(), serviceRequest);
+//        if (numberOfResults < spellCheckNumfoundThreshhold
+// && round == GlobalConstants.SPELL_CORRECT_LANGUAGE_TOOL_ROUND) {
+//            SearchServiceRequest spellCorrectServiceRequest =
+// spellCorrectService.buildCorrectSpellingsServiceRequest(queryResponse.getSpellCheckResponse(), serviceRequest);
 //            if (spellCorrectServiceRequest.isSpellCheck()) {
 //                return query(spellCorrectServiceRequest);
 //            }

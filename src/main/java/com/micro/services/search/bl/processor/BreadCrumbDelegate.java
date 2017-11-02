@@ -34,7 +34,7 @@ public class BreadCrumbDelegate extends BaseDelegate {
 
 
         List<BreadCrumbTrail> breadCrumbTrailList = new ArrayList<>();
-        for(String breadCrumbName: breadCrumbList) {
+        for (String breadCrumbName: breadCrumbList) {
             BreadCrumbTrail breadCrumbTrail = getBreadCrumbTrail(breadCrumbName, searchServiceResponse);
             breadCrumbTrailList.add(breadCrumbTrail);
         }
@@ -50,19 +50,21 @@ public class BreadCrumbDelegate extends BaseDelegate {
         return breadCrumbTrail;
     }
 
-    private List<BreadCrumbElement> getBreadCrumbElements(String breadCrumbName, SearchServiceResponse searchServiceResponse) {
+    private List<BreadCrumbElement> getBreadCrumbElements(
+            String breadCrumbName,
+            SearchServiceResponse searchServiceResponse) {
         List<BreadCrumbElement> breadCrumbElementList = new ArrayList<>();
 
         List<FacetGroup> facetGroupList = searchServiceResponse.getFacetGroups();
-        if(facetGroupList == null) {
+        if (facetGroupList == null) {
             return breadCrumbElementList;
         }
         Optional<FacetGroup> facetGroup = facetGroupList.stream()
                 .filter(e -> e.getGroupName().equals(breadCrumbName))
                 .findFirst();
-        if(facetGroup.isPresent()) {
+        if (facetGroup.isPresent()) {
             List<Facet> facetList = facetGroup.get().getFacets();
-            for(Facet facet: facetList) {
+            for (Facet facet: facetList) {
                 BreadCrumbElement breadCrumbElement = new BreadCrumbElement();
                 breadCrumbElement.setName(facet.getFacetName());
                 breadCrumbElement.setFacet(facet);

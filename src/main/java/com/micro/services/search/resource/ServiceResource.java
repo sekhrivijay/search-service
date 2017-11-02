@@ -109,7 +109,7 @@ public class ServiceResource {
         try {
             return queryService.query(searchServiceRequest);
         } catch (Exception ex) {
-            LOGGER.error( "Search exception ", ex );
+            LOGGER.error("Search exception ", ex);
 //            throw new WebApplicationException(ex);
         }
         return null;

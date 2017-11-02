@@ -9,15 +9,16 @@ import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Value;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
 @Named("sortDelegate")
-public class SortDelegate  extends BaseDelegate {
+public class SortDelegate extends BaseDelegate {
     public static final String SORT_FIELD = GlobalConstants.AMPERSAND + GlobalConstants.SORT + GlobalConstants.EQUAL;
 //    private static final Logger LOGGER = LoggerFactory.getLogger(SortDelegate.class);
 
@@ -43,7 +44,7 @@ public class SortDelegate  extends BaseDelegate {
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
-        if(sortList == null) {
+        if (sortList == null) {
             return searchServiceResponse;
         }
         List<SortTerm> sortTermList = new ArrayList<>();
@@ -53,16 +54,16 @@ public class SortDelegate  extends BaseDelegate {
     }
 
 
-    private SortTerm buildSortTerm(String sortTermString , SearchServiceResponse searchServiceResponse) {
+    private SortTerm buildSortTerm(String sortTermString, SearchServiceResponse searchServiceResponse) {
         SortTerm sortTerm = new SortTerm();
         sortTerm.setSortBy(sortTermString);
         String urlPrefix = SORT_FIELD + sortTermString + " ";
         String ascUrl = urlPrefix + SortOrder.ASCENDING.getName();
         String descUrl = urlPrefix + SortOrder.DESCENDING.getName();
 
-        if(!queryContains(searchServiceResponse , ascUrl) ) {
-            if(queryContains(searchServiceResponse , descUrl)) {
-               sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery().replace(descUrl, ascUrl));
+        if (!queryContains(searchServiceResponse, ascUrl)) {
+            if (queryContains(searchServiceResponse, descUrl)) {
+                sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery().replace(descUrl, ascUrl));
             } else {
                 sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery() + ascUrl);
             }
@@ -70,9 +71,9 @@ public class SortDelegate  extends BaseDelegate {
             sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery());
         }
 
-        if(!queryContains(searchServiceResponse , descUrl) ) {
-            if(queryContains(searchServiceResponse , ascUrl)) {
-               sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery().replace(ascUrl, descUrl));
+        if (!queryContains(searchServiceResponse, descUrl)) {
+            if (queryContains(searchServiceResponse, ascUrl)) {
+                sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery().replace(ascUrl, descUrl));
             } else {
                 sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery() + descUrl);
             }

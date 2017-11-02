@@ -60,7 +60,10 @@ public class FacetDelegate  extends BaseDelegate {
         return searchServiceResponse;
     }
 
-    private void setUrl(SearchServiceResponse searchServiceResponse, FacetField facetField, FacetField.Count count, Facet facet) {
+    private void setUrl(SearchServiceResponse searchServiceResponse,
+                        FacetField facetField,
+                        FacetField.Count count,
+                        Facet facet) {
         facet.setUrl(getQuery(searchServiceResponse, getQuery(facetField, count)));
     }
 

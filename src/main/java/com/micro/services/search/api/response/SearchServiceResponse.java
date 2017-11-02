@@ -1,11 +1,8 @@
 package com.micro.services.search.api.response;
 
 
-
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 public class SearchServiceResponse implements Serializable {
     private Debug debug;

@@ -62,9 +62,9 @@ public class DelegateInitializer {
     @Inject
     @Named("paginationDelegate")
     private Delegate paginationDelegate;
-    @Inject
-    @Named("breadCrumbDelegate")
-    private Delegate breadCrumbDelegate;
+//    @Inject
+//    @Named("breadCrumbDelegate")
+//    private Delegate breadCrumbDelegate;
     @Inject
     @Named("didYouMeanDelegate")
     private Delegate didYouMeanDelegate;
@@ -87,7 +87,7 @@ public class DelegateInitializer {
         mainDelegateList.add(mustMatchDelegate);
         mainDelegateList.add(parameterDelegate);
 
-        if(searchServiceRequest.getRequestType() == RequestType.SEARCH
+        if (searchServiceRequest.getRequestType() == RequestType.SEARCH
                 || searchServiceRequest.getRequestType() == RequestType.BROWSE) {
             addSecondaryDelegates(mainDelegateList);
         }

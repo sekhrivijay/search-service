@@ -11,6 +11,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.Map;
 @Named("productsDelegate")
 public class ProductsDelegate extends BaseDelegate {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductsDelegate.class);
 
     public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD
             + GlobalConstants.TYPE_PREFIX
@@ -40,7 +43,10 @@ public class ProductsDelegate extends BaseDelegate {
             return searchServiceResponse;
         }
         searchServiceResponse.setOriginalQuery(buildOriginalQuery(searchServiceRequest));
-        List<Document> documents = buildProducts(searchServiceRequest, searchServiceResponse, queryResponse.getResults());
+        List<Document> documents = buildProducts(
+                searchServiceRequest,
+                searchServiceResponse,
+                queryResponse.getResults());
         if (documents.size() > 0) {
             searchServiceResponse.setDocumentList(documents);
         }
@@ -48,7 +54,10 @@ public class ProductsDelegate extends BaseDelegate {
     }
 
 
-    private List<Document> buildProducts(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse, SolrDocumentList solrDocuments) {
+    private List<Document> buildProducts(
+            SearchServiceRequest searchServiceRequest,
+            SearchServiceResponse searchServiceResponse,
+            SolrDocumentList solrDocuments) {
         List<Document> documentList = new ArrayList<>();
         for (SolrDocument solrDocument : solrDocuments) {
             Collection<String> fieldNames = solrDocument.getFieldNames();
@@ -58,7 +67,7 @@ public class ProductsDelegate extends BaseDelegate {
             }
             Document document = new Document();
             document.setRecord(record);
-            if(searchServiceRequest.getRequestType() != RequestType.AUTOFILL) {
+            if (searchServiceRequest.getRequestType() != RequestType.AUTOFILL) {
                 setUrl(searchServiceResponse, solrDocument, document);
             }
             documentList.add(document);
@@ -73,6 +82,7 @@ public class ProductsDelegate extends BaseDelegate {
     }
 
     private String getQuery(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument) {
+        LOGGER.debug(searchServiceResponse.toString());
         return GlobalConstants.ID_FIELD_FILTER
                 + SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
                 + PDP_QUERY_SUFFIX;

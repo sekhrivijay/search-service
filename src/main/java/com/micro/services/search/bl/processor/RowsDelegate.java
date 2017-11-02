@@ -26,10 +26,13 @@ public class RowsDelegate extends BaseDelegate {
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
 
-        if(searchServiceRequest.getRequestType() == RequestType.AUTOFILL) {
+        if (searchServiceRequest.getRequestType() == RequestType.AUTOFILL) {
             return searchServiceResponse;
         }
-        searchServiceResponse.setRows(getRows(searchServiceRequest.getRows(), getRows(searchServiceRequest.getRows(), getRows(searchServiceRequest))));
+        searchServiceResponse.setRows(
+                getRows(
+                        searchServiceRequest.getRows(),
+                        getRows(searchServiceRequest.getRows(), getRows(searchServiceRequest))));
         return searchServiceResponse;
     }
 
