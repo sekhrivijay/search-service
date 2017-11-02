@@ -42,8 +42,11 @@ public class DelegateInitializer {
     @Named("sortDelegate")
     private Delegate sortDelegate;
     @Inject
-    @Named("rowsDelegate")
-    private Delegate rowsDelegate;
+    @Named("rowsPreDelegate")
+    private Delegate rowsPreDelegate;
+    @Inject
+    @Named("rowsPostDelegate")
+    private Delegate rowsPostDelegate;
     @Inject
     @Named("startDelegate")
     private Delegate startDelegate;
@@ -78,18 +81,20 @@ public class DelegateInitializer {
         List<Delegate> mainDelegateList = new ArrayList<>();
         mainDelegateList.add(queryTermDelegate);
         mainDelegateList.add(requestHandlerDelegate);
-        mainDelegateList.add(numFoundDelegate);
+
         mainDelegateList.add(timeAllowedDelegate);
         mainDelegateList.add(productsDelegate);
         mainDelegateList.add(filterDelegate);
 //        mainDelegateList.add(breadCrumbDelegate);
-        mainDelegateList.add(rowsDelegate);
-        mainDelegateList.add(mustMatchDelegate);
+        mainDelegateList.add(rowsPreDelegate);
         mainDelegateList.add(parameterDelegate);
 
         if (searchServiceRequest.getRequestType() == RequestType.SEARCH
                 || searchServiceRequest.getRequestType() == RequestType.BROWSE) {
             addSecondaryDelegates(mainDelegateList);
+        }
+        if(searchServiceRequest.getRequestType() == RequestType.SPELL) {
+            mainDelegateList.add(didYouMeanDelegate);
         }
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();
 
@@ -104,9 +109,11 @@ public class DelegateInitializer {
 
     private void addSecondaryDelegates(List<Delegate> mainDelegateList) {
         mainDelegateList.add(fuzzySearchDelegate);
-
         mainDelegateList.add(facetDelegate);
         mainDelegateList.add(startDelegate);
+        mainDelegateList.add(numFoundDelegate);
+        mainDelegateList.add(mustMatchDelegate);
+        mainDelegateList.add(rowsPostDelegate);
         mainDelegateList.add(groupDelegate);
         mainDelegateList.add(paginationDelegate);
         mainDelegateList.add(sortDelegate);

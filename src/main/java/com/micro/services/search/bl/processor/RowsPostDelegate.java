@@ -8,16 +8,11 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 
 import javax.inject.Named;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
-@Named("rowsDelegate")
-public class RowsDelegate extends BaseDelegate {
-
+@Named("rowsPostDelegate")
+public class RowsPostDelegate extends BaseDelegate {
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        solrQuery.setRows(getRows(searchServiceRequest.getRows(), getRows(searchServiceRequest)));
         return solrQuery;
     }
 
@@ -26,9 +21,6 @@ public class RowsDelegate extends BaseDelegate {
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
 
-        if (searchServiceRequest.getRequestType() == RequestType.AUTOFILL) {
-            return searchServiceResponse;
-        }
         searchServiceResponse.setRows(
                 getRows(
                         searchServiceRequest.getRows(),

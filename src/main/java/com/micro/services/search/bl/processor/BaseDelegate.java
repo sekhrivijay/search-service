@@ -52,7 +52,7 @@ public abstract class BaseDelegate implements Delegate {
         return searchServiceResponse.getOriginalQuery().contains(query);
     }
 
-    protected  int getRows(int rowsInput, int rows) {
+    protected int getRows(int rowsInput, int rows) {
         if (rowsInput != 0) {
             return rowsInput;
         }

@@ -6,8 +6,8 @@ import java.util.List;
 
 public class SearchServiceResponse implements Serializable {
     private Debug debug;
-    private long numFound;
-    private long rows;
+    private Long numFound;
+    private Integer rows;
     private List<FacetGroup> facetGroups;
     private List<ResponseGroup> responseGroups;
     private Redirect redirect;
@@ -68,11 +68,15 @@ public class SearchServiceResponse implements Serializable {
         this.didYouMeanList = didYouMeanList;
     }
 
-    public long getRows() {
+    public void setNumFound(Long numFound) {
+        this.numFound = numFound;
+    }
+
+    public Integer getRows() {
         return rows;
     }
 
-    public void setRows(long rows) {
+    public void setRows(Integer rows) {
         this.rows = rows;
     }
 

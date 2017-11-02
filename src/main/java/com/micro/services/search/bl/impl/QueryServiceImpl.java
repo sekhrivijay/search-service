@@ -1,6 +1,7 @@
 package com.micro.services.search.bl.impl;
 
 
+import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.DelegateInitializer;
@@ -106,7 +107,9 @@ public class QueryServiceImpl implements QueryService {
 
         long numberOfResults = queryResponse.getResults().getNumFound();
         int round = serviceRequest.getRound();
-        if (round >= maxQueryRounds) {
+        if (round >= maxQueryRounds
+                || serviceRequest.getRequestType() == RequestType.AUTOFILL
+                || serviceRequest.getRequestType() == RequestType.SPELL) {
             return null;
         }
 

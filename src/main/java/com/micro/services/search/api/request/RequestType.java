@@ -4,6 +4,7 @@ public enum RequestType {
     SEARCH("search"),
     BROWSE("browse"),
     AUTOFILL("autofill"),
+    SPELL("spell"),
     PDP("pdp");
     private String name;
 
