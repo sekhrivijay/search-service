@@ -4,7 +4,6 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 
 public class MiscUtil {
@@ -26,8 +25,8 @@ public class MiscUtil {
             childServiceRequest = parentServiceRequest;
             parentServiceRequest = parentServiceRequest.getParent();
         }
-        return GlobalConstants.APPLICATION_NAME.concat(
-                GlobalConstants.ENVIRONMENT.concat(
+        return GlobalConstants.getApplicationName().concat(
+                GlobalConstants.getEnvironment().concat(
                         childServiceRequest.toCacheKey()));
     }
 

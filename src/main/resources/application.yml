@@ -118,9 +118,6 @@ hystrix:
    threadpool.solrThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
 
 
-
-
-
 endpoints:
   restart:
     enabled: true

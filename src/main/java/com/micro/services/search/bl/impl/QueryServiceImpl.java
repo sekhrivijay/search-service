@@ -52,12 +52,12 @@ public class QueryServiceImpl implements QueryService {
 
     @Value("${spring.application.name}")
     public void setApplicationName(String name) {
-        GlobalConstants.APPLICATION_NAME = name;
+        GlobalConstants.setApplicationName(name);
     }
 
     @Value("${spring.profiles.active}")
     public void setEnvironment(String environment) {
-        GlobalConstants.ENVIRONMENT = environment;
+        GlobalConstants.setEnvironment(environment);
     }
 
 

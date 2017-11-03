@@ -1,6 +1,5 @@
 package com.micro.services.search.bl.processor;
 
-import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import org.apache.solr.client.solrj.SolrQuery;

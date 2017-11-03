@@ -93,7 +93,7 @@ public class DelegateInitializer {
                 || searchServiceRequest.getRequestType() == RequestType.BROWSE) {
             addSecondaryDelegates(mainDelegateList);
         }
-        if(searchServiceRequest.getRequestType() == RequestType.SPELL) {
+        if (searchServiceRequest.getRequestType() == RequestType.SPELL) {
             mainDelegateList.add(didYouMeanDelegate);
         }
         Map<String, List<Delegate>> delegateMapList = new HashMap<>();

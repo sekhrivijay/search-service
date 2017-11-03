@@ -7,8 +7,8 @@ import java.util.List;
 
 public class GlobalConstants {
 
-    public static String APPLICATION_NAME = "";
-    public static String ENVIRONMENT = "";
+    private static String applicationName = "";
+    private static String environment = "";
 
     public static final String REQUEST = "requests";
     public static final String ID = "id";
@@ -87,6 +87,19 @@ public class GlobalConstants {
         );
     }
 
+    public static void setApplicationName(String applicationName) {
+        GlobalConstants.applicationName = applicationName;
+    }
 
+    public static void setEnvironment(String environment) {
+        GlobalConstants.environment = environment;
+    }
 
+    public static String getApplicationName() {
+        return applicationName;
+    }
+
+    public static String getEnvironment() {
+        return environment;
+    }
 }
