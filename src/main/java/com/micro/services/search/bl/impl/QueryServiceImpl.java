@@ -50,6 +50,17 @@ public class QueryServiceImpl implements QueryService {
     @Value("${service.mustMatchNumfoundThreshhold:0}")
     private long mustMatchNumfoundThreshhold;
 
+    @Value("${spring.application.name}")
+    public void setApplicationName(String name) {
+        GlobalConstants.APPLICATION_NAME = name;
+    }
+
+    @Value("${spring.profiles.active}")
+    public void setEnvironment(String environment) {
+        GlobalConstants.ENVIRONMENT = environment;
+    }
+
+
     @Inject
     private QueryCommand queryCommand;
 

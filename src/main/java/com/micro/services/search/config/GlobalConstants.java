@@ -4,7 +4,11 @@ package com.micro.services.search.config;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class GlobalConstants {
+
+    public static String APPLICATION_NAME = "";
+    public static String ENVIRONMENT = "";
 
     public static final String REQUEST = "requests";
     public static final String ID = "id";
@@ -82,4 +86,7 @@ public class GlobalConstants {
                 DEBUG
         );
     }
+
+
+
 }

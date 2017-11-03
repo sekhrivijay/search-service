@@ -46,11 +46,13 @@ service:
     enabled: true
   swagger:
     enabled: true
+#    base-package: com.micro.services.search.resource
   logging:
     enabled: true
-
-
-
+  memcache:
+    enabled: false
+#    ttl: 3360
+#    servers: localhost:11211
 
   zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
   collectionDestination : products
@@ -98,11 +100,14 @@ service:
   rulesService:
     baseUrl: http://localhost:8080/demo/rules
 
-
+#  memcache:
+##    servers: localhost:11211
+#    enabled: true
 memcached:
   cache:
     servers: localhost:11211
     mode: static
+
 
 hystrix:
    command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 2000
