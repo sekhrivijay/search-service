@@ -96,7 +96,8 @@ public class ServiceResource {
                     dataType = "string",
                     paramType = "query"),
             @ApiImplicitParam(name = "type",
-                    value = "To determine what the different request types are. Valid examples type=[search, browse, autofill, spell, pdp] ",
+                    value = "To determine what the different request types are. " +
+                            "Valid examples type=[search, browse, autofill, spell, pdp] ",
                     required = false,
                     dataType = "string",
                     paramType = "query"),
