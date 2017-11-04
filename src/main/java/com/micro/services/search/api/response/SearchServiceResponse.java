@@ -28,12 +28,8 @@ public class SearchServiceResponse implements Serializable {
         this.debug = debug;
     }
 
-    public long getNumFound() {
+    public Long getNumFound() {
         return numFound;
-    }
-
-    public void setNumFound(long numFound) {
-        this.numFound = numFound;
     }
 
     public List<FacetGroup> getFacetGroups() {
