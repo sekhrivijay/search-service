@@ -116,6 +116,9 @@ public class QueryServiceImpl implements QueryService {
             String key,
             QueryResponse queryResponse) throws Exception {
 
+        if(queryResponse == null || queryResponse.getResults() == null) {
+            return null;
+        }
         long numberOfResults = queryResponse.getResults().getNumFound();
         int round = serviceRequest.getRound();
         if (round >= maxQueryRounds
