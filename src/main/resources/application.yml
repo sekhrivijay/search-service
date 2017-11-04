@@ -1,9 +1,9 @@
 server:
   context-path: /${spring.application.name}
-  tomcat:
-    accesslog:
-      enabled: false
-    basedir: .
+#  tomcat:
+#    accesslog:
+#      enabled: false
+#    basedir: .
 
 spring:
   application:
@@ -103,10 +103,10 @@ service:
 #  memcache:
 ##    servers: localhost:11211
 #    enabled: true
-memcached:
-  cache:
-    servers: localhost:11211
-    mode: static
+#memcached:
+#  cache:
+#    servers: localhost:11211
+#    mode: static
 
 
 hystrix:
@@ -128,8 +128,8 @@ management:
   security:
     enabled: false
 
-logging:
-  level:
-    ROOT: INFO
-    com.amazonaws: DEBUG
+#logging:
+#  level:
+#    ROOT: INFO
+#    com.amazonaws: DEBUG
 
