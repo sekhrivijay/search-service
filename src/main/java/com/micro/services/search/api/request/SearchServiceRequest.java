@@ -10,7 +10,7 @@ import java.util.Map;
 import static com.micro.services.search.config.GlobalConstants.COUNT;
 
 public class SearchServiceRequest implements Serializable {
-    private String q;
+    private String q = "*";
     private String sort = GlobalConstants.ID;
     private String sortOrder = GlobalConstants.ASC;
     private int rows;
