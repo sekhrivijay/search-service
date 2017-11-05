@@ -138,7 +138,7 @@ public class QueryServiceImpl implements QueryService {
             }
         }
 
-        int numberOfTermTokens = serviceRequest.getQ().split(GlobalConstants.SPACE).length;
+        int numberOfTermTokens = getLength(serviceRequest);
         if (numberOfResults <= mustMatchNumfoundThreshhold
                 && round == GlobalConstants.MUST_MATCH_ROUND_1) {
             if (!serviceRequest.isMustMatchSeventyFivePercent() && numberOfTermTokens > 1) {
@@ -168,6 +168,13 @@ public class QueryServiceImpl implements QueryService {
 //            }
 //        }
         return null;
+    }
+
+    private int getLength(SearchServiceRequest serviceRequest) {
+        if(serviceRequest == null || serviceRequest.getQ() == null) {
+            return 0;
+        }
+        return serviceRequest.getQ().split(GlobalConstants.SPACE).length;
     }
 
     @NotNull
