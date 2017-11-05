@@ -171,7 +171,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
     private int getLength(SearchServiceRequest serviceRequest) {
-        if(serviceRequest == null || serviceRequest.getQ() == null) {
+        if (serviceRequest == null || serviceRequest.getQ() == null) {
             return 0;
         }
         return serviceRequest.getQ().split(GlobalConstants.SPACE).length;

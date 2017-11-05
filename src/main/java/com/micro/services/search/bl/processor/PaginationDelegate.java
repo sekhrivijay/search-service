@@ -43,7 +43,7 @@ public class PaginationDelegate  extends BaseDelegate {
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
 
-        if (searchServiceResponse == null || searchServiceResponse.getNumFound() == null ) {
+        if (searchServiceResponse == null || searchServiceResponse.getNumFound() == null) {
             return searchServiceResponse;
         }
         long recordOffset = searchServiceRequest.getStart();
