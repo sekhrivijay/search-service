@@ -1,5 +1,6 @@
 package com.micro.services.search.bl.processor;
 
+import com.google.gson.Gson;
 import com.micro.services.search.api.SearchModelWrapper;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
@@ -33,9 +34,12 @@ public class RulesDelegate extends BaseDelegate {
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         SearchModelWrapper searchModelWrapper = new SearchModelWrapper();
-        searchModelWrapper.setSearchServiceRequest(new SearchServiceRequest());
+        searchModelWrapper.setSearchServiceRequest(searchServiceRequest);
+        searchModelWrapper.setSearchServiceResponse(new SearchServiceResponse());
         HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
         LOGGER.info("Calling rule service ");
+//        Gson gson = new Gson();
+//        LOGGER.info(gson.toJson(searchModelWrapper));
         ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
                 rulesServiceBaseUrl + "/executePre",
                 HttpMethod.POST, request,

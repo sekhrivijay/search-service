@@ -18,63 +18,25 @@ import java.util.Map;
 public class DelegateInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DelegateInitializer.class);
-
-    @Inject
-    @Named("queryTermDelegate")
     private Delegate queryTermDelegate;
-
-    @Inject
-    @Named("fuzzySearchDelegate")
     private Delegate fuzzySearchDelegate;
-    @Inject
-    @Named("requestHandlerDelegate")
-    private Delegate requestHandlerDelegate;
-    @Inject
-    @Named("productsDelegate")
     private Delegate productsDelegate;
-    @Inject
-    @Named("timeAllowedDelegate")
     private Delegate timeAllowedDelegate;
-    @Inject
-    @Named("filterDelegate")
     private Delegate filterDelegate;
-    @Inject
-    @Named("sortDelegate")
     private Delegate sortDelegate;
-    @Inject
-    @Named("rowsPreDelegate")
     private Delegate rowsPreDelegate;
-    @Inject
-    @Named("rowsPostDelegate")
     private Delegate rowsPostDelegate;
-    @Inject
-    @Named("startDelegate")
     private Delegate startDelegate;
-    @Inject
-    @Named("parameterDelegate")
     private Delegate parameterDelegate;
-    @Inject
-    @Named("numFoundDelegate")
     private Delegate numFoundDelegate;
-    @Inject
-    @Named("facetDelegate")
     private Delegate facetDelegate;
-    @Inject
-    @Named("groupDelegate")
     private Delegate groupDelegate;
-    @Inject
-    @Named("paginationDelegate")
     private Delegate paginationDelegate;
-//    @Inject
-//    @Named("breadCrumbDelegate")
+    private Delegate requestHandlerDelegate;
 //    private Delegate breadCrumbDelegate;
-    @Inject
-    @Named("didYouMeanDelegate")
     private Delegate didYouMeanDelegate;
-
-    @Inject
-    @Named("mustMatchDelegate")
     private Delegate mustMatchDelegate;
+    private Delegate rulesDelegate;
 
 
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
@@ -108,6 +70,7 @@ public class DelegateInitializer {
     }
 
     private void addSecondaryDelegates(List<Delegate> mainDelegateList) {
+        mainDelegateList.add(rulesDelegate);
         mainDelegateList.add(fuzzySearchDelegate);
         mainDelegateList.add(facetDelegate);
         mainDelegateList.add(startDelegate);
@@ -120,4 +83,112 @@ public class DelegateInitializer {
         mainDelegateList.add(didYouMeanDelegate);
     }
 
+
+    @Inject
+    @Named("queryTermDelegate")
+    public void setQueryTermDelegate(Delegate queryTermDelegate) {
+        this.queryTermDelegate = queryTermDelegate;
+    }
+
+    @Inject
+    @Named("fuzzySearchDelegate")
+    public void setFuzzySearchDelegate(Delegate fuzzySearchDelegate) {
+        this.fuzzySearchDelegate = fuzzySearchDelegate;
+    }
+
+    @Inject
+    @Named("requestHandlerDelegate")
+    public void setRequestHandlerDelegate(Delegate requestHandlerDelegate) {
+        this.requestHandlerDelegate = requestHandlerDelegate;
+    }
+
+    @Inject
+    @Named("productsDelegate")
+    public void setProductsDelegate(Delegate productsDelegate) {
+        this.productsDelegate = productsDelegate;
+    }
+
+    @Inject
+    @Named("timeAllowedDelegate")
+    public void setTimeAllowedDelegate(Delegate timeAllowedDelegate) {
+        this.timeAllowedDelegate = timeAllowedDelegate;
+    }
+
+    @Inject
+    @Named("filterDelegate")
+    public void setFilterDelegate(Delegate filterDelegate) {
+        this.filterDelegate = filterDelegate;
+    }
+
+    @Inject
+    @Named("sortDelegate")
+    public void setSortDelegate(Delegate sortDelegate) {
+        this.sortDelegate = sortDelegate;
+    }
+
+    @Inject
+    @Named("rowsPreDelegate")
+    public void setRowsPreDelegate(Delegate rowsPreDelegate) {
+        this.rowsPreDelegate = rowsPreDelegate;
+    }
+
+    @Inject
+    @Named("rowsPostDelegate")
+    public void setRowsPostDelegate(Delegate rowsPostDelegate) {
+        this.rowsPostDelegate = rowsPostDelegate;
+    }
+
+    @Inject
+    @Named("startDelegate")
+    public void setStartDelegate(Delegate startDelegate) {
+        this.startDelegate = startDelegate;
+    }
+
+    @Inject
+    @Named("parameterDelegate")
+    public void setParameterDelegate(Delegate parameterDelegate) {
+        this.parameterDelegate = parameterDelegate;
+    }
+
+    @Inject
+    @Named("numFoundDelegate")
+    public void setNumFoundDelegate(Delegate numFoundDelegate) {
+        this.numFoundDelegate = numFoundDelegate;
+    }
+
+    @Inject
+    @Named("facetDelegate")
+    public void setFacetDelegate(Delegate facetDelegate) {
+        this.facetDelegate = facetDelegate;
+    }
+
+    @Inject
+    @Named("groupDelegate")
+    public void setGroupDelegate(Delegate groupDelegate) {
+        this.groupDelegate = groupDelegate;
+    }
+
+    @Inject
+    @Named("paginationDelegate")
+    public void setPaginationDelegate(Delegate paginationDelegate) {
+        this.paginationDelegate = paginationDelegate;
+    }
+
+    @Inject
+    @Named("didYouMeanDelegate")
+    public void setDidYouMeanDelegate(Delegate didYouMeanDelegate) {
+        this.didYouMeanDelegate = didYouMeanDelegate;
+    }
+
+    @Inject
+    @Named("mustMatchDelegate")
+    public void setMustMatchDelegate(Delegate mustMatchDelegate) {
+        this.mustMatchDelegate = mustMatchDelegate;
+    }
+
+    @Inject
+    @Named("rulesDelegate")
+    public void setRulesDelegate(Delegate rulesDelegate) {
+        this.rulesDelegate = rulesDelegate;
+    }
 }
