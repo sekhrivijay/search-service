@@ -6,19 +6,10 @@ options:
 pipelines:
   default:
     - step:
-        name: mvn build
+        name: mvn and docker build
         script:
           - mvn -version
           - mvn -B clean install
-          - echo "pwd is"
-          - pwd
-          - ls -lrth  
-    - step:
-        name: docker build
-        script: # Modify the commands below to build your repository.
-          - ls -lrth
-          - echo "pwd is "
-          - pwd
           - export IMAGE_NAME=$DOCKER_HUB_USERNAME/generic-search:$BITBUCKET_COMMIT
           - echo "Image name is ${IMAGE_NAME}"
           - docker build -t ${IMAGE_NAME} .
