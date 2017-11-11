@@ -1,6 +1,5 @@
 package com.micro.services.search.bl.processor;
 
-import com.google.gson.Gson;
 import com.micro.services.search.api.SearchModelWrapper;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
