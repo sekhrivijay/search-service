@@ -1,4 +1,4 @@
-image: maven:3.1.1
+image: maven:3.3.9
 
 options:
   docker: true
