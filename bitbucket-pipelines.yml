@@ -9,7 +9,7 @@ pipelines:
         name: mvn build
         script:
           - mvn -version
-          - mvn clean install
+          - mvn -B clean install
     - step:
         name: docker build
         script: # Modify the commands below to build your repository.
