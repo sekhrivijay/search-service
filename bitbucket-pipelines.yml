@@ -1,4 +1,4 @@
-image: maven:3.3.9
+image: maven:3.1.1
 
 options:
   docker: true
@@ -8,6 +8,7 @@ pipelines:
     - step:
         name: mvn build
         script:
+          - mvn -version
           - mvn clean install
     - step:
         name: docker build
