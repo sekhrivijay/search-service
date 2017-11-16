@@ -32,20 +32,29 @@ public class RulesDelegate extends BaseDelegate {
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        SearchModelWrapper searchModelWrapper = new SearchModelWrapper();
-        searchModelWrapper.setSearchServiceRequest(searchServiceRequest);
-        searchModelWrapper.setSearchServiceResponse(new SearchServiceResponse());
-        HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
-        LOGGER.info("Calling rule service ");
-//        Gson gson = new Gson();
-//        LOGGER.info(gson.toJson(searchModelWrapper));
-        ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
-                rulesServiceBaseUrl + "/executePre",
-                HttpMethod.POST, request,
-                SearchModelWrapper.class);
-        SearchModelWrapper searchModelWrapperModified = response.getBody();
+        SearchModelWrapper searchModelWrapperModified = callSearchRulesService(searchServiceRequest);
         LOGGER.info(searchModelWrapperModified.toString());
         return solrQuery;
+    }
+
+    private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
+        SearchModelWrapper searchModelWrapper = new SearchModelWrapper();
+        try {
+            searchModelWrapper.setSearchServiceRequest(searchServiceRequest);
+            searchModelWrapper.setSearchServiceResponse(new SearchServiceResponse());
+            HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
+            LOGGER.info("Calling rule service ");
+//        Gson gson = new Gson();
+//        LOGGER.info(gson.toJson(searchModelWrapper));
+            ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
+                    rulesServiceBaseUrl + "/executePre",
+                    HttpMethod.POST, request,
+                    SearchModelWrapper.class);
+            return response.getBody();
+        } catch (Exception e) {
+            LOGGER.error("Rule service exception ", e);
+        }
+        return searchModelWrapper;
     }
 
     @Override
