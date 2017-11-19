@@ -38,6 +38,10 @@ public class RulesDelegate extends BaseDelegate {
     }
 
     private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
+        return new SearchModelWrapper();
+    }
+
+    private SearchModelWrapper callSearchRulesServiceOld(SearchServiceRequest searchServiceRequest) {
         SearchModelWrapper searchModelWrapper = new SearchModelWrapper();
         try {
             searchModelWrapper.setSearchServiceRequest(searchServiceRequest);
