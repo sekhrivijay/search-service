@@ -22,6 +22,9 @@ public class RulesDelegate extends BaseDelegate {
 
     private RestTemplate restTemplate;
 
+    @Value("${service.rulesService.enabled:false}")
+    private boolean rulesServiceEnabled;
+
     @Value("${service.rulesService.baseUrl}")
     private String rulesServiceBaseUrl;
 
@@ -39,6 +42,9 @@ public class RulesDelegate extends BaseDelegate {
 
     private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
         LOGGER.info(searchServiceRequest.toString());
+        if (rulesServiceEnabled) {
+            return callSearchRulesServiceOld(searchServiceRequest);
+        }
         return new SearchModelWrapper();
     }
 

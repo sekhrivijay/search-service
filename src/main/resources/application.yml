@@ -98,6 +98,7 @@ service:
       size: 2
 
   rulesService:
+    enabled: false
     baseUrl: http://localhost:8070/search-rules-service/rules
 
 
