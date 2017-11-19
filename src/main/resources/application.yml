@@ -1,5 +1,5 @@
-server:
-  context-path: /${spring.application.name}
+#server:
+#  context-path: /${spring.application.name}
 #  tomcat:
 #    accesslog:
 #      enabled: false
