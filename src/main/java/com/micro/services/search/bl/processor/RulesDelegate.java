@@ -38,6 +38,7 @@ public class RulesDelegate extends BaseDelegate {
     }
 
     private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
+        LOGGER.info(searchServiceRequest.toString());
         return new SearchModelWrapper();
     }
 
