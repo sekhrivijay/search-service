@@ -18,7 +18,7 @@ spec:
       containers:
       - name: search
         imagePullPolicy: Always
-        image: "sekhrivijay/generic-search:10936516e4a5452580543a3b1427adc694526a86"
+        image: "sekhrivijay/generic-search:ddb645f5a6525565a54445ab2e5f98de1ab72319"
         resources:
           requests:
             memory: "0.5Gi"
