@@ -7,7 +7,7 @@
 
 spring:
   application:
-    name: generic-search
+    name: search
 #  cache:
 #    type: none
   profiles:
