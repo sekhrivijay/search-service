@@ -40,6 +40,8 @@ service:
       enabled: true
     prometheus:
       enabled: true
+    jmx:
+      enabled: true
   git:
     enabled: true
   vip:
