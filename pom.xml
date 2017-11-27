@@ -124,16 +124,6 @@
             <artifactId>commons-logging</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.services.micro.commons</groupId>-->
-        <!--<artifactId>commons-jsonp</artifactId>-->
-        <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.services.micro.commons</groupId>-->
-        <!--<artifactId>commons-https</artifactId>-->
-        <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>

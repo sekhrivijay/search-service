@@ -5,9 +5,9 @@ import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.DelegateInitializer;
+import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.bl.processor.Delegate;
 import com.micro.services.search.bl.task.QueryCommand;
-import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrUtil;
 import org.apache.commons.lang3.SerializationUtils;
@@ -82,15 +82,21 @@ public class QueryServiceImpl implements QueryService {
             }
             solrQueryMap.put(key, solrQuery);
         }
-        Map<String, Future<QueryResponse>> futureMap = submitQueries(solrQueryMap);
 
+        SearchServiceResponse preProcessResponse = preProcessRequest(searchServiceRequest);
+        if (preProcessResponse != null) {
+            return preProcessResponse;
+        }
+
+        Map<String, Future<QueryResponse>> futureMap = submitQueries(solrQueryMap);
         SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
+
         for (String key : delegateMapList.keySet()) {
             QueryResponse queryResponse = SolrUtil.getQueryResponse(futureMap, key, solrQueryTimeout);
             if (queryResponse == null) {
                 continue;
             }
-            SearchServiceResponse preProcessResponse = preProcessResponse(searchServiceRequest, key, queryResponse);
+            preProcessResponse = preProcessResponse(searchServiceRequest, key, queryResponse);
             if (preProcessResponse != null) {
                 return preProcessResponse;
             }
@@ -110,6 +116,20 @@ public class QueryServiceImpl implements QueryService {
         }
         return toReturn;
     }
+
+
+    public SearchServiceResponse preProcessRequest(SearchServiceRequest searchServiceRequest) throws Exception {
+        if (searchServiceRequest != null
+                && searchServiceRequest.getHolder() != null
+                && searchServiceRequest.getHolder().getRedirect() != null
+                && searchServiceRequest.getHolder().getRedirect().getRedirectUrl() != null) {
+            SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
+            searchServiceResponse.setRedirect(searchServiceRequest.getHolder().getRedirect());
+            return searchServiceResponse;
+        }
+        return null;
+    }
+
 
     public SearchServiceResponse preProcessResponse(
             SearchServiceRequest serviceRequest,

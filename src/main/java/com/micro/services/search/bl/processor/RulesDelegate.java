@@ -1,8 +1,10 @@
 package com.micro.services.search.bl.processor;
 
 import com.micro.services.search.api.SearchModelWrapper;
+import com.micro.services.search.api.request.Holder;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.slf4j.Logger;
@@ -34,23 +36,31 @@ public class RulesDelegate extends BaseDelegate {
     }
 
     @Override
+    @HystrixCommand(groupKey = "hystrixGroup",
+            commandKey = "ruleServiceKey",
+            threadPoolKey = "ruleThreadPoolKey",
+            fallbackMethod = "preProcessFallback")
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         SearchModelWrapper searchModelWrapperModified = callSearchRulesService(searchServiceRequest);
-        LOGGER.info(searchModelWrapperModified.toString());
+        if(searchModelWrapperModified != null
+                && searchModelWrapperModified.getSearchServiceResponse() != null
+                && searchModelWrapperModified.getSearchServiceResponse().getRedirect() != null) {
+            LOGGER.info(searchModelWrapperModified.toString());
+            Holder holder = new Holder();
+            holder.setRedirect(searchModelWrapperModified.getSearchServiceResponse().getRedirect());
+            searchServiceRequest.setHolder(holder);
+        }
+        return solrQuery;
+    }
+
+    public SolrQuery preProcessFallback(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         return solrQuery;
     }
 
     private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
-        LOGGER.info(searchServiceRequest.toString());
+//        LOGGER.info(searchServiceRequest.toString());
         if (rulesServiceEnabled) {
-            return callSearchRulesServiceOld(searchServiceRequest);
-        }
-        return new SearchModelWrapper();
-    }
-
-    private SearchModelWrapper callSearchRulesServiceOld(SearchServiceRequest searchServiceRequest) {
-        SearchModelWrapper searchModelWrapper = new SearchModelWrapper();
-        try {
+            SearchModelWrapper searchModelWrapper = new SearchModelWrapper();
             searchModelWrapper.setSearchServiceRequest(searchServiceRequest);
             searchModelWrapper.setSearchServiceResponse(new SearchServiceResponse());
             HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
@@ -62,10 +72,8 @@ public class RulesDelegate extends BaseDelegate {
                     HttpMethod.POST, request,
                     SearchModelWrapper.class);
             return response.getBody();
-        } catch (Exception e) {
-            LOGGER.error("Rule service exception ", e);
         }
-        return searchModelWrapper;
+        return new SearchModelWrapper();
     }
 
     @Override

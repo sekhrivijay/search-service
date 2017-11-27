@@ -2,7 +2,7 @@
 
 steps:
 - name: 'gcr.io/cloud-builders/mvn'
-  args: ['clean', 'install']
+  args: ['-U', '-B', 'clean', 'install']
 
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '--tag=gcr.io/deep-thought-185318/generic-search', '.']

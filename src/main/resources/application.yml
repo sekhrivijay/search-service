@@ -100,8 +100,8 @@ service:
       size: 2
 
   rulesService:
-    enabled: false
-    baseUrl: http://localhost:8070/search-rules-service/rules
+    enabled: true
+    baseUrl: http://localhost:8070/rules
 
 
 hystrix:
@@ -111,6 +111,14 @@ hystrix:
    command.solrCommandKey.metrics.rollingStats.timeInMilliseconds: 180000
    threadpool.solrThreadPoolKey.coreSize: 30
    threadpool.solrThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.ruleServiceKey.execution.isolation.thread.timeoutInMilliseconds: 1000
+   command.ruleServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.ruleServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.ruleServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.ruleThreadPoolKey.coreSize: 30
+   threadpool.ruleThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
 
 
 endpoints:

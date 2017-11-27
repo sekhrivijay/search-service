@@ -32,6 +32,7 @@ public class SearchServiceRequest implements Serializable {
     private RequestType requestType = RequestType.SEARCH;
     private Map<String, List<String>> parameters;
     private Map<String, String[]> parametersOriginal;
+    private Holder holder;
 
     public String getQ() {
         return q;
@@ -211,6 +212,14 @@ public class SearchServiceRequest implements Serializable {
         this.site = site;
     }
 
+    public Holder getHolder() {
+        return holder;
+    }
+
+    public void setHolder(Holder holder) {
+        this.holder = holder;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceRequest{" +
@@ -232,6 +241,7 @@ public class SearchServiceRequest implements Serializable {
                 ", isMustMatchFiftyPercent=" + isMustMatchFiftyPercent +
                 ", isMustMatchSeventyFivePercent=" + isMustMatchSeventyFivePercent +
                 ", from=" + from +
+                ", holder=" + holder +
                 ", site=" + site +
                 ", requestType=" + requestType +
                 ", parameters=" + parameters +

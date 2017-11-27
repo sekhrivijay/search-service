@@ -15,20 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//import com.micro.services.search.config.GlobalConstants;
-//import static com.micro.services.search.config.GlobalConstants.FQ;
-//import static com.micro.services.search.config.GlobalConstants.FACET_FIELDS;
-//import static com.micro.services.search.config.GlobalConstants.FACET_SORT;
-//import static com.micro.services.search.config.GlobalConstants.SORT;
-//import static com.micro.services.search.config.GlobalConstants.SORT_ORDER;
-//import static com.micro.services.search.config.GlobalConstants.ROWS;
-//import static com.micro.services.search.config.GlobalConstants.GROUP_FIELDS;
-//import static com.micro.services.search.config.GlobalConstants.START;
-//import static com.micro.services.search.config.GlobalConstants.COMMA;
-//import static com.micro.services.search.config.GlobalConstants.DEBUG;
-//import static com.micro.services.search.config.GlobalConstants.TRUE;
-//import static com.micro.services.search.config.GlobalConstants.FROM;
-
 public class ResourceUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourceUtil.class);
 
@@ -40,7 +26,6 @@ public class ResourceUtil {
     }
 
 
-    //    public static SearchServiceRequest buildServiceRequest(MultivaluedMap<String, String> queryParams) {
     public static SearchServiceRequest buildServiceRequest(Map<String, String[]> queryParams) {
         SearchServiceRequest searchServiceRequest = new SearchServiceRequest();
         Map<String, List<String>> parameters = new HashMap<>();
