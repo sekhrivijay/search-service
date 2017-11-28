@@ -42,7 +42,7 @@ public class RulesDelegate extends BaseDelegate {
             fallbackMethod = "preProcessFallback")
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         SearchModelWrapper searchModelWrapperModified = callSearchRulesService(searchServiceRequest);
-        if(searchModelWrapperModified != null
+        if (searchModelWrapperModified != null
                 && searchModelWrapperModified.getSearchServiceResponse() != null
                 && searchModelWrapperModified.getSearchServiceResponse().getRedirect() != null) {
             LOGGER.info(searchModelWrapperModified.toString());

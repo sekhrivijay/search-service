@@ -4,10 +4,8 @@ import java.io.Serializable;
 
 public class SortTerm implements Serializable {
     private String sortBy;
-    private SortOrder sortOrder;
-    private String ascendingUrl;
-    private String descendingUrl;
-    private boolean selected;
+    private SortDetail ascendingSortDetail;
+    private SortDetail descendingSortDetail;
 
     public String getSortBy() {
         return sortBy;
@@ -17,46 +15,28 @@ public class SortTerm implements Serializable {
         this.sortBy = sortBy;
     }
 
-    public SortOrder getSortOrder() {
-        return sortOrder;
+    public SortDetail getAscendingSortDetail() {
+        return ascendingSortDetail;
     }
 
-    public void setSortOrder(SortOrder sortOrder) {
-        this.sortOrder = sortOrder;
+    public void setAscendingSortDetail(SortDetail ascendingSortDetail) {
+        this.ascendingSortDetail = ascendingSortDetail;
     }
 
-    public String getAscendingUrl() {
-        return ascendingUrl;
+    public SortDetail getDescendingSortDetail() {
+        return descendingSortDetail;
     }
 
-    public void setAscendingUrl(String ascendingUrl) {
-        this.ascendingUrl = ascendingUrl;
-    }
-
-    public String getDescendingUrl() {
-        return descendingUrl;
-    }
-
-    public void setDescendingUrl(String descendingUrl) {
-        this.descendingUrl = descendingUrl;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setDescendingSortDetail(SortDetail descendingSortDetail) {
+        this.descendingSortDetail = descendingSortDetail;
     }
 
     @Override
     public String toString() {
         return "SortTerm{" +
                 "sortBy='" + sortBy + '\'' +
-                ", sortOrder=" + sortOrder +
-                ", ascendingUrl='" + ascendingUrl + '\'' +
-                ", descendingUrl='" + descendingUrl + '\'' +
-                ", selected=" + selected +
+                ", ascendingSortDetail=" + ascendingSortDetail +
+                ", descendingSortDetail=" + descendingSortDetail +
                 '}';
     }
 }

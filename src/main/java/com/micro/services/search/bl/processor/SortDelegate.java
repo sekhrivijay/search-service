@@ -3,6 +3,7 @@ package com.micro.services.search.bl.processor;
 
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
+import com.micro.services.search.api.response.SortDetail;
 import com.micro.services.search.api.response.SortOrder;
 import com.micro.services.search.api.response.SortTerm;
 import com.micro.services.search.config.GlobalConstants;
@@ -63,24 +64,35 @@ public class SortDelegate extends BaseDelegate {
 
         if (!queryContains(searchServiceResponse, ascUrl)) {
             if (queryContains(searchServiceResponse, descUrl)) {
-                sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery().replace(descUrl, ascUrl));
+                sortTerm.setAscendingSortDetail(
+                        buildSortDetail(searchServiceResponse.getOriginalQuery().replace(descUrl, ascUrl)));
             } else {
-                sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery() + ascUrl);
+                sortTerm.setAscendingSortDetail(
+                        buildSortDetail(searchServiceResponse.getOriginalQuery() + ascUrl));
             }
         } else {
-            sortTerm.setAscendingUrl(searchServiceResponse.getOriginalQuery());
+            sortTerm.setAscendingSortDetail(buildSortDetail(searchServiceResponse.getOriginalQuery()));
         }
 
         if (!queryContains(searchServiceResponse, descUrl)) {
             if (queryContains(searchServiceResponse, ascUrl)) {
-                sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery().replace(ascUrl, descUrl));
+                sortTerm.setDescendingSortDetail(
+                        buildSortDetail(searchServiceResponse.getOriginalQuery().replace(ascUrl, descUrl)));
             } else {
-                sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery() + descUrl);
+                sortTerm.setDescendingSortDetail(
+                        buildSortDetail(searchServiceResponse.getOriginalQuery() + descUrl));
             }
         } else {
-            sortTerm.setDescendingUrl(searchServiceResponse.getOriginalQuery());
+            sortTerm.setDescendingSortDetail(buildSortDetail(searchServiceResponse.getOriginalQuery()));
         }
-        sortTerm.setSortOrder(SortOrder.ASCENDING);
         return sortTerm;
+    }
+
+
+
+    private SortDetail buildSortDetail(String url) {
+        SortDetail sortDetail = new SortDetail();
+        sortDetail.setUrl(url);
+        return sortDetail;
     }
 }
