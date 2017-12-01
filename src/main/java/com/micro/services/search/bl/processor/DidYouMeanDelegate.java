@@ -5,6 +5,7 @@ import com.micro.services.search.api.response.DidYouMean;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SpellCorrectUtil;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.SpellCheckResponse;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +27,17 @@ public class DidYouMeanDelegate extends BaseDelegate {
     @Autowired
     private SpellCorrectUtil spellCorrectUtil;
 
-//    @Value("${service.spellCheckNumfoundThreshhold:0}")
-//    private long spellCheckNumfoundThreshhold;
+    private LevenshteinDistance levenshteinDistance;
+
+    @Autowired
+    public void setSpellCorrectUtil(SpellCorrectUtil spellCorrectUtil) {
+        this.spellCorrectUtil = spellCorrectUtil;
+    }
+
+    @PostConstruct
+    public void setLevenshteinDistance() {
+        this.levenshteinDistance = LevenshteinDistance.getDefaultInstance();
+    }
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -73,6 +84,9 @@ public class DidYouMeanDelegate extends BaseDelegate {
             for (String suggestion: suggestedReplacements) {
                 int fromIndex = ruleMatch.getFromPos();
                 int endIndex = ruleMatch.getToPos();
+                if (!suggestion.startsWith(term.substring(fromIndex, fromIndex + 1))) {
+                    continue;
+                }
                 while (endIndex < term.length()) {
                     if (term.charAt(endIndex) == ' ') {
                         break;
@@ -83,7 +97,10 @@ public class DidYouMeanDelegate extends BaseDelegate {
                         + GlobalConstants.SPACE
                         +  suggestion
                         + term.substring(endIndex, term.length()).trim()).trim();
-
+                if (levenshteinDistance.apply(finalSuggestion, term) > 1
+                        || !finalSuggestion.startsWith(term.substring(0, 1))) {
+                    continue;
+                }
                 DidYouMean didYouMean = new DidYouMean();
                 didYouMean.setSuggestedTerm(finalSuggestion);
                 didYouMean.setUrl(

@@ -19,7 +19,7 @@ public class DelegateInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DelegateInitializer.class);
     private Delegate queryTermDelegate;
-    private Delegate fuzzySearchDelegate;
+
     private Delegate productsDelegate;
     private Delegate timeAllowedDelegate;
     private Delegate filterDelegate;
@@ -35,6 +35,7 @@ public class DelegateInitializer {
     private Delegate requestHandlerDelegate;
 //    private Delegate breadCrumbDelegate;
     private Delegate didYouMeanDelegate;
+    private Delegate fuzzySearchDelegate;
     private Delegate mustMatchDelegate;
     private Delegate rulesDelegate;
 

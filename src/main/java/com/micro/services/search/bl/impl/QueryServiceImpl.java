@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-
 @Service("queryService")
 public class QueryServiceImpl implements QueryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryServiceImpl.class);
@@ -143,6 +142,7 @@ public class QueryServiceImpl implements QueryService {
         int round = serviceRequest.getRound();
         if (round >= maxQueryRounds
                 || serviceRequest.getRequestType() == RequestType.AUTOFILL
+                || serviceRequest.getRequestType() == RequestType.PDP
                 || serviceRequest.getRequestType() == RequestType.SPELL) {
             return null;
         }

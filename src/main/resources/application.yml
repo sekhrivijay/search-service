@@ -4,12 +4,11 @@
 #    accesslog:
 #      enabled: false
 #    basedir: .
-
 spring:
   application:
     name: search
-#  cache:
-#    type: none
+  cache:
+    type: none
   profiles:
     active: local
   output:
@@ -33,6 +32,24 @@ spring:
     base-url: http://localhost:8680/
     flush-interval: 15
     enabled: false
+#  redis:
+#    cluster:
+#      nodes: 10.222.92.54:7000,10.222.92.54:7001,10.222.92.54:7002
+#    host: freshdapp01v1.ftdi.com
+#    port: 7000
+#    host: test-0001-001.udsdt6.0001.use1.cache.amazonaws.com
+#    port: 6379
+#    cluster:
+#      nodes: freshdapp01v1.ftdi.com:7000
+#    sentinel:
+#      master: freshdapp01v1.ftdi.com
+#      nodes: freshdapp01v1.ftdi.com:7000,freshdapp01v1.ftdi.com:7001,freshdapp01v1.ftdi.com:7002,freshdapp01v1.ftdi.com:7003
+#    pool:
+#      max-idle: 30
+#      min-idle: 10
+
+
+      #,freshdapp01v1.ftdi.com:7001:freshdapp01v1.ftdi.com:7002
 
 service:
   metrics:
@@ -45,16 +62,16 @@ service:
   git:
     enabled: true
   vip:
-    enabled: true
+    enabled: false
   swagger:
     enabled: true
 #    base-package: com.micro.services.search.resource
   logging:
-    enabled: true
-  memcache:
     enabled: false
-#    ttl: 3360
-#    servers: localhost:11211
+  memcache:
+    enabled: true
+    ttl: 3360
+    servers: localhost:11211
 
   zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
   collectionDestination : products
