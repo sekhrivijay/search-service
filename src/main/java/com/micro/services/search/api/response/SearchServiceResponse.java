@@ -6,7 +6,7 @@ import org.springframework.hateoas.ResourceSupport;
 import java.io.Serializable;
 import java.util.List;
 
-public class SearchServiceResponse extends ResourceSupport implements Serializable  {
+public class SearchServiceResponse implements Serializable  {
     private Debug debug;
     private Long numFound;
     private Integer rows;
