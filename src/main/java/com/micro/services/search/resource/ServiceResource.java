@@ -11,8 +11,6 @@ import com.services.micro.commons.logging.annotation.LogExecutionTime;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +24,7 @@ import org.springframework.web.context.request.WebRequest;
 public class ServiceResource {
     private QueryService queryService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceResource.class.getName());
+//    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceResource.class.getName());
 
     public ServiceResource() {
     }

@@ -15,11 +15,13 @@ public class MiscUtil {
     }
 
     public static boolean isValidData(SearchServiceResponse searchServiceResponse) {
-        return (searchServiceResponse.getRedirect() == null
+        boolean noRedirectCase = searchServiceResponse.getRedirect() == null
                 && searchServiceResponse.getDocumentList() != null
-                && searchServiceResponse.getDocumentList().size() > 0)
-                || (searchServiceResponse.getRedirect() != null
-                && searchServiceResponse.getRedirect().getRedirectUrl() != null);
+                && searchServiceResponse.getDocumentList().size() > 0;
+        boolean redirectCase = searchServiceResponse.getRedirect() != null
+                && searchServiceResponse.getRedirect().getRedirectUrl() != null;
+        return noRedirectCase || redirectCase;
+
     }
 
     public static String filterNonAlphaNumeric(String input, String pattern, String delimiter) {
