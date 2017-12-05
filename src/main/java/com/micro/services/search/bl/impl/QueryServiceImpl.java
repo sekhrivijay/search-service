@@ -10,7 +10,6 @@ import com.micro.services.search.bl.processor.Delegate;
 import com.micro.services.search.bl.processor.RulesDelegate;
 import com.micro.services.search.bl.task.QueryCommand;
 import com.micro.services.search.config.GlobalConstants;
-import com.micro.services.search.util.MiscUtil;
 import com.micro.services.search.util.SolrUtil;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -135,7 +134,9 @@ public class QueryServiceImpl implements QueryService {
     }
 
 
-    public SearchServiceResponse preProcessRequest(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse) throws Exception {
+    public SearchServiceResponse preProcessRequest(
+            SearchServiceRequest searchServiceRequest,
+            SearchServiceResponse searchServiceResponse) throws Exception {
         if (searchServiceRequest != null
                 && searchServiceRequest.getHolder() != null) {
             if (searchServiceRequest.getHolder() == RulesDelegate.FALLBACK_RULE_RESPONSE) {

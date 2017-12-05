@@ -30,10 +30,9 @@ public class RulesDelegate extends BaseDelegate {
     @Value("${service.rulesService.baseUrl}")
     private String rulesServiceBaseUrl;
 
-    public static Holder FALLBACK_RULE_RESPONSE;
+    public static final Holder FALLBACK_RULE_RESPONSE = new Holder();
 
     public RulesDelegate() {
-        FALLBACK_RULE_RESPONSE = new Holder();
         FALLBACK_RULE_RESPONSE.setCacheable(false);
     }
 
