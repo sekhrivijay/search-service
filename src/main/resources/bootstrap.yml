@@ -1,11 +1,11 @@
-spring:
-  application:
-    name: search
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://github.com/sekhrivijay/search-service.git
-          force-pull: true
-          search-paths: /src/main/resources
-          strict-host-key-checking: false
+#spring:
+#  application:
+#    name: search
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/sekhrivijay/search-service.git
+#          force-pull: true
+#          search-paths: /src/main/resources
+#          strict-host-key-checking: false

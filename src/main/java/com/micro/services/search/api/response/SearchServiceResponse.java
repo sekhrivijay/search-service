@@ -18,6 +18,7 @@ public class SearchServiceResponse implements Serializable {
     private List<Document> documentList;
     private String originalQuery;
     private List<SortTerm> sortTermList;
+    private Boolean cacheable = true;
 
 
     public Debug getDebug() {
@@ -124,6 +125,14 @@ public class SearchServiceResponse implements Serializable {
         this.sortTermList = sortTermList;
     }
 
+    public Boolean isCacheable() {
+        return cacheable;
+    }
+
+    public void setCacheable(Boolean cacheable) {
+        this.cacheable = cacheable;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceResponse{" +
@@ -140,6 +149,7 @@ public class SearchServiceResponse implements Serializable {
                 ", documentList=" + documentList +
                 ", originalQuery='" + originalQuery + '\'' +
                 ", sortTermList=" + sortTermList +
+                ", cacheable=" + cacheable +
                 '}';
     }
 }

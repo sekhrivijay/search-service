@@ -32,31 +32,18 @@ spring:
     base-url: http://localhost:8680/
     flush-interval: 15
     enabled: false
-#  redis:
-#    cluster:
-#      nodes: 10.222.92.54:7000,10.222.92.54:7001,10.222.92.54:7002
-#    host: freshdapp01v1.ftdi.com
-#    port: 7000
-#    host: test-0001-001.udsdt6.0001.use1.cache.amazonaws.com
-#    port: 6379
-#    cluster:
-#      nodes: freshdapp01v1.ftdi.com:7000
-#    sentinel:
-#      master: freshdapp01v1.ftdi.com
-#      nodes: freshdapp01v1.ftdi.com:7000,freshdapp01v1.ftdi.com:7001,freshdapp01v1.ftdi.com:7002,freshdapp01v1.ftdi.com:7003
-#    pool:
-#      max-idle: 30
-#      min-idle: 10
+  redis:
+    cluster:
+      nodes: freshdapp01v1.ftdi.com:7000,freshdapp01v1.ftdi.com:7001,freshdapp01v1.ftdi.com:7002
+      max-redirects: 3
 
-
-      #,freshdapp01v1.ftdi.com:7001:freshdapp01v1.ftdi.com:7002
 
 service:
   metrics:
     dropwizard:
-      enabled: true
+      enabled: false
     prometheus:
-      enabled: true
+      enabled: false
     jmx:
       enabled: true
   git:
@@ -64,14 +51,19 @@ service:
   vip:
     enabled: false
   swagger:
-    enabled: true
+    enabled: false
 #    base-package: com.micro.services.search.resource
   logging:
     enabled: false
   memcache:
     enabled: true
-    ttl: 3360
-    servers: localhost:11211
+    configs:
+      - ttl: 3600
+        servers: localhost:11211
+        name: default
+      - ttl: 36000
+        servers: localhost:11211
+        name: autofill
 
   zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
   collectionDestination : products
@@ -118,7 +110,7 @@ service:
 
   rulesService:
     enabled: true
-    baseUrl: http://localhost:8070/rules
+    baseUrl: http://localhost:8070/api/rules
 
 
 hystrix:
@@ -137,19 +129,26 @@ hystrix:
    threadpool.ruleThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
 
 
+#endpoints:
+#  restart:
+#    enabled: true
+#  shutdown:
+#    enabled: true
+#
+#management:
+#  security:
+#    enabled: false
 
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.data.redis: DEBUG
 
-management:
-  security:
-    enabled: false
+#memcached:
+#  cache:
+#    servers: localhost:11211
+#    mode: static
+#    expiration: 5000
 
-#logging:
-#  level:
-#    ROOT: INFO
 #    com.amazonaws: DEBUG
 

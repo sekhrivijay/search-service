@@ -24,8 +24,12 @@ public class QueryCommand {
     private static final String SOLR_REQUEST = "generic-search.solr." + GlobalConstants.REQUEST;
     public static final QueryResponse FALLBACK_QUERY_RESPONSE = SolrUtil.getFallback();
 
-    @Inject
     private SolrClient solrClient;
+
+    @Inject
+    public void setSolrClient(SolrClient solrClient) {
+        this.solrClient = solrClient;
+    }
 
     public QueryCommand() {
     }

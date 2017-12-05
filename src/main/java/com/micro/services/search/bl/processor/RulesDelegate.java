@@ -30,6 +30,13 @@ public class RulesDelegate extends BaseDelegate {
     @Value("${service.rulesService.baseUrl}")
     private String rulesServiceBaseUrl;
 
+    public static Holder FALLBACK_RULE_RESPONSE;
+
+    public RulesDelegate() {
+        FALLBACK_RULE_RESPONSE = new Holder();
+        FALLBACK_RULE_RESPONSE.setCacheable(false);
+    }
+
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -54,6 +61,7 @@ public class RulesDelegate extends BaseDelegate {
     }
 
     public SolrQuery preProcessFallback(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+        searchServiceRequest.setHolder(FALLBACK_RULE_RESPONSE);
         return solrQuery;
     }
 
@@ -65,8 +73,6 @@ public class RulesDelegate extends BaseDelegate {
             searchModelWrapper.setSearchServiceResponse(new SearchServiceResponse());
             HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
             LOGGER.info("Calling rule service ");
-//        Gson gson = new Gson();
-//        LOGGER.info(gson.toJson(searchModelWrapper));
             ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
                     rulesServiceBaseUrl + "/executePre",
                     HttpMethod.POST, request,

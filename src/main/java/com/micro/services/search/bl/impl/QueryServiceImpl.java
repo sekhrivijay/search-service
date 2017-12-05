@@ -7,8 +7,10 @@ import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.DelegateInitializer;
 import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.bl.processor.Delegate;
+import com.micro.services.search.bl.processor.RulesDelegate;
 import com.micro.services.search.bl.task.QueryCommand;
 import com.micro.services.search.config.GlobalConstants;
+import com.micro.services.search.util.MiscUtil;
 import com.micro.services.search.util.SolrUtil;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+
 @Service("queryService")
 public class QueryServiceImpl implements QueryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryServiceImpl.class);
@@ -59,10 +62,21 @@ public class QueryServiceImpl implements QueryService {
         GlobalConstants.setEnvironment(environment);
     }
 
-
-    @Inject
     private QueryCommand queryCommand;
 
+    @Inject
+    public void setQueryCommand(QueryCommand queryCommand) {
+        this.queryCommand = queryCommand;
+    }
+
+
+    @Cacheable(cacheNames = "autofill",
+            key = "T(com.micro.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
+            condition = "#searchServiceRequest.from != T(com.micro.services.search.api.request.From).INDEX",
+            unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
+    public SearchServiceResponse queryAutofill(SearchServiceRequest searchServiceRequest) throws Exception {
+        return query(searchServiceRequest);
+    }
 
     @Cacheable(cacheNames = "default",
             key = "T(com.micro.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
@@ -70,6 +84,7 @@ public class QueryServiceImpl implements QueryService {
             unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")
     public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
         LOGGER.info(searchServiceRequest.toString());
+
         searchServiceRequest.setRound(searchServiceRequest.getRound() + 1);
 
         Map<String, List<Delegate>> delegateMapList = delegateInitializer.buildDelegateMapList(searchServiceRequest);
@@ -82,17 +97,20 @@ public class QueryServiceImpl implements QueryService {
             solrQueryMap.put(key, solrQuery);
         }
 
-        SearchServiceResponse preProcessResponse = preProcessRequest(searchServiceRequest);
+        SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
+
+        SearchServiceResponse preProcessResponse = preProcessRequest(searchServiceRequest, searchServiceResponse);
         if (preProcessResponse != null) {
             return preProcessResponse;
         }
 
         Map<String, Future<QueryResponse>> futureMap = submitQueries(solrQueryMap);
-        SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
+
 
         for (String key : delegateMapList.keySet()) {
             QueryResponse queryResponse = SolrUtil.getQueryResponse(futureMap, key, solrQueryTimeout);
-            if (queryResponse == null) {
+            if (queryResponse == null || queryResponse == QueryCommand.FALLBACK_QUERY_RESPONSE) {
+                searchServiceResponse.setCacheable(false);
                 continue;
             }
             preProcessResponse = preProcessResponse(searchServiceRequest, key, queryResponse);
@@ -117,14 +135,18 @@ public class QueryServiceImpl implements QueryService {
     }
 
 
-    public SearchServiceResponse preProcessRequest(SearchServiceRequest searchServiceRequest) throws Exception {
+    public SearchServiceResponse preProcessRequest(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse) throws Exception {
         if (searchServiceRequest != null
-                && searchServiceRequest.getHolder() != null
-                && searchServiceRequest.getHolder().getRedirect() != null
-                && searchServiceRequest.getHolder().getRedirect().getRedirectUrl() != null) {
-            SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
-            searchServiceResponse.setRedirect(searchServiceRequest.getHolder().getRedirect());
-            return searchServiceResponse;
+                && searchServiceRequest.getHolder() != null) {
+            if (searchServiceRequest.getHolder() == RulesDelegate.FALLBACK_RULE_RESPONSE) {
+                searchServiceResponse.setCacheable(false);
+            }
+            if (searchServiceRequest.getHolder().getRedirect() != null
+                    && searchServiceRequest.getHolder().getRedirect().getRedirectUrl() != null) {
+                SearchServiceResponse searchServiceResponseOut = new SearchServiceResponse();
+                searchServiceResponseOut.setRedirect(searchServiceRequest.getHolder().getRedirect());
+                return searchServiceResponseOut;
+            }
         }
         return null;
     }

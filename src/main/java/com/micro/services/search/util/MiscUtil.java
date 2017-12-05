@@ -10,8 +10,16 @@ public class MiscUtil {
 
     public static boolean isValidResponse(SearchServiceResponse searchServiceResponse) {
         return searchServiceResponse != null
+                && searchServiceResponse.isCacheable()
+                && isValidData(searchServiceResponse);
+    }
+
+    public static boolean isValidData(SearchServiceResponse searchServiceResponse) {
+        return (searchServiceResponse.getRedirect() == null
                 && searchServiceResponse.getDocumentList() != null
-                && searchServiceResponse.getDocumentList().size() > 0;
+                && searchServiceResponse.getDocumentList().size() > 0)
+                || (searchServiceResponse.getRedirect() != null
+                && searchServiceResponse.getRedirect().getRedirectUrl() != null);
     }
 
     public static String filterNonAlphaNumeric(String input, String pattern, String delimiter) {
@@ -27,7 +35,7 @@ public class MiscUtil {
         }
         return GlobalConstants.getApplicationName().concat(
                 GlobalConstants.getEnvironment().concat(
-                        childServiceRequest.toCacheKey()));
+                        String.valueOf(childServiceRequest.getCacheKey())));
     }
 
 }
