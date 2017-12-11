@@ -5,6 +5,7 @@ import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.request.Site;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 public abstract class BaseDelegate implements Delegate {
@@ -29,6 +30,9 @@ public abstract class BaseDelegate implements Delegate {
 
     protected String buildOriginalQuery(SearchServiceRequest searchServiceRequest) {
         StringBuilder stringBuilder = new StringBuilder();
+        if (searchServiceRequest.getParametersOriginal() == null) {
+            return StringUtils.EMPTY;
+        }
         for (String paramName : searchServiceRequest.getParametersOriginal().keySet()) {
             for (String value : searchServiceRequest.getParametersOriginal().get(paramName)) {
                 stringBuilder

@@ -8,7 +8,8 @@ import com.micro.services.search.bl.DelegateInitializer;
 import com.micro.services.search.bl.QueryService;
 import com.micro.services.search.bl.processor.Delegate;
 import com.micro.services.search.bl.processor.RulesDelegate;
-import com.micro.services.search.bl.task.QueryCommand;
+import com.micro.services.search.bl.solr.SolrService;
+import com.micro.services.search.bl.solr.SolrServiceImpl;
 import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrUtil;
 import org.apache.commons.lang3.SerializationUtils;
@@ -33,6 +34,12 @@ public class QueryServiceImpl implements QueryService {
 
 
     private DelegateInitializer delegateInitializer;
+    private SolrUtil solrUtil;
+
+    @Inject
+    public void setSolrUtil(SolrUtil solrUtil) {
+        this.solrUtil = solrUtil;
+    }
 
     @Inject
     public void setDelegateInitializer(DelegateInitializer delegateInitializer) {
@@ -61,11 +68,11 @@ public class QueryServiceImpl implements QueryService {
         GlobalConstants.setEnvironment(environment);
     }
 
-    private QueryCommand queryCommand;
+    private SolrService solrService;
 
     @Inject
-    public void setQueryCommand(QueryCommand queryCommand) {
-        this.queryCommand = queryCommand;
+    public void setSolrService(SolrServiceImpl solrService) {
+        this.solrService = solrService;
     }
 
 
@@ -107,8 +114,8 @@ public class QueryServiceImpl implements QueryService {
 
 
         for (String key : delegateMapList.keySet()) {
-            QueryResponse queryResponse = SolrUtil.getQueryResponse(futureMap, key, solrQueryTimeout);
-            if (queryResponse == null || queryResponse == QueryCommand.FALLBACK_QUERY_RESPONSE) {
+            QueryResponse queryResponse = solrUtil.getQueryResponse(futureMap, key, solrQueryTimeout);
+            if (queryResponse == null || queryResponse == SolrServiceImpl.FALLBACK_QUERY_RESPONSE) {
                 searchServiceResponse.setCacheable(false);
                 continue;
             }
@@ -128,7 +135,7 @@ public class QueryServiceImpl implements QueryService {
     public Map<String, Future<QueryResponse>> submitQueries(Map<String, SolrQuery> solrQueryMap) throws Exception {
         Map<String, Future<QueryResponse>> toReturn = new HashMap<>();
         for (String key : solrQueryMap.keySet()) {
-            toReturn.put(key, queryCommand.run(solrQueryMap.get(key)));
+            toReturn.put(key, solrService.run(solrQueryMap.get(key)));
         }
         return toReturn;
     }

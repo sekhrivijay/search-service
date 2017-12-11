@@ -1,4 +1,4 @@
-package com.micro.services.search.bl.task;
+package com.micro.services.search.bl.solr;
 
 
 import com.codahale.metrics.annotation.Timed;
@@ -18,20 +18,26 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.concurrent.Future;
 
-@Named
-public class QueryCommand {
-    private static final Logger LOGGER = LoggerFactory.getLogger(QueryCommand.class);
+@Named("solrService")
+public class SolrServiceImpl implements SolrService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolrServiceImpl.class);
     private static final String SOLR_REQUEST = "generic-search.solr." + GlobalConstants.REQUEST;
     public static final QueryResponse FALLBACK_QUERY_RESPONSE = SolrUtil.getFallback();
 
     private SolrClient solrClient;
+    private SolrUtil solrUtil;
+
+    @Inject
+    public void setSolrUtil(SolrUtil solrUtil) {
+        this.solrUtil = solrUtil;
+    }
 
     @Inject
     public void setSolrClient(SolrClient solrClient) {
         this.solrClient = solrClient;
     }
 
-    public QueryCommand() {
+    public SolrServiceImpl() {
     }
 
     @Timed(absolute = true, name = SOLR_REQUEST)
@@ -45,7 +51,7 @@ public class QueryCommand {
                     @Override
                     public QueryResponse invoke() {
                         LOGGER.info("Solr Query is " + solrQuery.toQueryString());
-                        return SolrUtil.runSolrCommand(solrClient, solrQuery);
+                        return solrUtil.runSolrCommand(solrClient, solrQuery);
                     }
                 };
 
@@ -55,5 +61,8 @@ public class QueryCommand {
     public QueryResponse getFallback(SolrQuery solrQuery) {
         return FALLBACK_QUERY_RESPONSE;
     }
+
+
+
 
 }
