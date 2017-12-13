@@ -50,6 +50,7 @@ public class GlobalConstants {
     public static final String COLON = ":";
     public static final String PERCENT = "%";
     public static final String MM = "mm";
+    public static final String DISTRIB = "distrib";
     public static final String RELAXED_MUST_MATCH_FIFTY_PERCENT = "50" + PERCENT;
     public static final String RELAXED_MUST_MATCH_SEVENTY_FIVE_PERCENT = "75" + PERCENT;
     public static final String MUST_MATCH_HUNDRED_PERCENT = "100" + PERCENT;
