@@ -13,6 +13,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -26,9 +27,12 @@ public class ProductsDelegate extends BaseDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductsDelegate.class);
 
-    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD
-            + GlobalConstants.TYPE_PREFIX
-            + RequestType.PDP.getName();
+    @Value("${service.productEndpont}")
+    private String productEndpoint;
+
+    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD;
+//            + GlobalConstants.TYPE_PREFIX
+//            + RequestType.PDP.getName();
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -83,7 +87,7 @@ public class ProductsDelegate extends BaseDelegate {
 
     private String getQuery(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument) {
         LOGGER.debug(searchServiceResponse.toString());
-        return GlobalConstants.ID_FIELD_FILTER
+        return productEndpoint + GlobalConstants.QUESTION_MARK + GlobalConstants.ID_FIELD_FILTER
                 + SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
                 + PDP_QUERY_SUFFIX;
     }

@@ -51,7 +51,7 @@ service:
   vip:
     enabled: false
   swagger:
-    enabled: false
+    enabled: true
 #    base-package: com.micro.services.search.resource
   logging:
     enabled: false
@@ -76,6 +76,11 @@ service:
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
+  searchEndpont: /search
+  browseEndpont: /browse
+  autofillEndpont: /autofill
+  spellEndpont: /spell
+  productEndpont: /product
   document:
     autofill:
       desktop:
