@@ -37,7 +37,7 @@ public class ServiceHealthCheck implements HealthIndicator {
 
         try {
             SearchServiceResponse searchServiceResponse = queryService.query(SEARCH_SERVICE_REQUEST);
-            if (searchServiceResponse == null ) {
+            if (searchServiceResponse == null) {
 //                    || searchServiceResponse.getNumFound() == 0) {
                 return Health.down().build();
             }
