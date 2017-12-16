@@ -2,9 +2,10 @@
 
 steps:
 - name: 'gcr.io/cloud-builders/mvn'
-  args: ['-U', '-B', 'clean', 'install']
+  args: ['-U', '-DskipTests', '-B', 'clean', 'install']
 
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '--tag=gcr.io/deep-thought-185318/generic-search', '.']
+  args: ['build', '--tag=gcr.io/$PROJECT_ID/search-service', '.']
 
-images: ['gcr.io/deep-thought-185318/generic-search']
+images: ['gcr.io/$PROJECT_ID/search-service']
+
