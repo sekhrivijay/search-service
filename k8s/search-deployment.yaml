@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app: search
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -18,7 +18,8 @@ spec:
       containers:
       - name: search
         imagePullPolicy: Always
-        image: "sekhrivijay/generic-search:ddb645f5a6525565a54445ab2e5f98de1ab72319"
+#        image: "sekhrivijay/generic-search:ddb645f5a6525565a54445ab2e5f98de1ab72319"
+        image: "gcr.io/deep-thought-185318/search-service:5ac589e4526420d88096ae6a84638edaddacaa57"
         resources:
           requests:
             memory: "0.5Gi"
@@ -29,6 +30,13 @@ spec:
         env:
         - name: SERVICE_ZKENSEMBLEDESTINATION
           value: "zk-0.zk-hs.default.svc.cluster.local:2181,zk-1.zk-hs.default.svc.cluster.local:2181,zk-2.zk-hs.default.svc.cluster.local:2181"
+        - name: SERVICE_MEMCACHE_ENABLED
+          value: "false"
+        - name: SERVICE_RULESSERVICE_ENABLED
+          value: "false"
+        - name: JAVA_ARGS
+          value: "-Dservice.memcache.configs[0].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211 -Dservice.memcache.configs[1].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211"
+
 #        command:
 #        - java
 #        - "-Dservice.zkEnsembleDestination=zk-0.zk-hs.default.svc.cluster.local:2181,zk-1.zk-hs.default.svc.cluster.local:2181,zk-2.zk-hs.default.svc.cluster.local:2181"
@@ -45,7 +53,7 @@ spec:
           periodSeconds: 5
         readinessProbe:
           httpGet:
-            path: "/query?q=*:*"
+            path: "/api/search?q=*:*"
             port: 8080
           initialDelaySeconds: 60
           periodSeconds: 10
