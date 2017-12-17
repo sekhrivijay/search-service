@@ -2,9 +2,10 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: search-service-pdb
+  name: search-pdb-group
 spec:
   selector:
     matchLabels:
       app: search
+      ns: group
   maxUnavailable: 1
