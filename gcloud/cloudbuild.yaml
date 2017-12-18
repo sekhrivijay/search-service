@@ -2,14 +2,14 @@
 
 steps:
 - name: 'gcr.io/cloud-builders/mvn'
-  args: ['-U', '-DskipTests', '-B', 'clean', 'install']
-#  args: ['-U', '-B', 'clean', 'install']
+#  args: ['-U', '-DskipTests', '-B', 'clean', 'install']
+  args: ['-U', '-B', 'clean', 'install']
 
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',  '-t', 'gcr.io/$PROJECT_ID/search-service:$REVISION_ID', '.']
 
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: ['set', 'image', 'deployment/search-deployment-$_GROUP', 'search=gcr.io/$PROJECT_ID/search-service:$REVISION_ID']
+  args: ['-n', '$_NAMESPACE', 'set', 'image', 'deployment/search-deployment-$_GROUP', 'search=gcr.io/$PROJECT_ID/search-service:$REVISION_ID']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=development'

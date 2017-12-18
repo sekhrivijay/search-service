@@ -3,14 +3,13 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: search-hpa-group
-  namespace: default
 spec:
   scaleTargetRef:
     apiVersion: apps/v1beta1
     kind: Deployment
     name: search-deployment-group
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 5
   metrics:
   - type: Resource
     resource:
