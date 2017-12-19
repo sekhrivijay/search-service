@@ -2,7 +2,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: search-pdb-group
+  name: search-service-group
 spec:
   selector:
     matchLabels:

@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: search-ing-group
+  name: search-service-group
   annotations:
     kubernetes.io/ingress.global-static-ip-name: search-service-group
   labels:

@@ -2,7 +2,7 @@
 apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
-  name: search-deployment-group
+  name: search-service-group
   labels:
     app: search
     ns: group
@@ -19,7 +19,7 @@ spec:
         ns: group
     spec:
       containers:
-      - name: search
+      - name: search-service
         imagePullPolicy: Always
 #        image: "sekhrivijay/generic-search:ddb645f5a6525565a54445ab2e5f98de1ab72319"
         image: "gcr.io/deep-thought-185318/search-service:e6b8b6fdce964f0b2c0aaecf9256d16fdfc6bfc8"
