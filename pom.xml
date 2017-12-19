@@ -91,9 +91,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>io.sixhours</groupId>-->
-            <!--<artifactId>memcached-spring-boot-starter</artifactId>-->
-            <!--<version>1.0.1</version>-->
+        <!--<groupId>io.sixhours</groupId>-->
+        <!--<artifactId>memcached-spring-boot-starter</artifactId>-->
+        <!--<version>1.0.1</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.services.micro.commons</groupId>
@@ -120,11 +120,11 @@
             <artifactId>commons-swagger</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>com.services.micro.commons</groupId>-->
-        <!--<artifactId>commons-jsonp</artifactId>-->
-        <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.services.micro.commons</groupId>
+            <artifactId>commons-jsonp</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>com.services.micro.commons</groupId>-->
         <!--<artifactId>commons-https</artifactId>-->
@@ -189,12 +189,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <!--<plugin>-->
-                <!--<groupId>pl.project13.maven</groupId>-->
-                <!--<artifactId>git-commit-id-plugin</artifactId>-->
-                <!--<version>2.2.1</version>-->
-                <!--<configuration>-->
-                    <!--<failOnNoGitDirectory>false</failOnNoGitDirectory>-->
-                <!--</configuration>-->
+            <!--<groupId>pl.project13.maven</groupId>-->
+            <!--<artifactId>git-commit-id-plugin</artifactId>-->
+            <!--<version>2.2.1</version>-->
+            <!--<configuration>-->
+            <!--<failOnNoGitDirectory>false</failOnNoGitDirectory>-->
+            <!--</configuration>-->
             <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

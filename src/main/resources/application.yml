@@ -55,6 +55,8 @@ service:
 #    base-package: com.micro.services.search.resource
   logging:
     enabled: false
+  jsonp:
+    enabled: true
   memcache:
     enabled: true
     configs:
