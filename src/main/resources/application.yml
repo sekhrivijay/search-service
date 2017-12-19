@@ -78,11 +78,11 @@ service:
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
-  searchEndpont: /search
-  browseEndpont: /browse
-  autofillEndpont: /autofill
-  spellEndpont: /spell
-  productEndpont: /product
+  searchEndpoint: /search
+  browseEndpoint: /browse
+  autofillEndpoint: /autofill
+  spellEndpoint: /spell
+  productEndpoint: /product
   document:
     autofill:
       desktop:
@@ -109,7 +109,7 @@ service:
     first:
       size: 3
     last:
-      size: 2
+      size: 3
     previous:
       size: 3
     next:

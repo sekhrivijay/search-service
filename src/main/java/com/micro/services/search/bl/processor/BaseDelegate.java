@@ -45,11 +45,11 @@ public abstract class BaseDelegate implements Delegate {
         return stringBuilder.toString();
     }
 
-    protected String getQuery(SearchServiceResponse searchServiceResponse, String query) {
+    protected String getQuery(SearchServiceResponse searchServiceResponse, String query, String endpoint) {
         if (queryContains(searchServiceResponse, query)) {
-            return searchServiceResponse.getOriginalQuery();
+            return endpoint + searchServiceResponse.getOriginalQuery();
         }
-        return searchServiceResponse.getOriginalQuery() + query;
+        return endpoint + searchServiceResponse.getOriginalQuery() + query;
     }
 
     protected boolean queryContains(SearchServiceResponse searchServiceResponse, String query) {

@@ -14,6 +14,7 @@ import org.languagetool.rules.RuleMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -24,7 +25,9 @@ import java.util.List;
 public class DidYouMeanDelegate extends BaseDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(DidYouMeanDelegate.class);
 
-    @Autowired
+    @Value("${service.searchEndpoint}")
+    private String searchEndpoint;
+
     private SpellCorrectUtil spellCorrectUtil;
 
     private LevenshteinDistance levenshteinDistance;
@@ -71,17 +74,16 @@ public class DidYouMeanDelegate extends BaseDelegate {
     }
 
 
-
     @NotNull
     private List<DidYouMean> getDidYouMeansFromJLanguageTools(
             SearchServiceResponse searchServiceResponse,
             String term) {
-        String originalQuery = GlobalConstants.Q_PREFIX  + term;
+        String originalQuery = GlobalConstants.Q_PREFIX + term;
         List<RuleMatch> ruleMatchList = spellCorrectUtil.getRuleMatchList(term);
         List<DidYouMean> didYouMeanList = new ArrayList<>();
         for (RuleMatch ruleMatch : ruleMatchList) {
             List<String> suggestedReplacements = ruleMatch.getSuggestedReplacements();
-            for (String suggestion: suggestedReplacements) {
+            for (String suggestion : suggestedReplacements) {
                 int fromIndex = ruleMatch.getFromPos();
                 int endIndex = ruleMatch.getToPos();
                 if (!suggestion.startsWith(term.substring(fromIndex, fromIndex + 1))) {
@@ -95,7 +97,7 @@ public class DidYouMeanDelegate extends BaseDelegate {
                 }
                 String finalSuggestion = (term.substring(0, fromIndex).trim()
                         + GlobalConstants.SPACE
-                        +  suggestion
+                        + suggestion
                         + term.substring(endIndex, term.length()).trim()).trim();
                 if (levenshteinDistance.apply(finalSuggestion, term) > 1
                         || !finalSuggestion.startsWith(term.substring(0, 1))) {
@@ -104,9 +106,11 @@ public class DidYouMeanDelegate extends BaseDelegate {
                 DidYouMean didYouMean = new DidYouMean();
                 didYouMean.setSuggestedTerm(finalSuggestion);
                 didYouMean.setUrl(
-                        searchServiceResponse.getOriginalQuery().replace(
-                                originalQuery,
-                                GlobalConstants.Q_PREFIX  + finalSuggestion));
+                        searchEndpoint +
+                                GlobalConstants.QUESTION_MARK +
+                                searchServiceResponse.getOriginalQuery().replace(
+                                        originalQuery,
+                                        GlobalConstants.Q_PREFIX + finalSuggestion));
                 didYouMeanList.add(didYouMean);
             }
         }
@@ -114,11 +118,11 @@ public class DidYouMeanDelegate extends BaseDelegate {
     }
 
 
-    public  List<DidYouMean> getDidYouMeansFromSolr(
+    public List<DidYouMean> getDidYouMeansFromSolr(
             QueryResponse queryResponse,
             SearchServiceResponse searchServiceResponse,
             String term) {
-        String originalQuery = GlobalConstants.Q_PREFIX  + term;
+        String originalQuery = GlobalConstants.Q_PREFIX + term;
         SpellCheckResponse spellCheckResponse = queryResponse.getSpellCheckResponse();
         List<DidYouMean> didYouMeanList = new ArrayList<>();
         if (spellCheckResponse == null) {
@@ -144,9 +148,11 @@ public class DidYouMeanDelegate extends BaseDelegate {
                                 didYouMean.setNumberOfResults(alternativeFrequencies.get(count));
 
                                 didYouMean.setUrl(
-                                        searchServiceResponse.getOriginalQuery().replace(
-                                                originalQuery,
-                                                GlobalConstants.Q_PREFIX + alternative));
+                                        searchEndpoint +
+                                                GlobalConstants.QUESTION_MARK +
+                                                searchServiceResponse.getOriginalQuery().replace(
+                                                        originalQuery,
+                                                        GlobalConstants.Q_PREFIX + alternative));
                                 didYouMeanList.add(didYouMean);
                             }
                             count++;
@@ -162,9 +168,12 @@ public class DidYouMeanDelegate extends BaseDelegate {
                     DidYouMean didYouMean = new DidYouMean();
                     didYouMean.setSuggestedTerm(collation.getCollationQueryString());
                     didYouMean.setNumberOfResults(collation.getNumberOfHits());
-                    didYouMean.setUrl(searchServiceResponse.getOriginalQuery().replace(
-                                    originalQuery,
-                                    GlobalConstants.Q_PREFIX + collation.getCollationQueryString()));
+                    didYouMean.setUrl(
+                            searchEndpoint +
+                                    GlobalConstants.QUESTION_MARK +
+                                    searchServiceResponse.getOriginalQuery().replace(
+                                            originalQuery,
+                                            GlobalConstants.Q_PREFIX + collation.getCollationQueryString()));
                     didYouMeanList.add(didYouMean);
                 }
             }

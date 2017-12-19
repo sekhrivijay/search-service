@@ -109,7 +109,7 @@ public class ServiceResource {
                     dataType = "string",
                     paramType = "query"),
     })
-    @GetMapping("${service.searchEndpont}")
+    @GetMapping("${service.searchEndpoint}")
     @LogExecutionTime
     public SearchServiceResponse search(WebRequest webRequest) throws Exception {
         SearchServiceRequest searchServiceRequest = ResourceUtil.buildServiceRequest(webRequest.getParameterMap());
@@ -184,7 +184,7 @@ public class ServiceResource {
                     dataType = "string",
                     paramType = "query"),
     })
-    @GetMapping("${service.browseEndpont}")
+    @GetMapping("${service.browseEndpoint}")
     @LogExecutionTime
     @Timed
     @ExceptionMetered
@@ -222,7 +222,7 @@ public class ServiceResource {
                     dataType = "string",
                     paramType = "query"),
     })
-    @GetMapping("${service.autofillEndpont}")
+    @GetMapping("${service.autofillEndpoint}")
     @LogExecutionTime
     @Timed
     @ExceptionMetered
@@ -259,7 +259,7 @@ public class ServiceResource {
                     dataType = "string",
                     paramType = "query"),
     })
-    @GetMapping("${service.productEndpont}")
+    @GetMapping("${service.productEndpoint}")
     @LogExecutionTime
     @Timed
     @ExceptionMetered
@@ -296,7 +296,7 @@ public class ServiceResource {
             notes = "Pass q and other parameters to get relevant suggestions back ",
             response = SearchServiceResponse.class
     )
-    @GetMapping("${service.spellEndpont}")
+    @GetMapping("${service.spellEndpoint}")
     @LogExecutionTime
     @Timed
     @ExceptionMetered

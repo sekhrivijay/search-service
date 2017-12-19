@@ -27,7 +27,7 @@ public class ProductsDelegate extends BaseDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductsDelegate.class);
 
-    @Value("${service.productEndpont}")
+    @Value("${service.productEndpoint}")
     private String productEndpoint;
 
     public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD;
@@ -65,8 +65,8 @@ public class ProductsDelegate extends BaseDelegate {
         List<Document> documentList = new ArrayList<>();
         for (SolrDocument solrDocument : solrDocuments) {
             Collection<String> fieldNames = solrDocument.getFieldNames();
-            Map<String, String> record  = new HashMap<>();
-            for (String key: fieldNames) {
+            Map<String, String> record = new HashMap<>();
+            for (String key : fieldNames) {
                 record.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
             }
             Document document = new Document();

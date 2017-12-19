@@ -20,6 +20,8 @@ public class PaginationDelegate  extends BaseDelegate {
 //    @Value("${service.defaultRows}")
 //    private int rows;
 
+    @Value("${service.searchEndpoint}")
+    private String searchEndpoint;
 
     @Value("${service.pagination.first.size}")
     private int numberOfFirstPages;
@@ -65,7 +67,9 @@ public class PaginationDelegate  extends BaseDelegate {
         long activePageNumber = Math.round(Math.ceil((double) (recordOffset) / numberOfRecordsPerPage) + 1);
 
 
-        String url = searchServiceResponse.getOriginalQuery();
+        String url = searchEndpoint +
+                GlobalConstants.QUESTION_MARK +
+                searchServiceResponse.getOriginalQuery();
 
         Pagination pagination = new Pagination();
         pagination.setNextPageList(buildPageList(activePageNumber,
@@ -128,6 +132,9 @@ public class PaginationDelegate  extends BaseDelegate {
 
         if (startIndex <= endIndex) {
             for (long pageIndex = startIndex; pageIndex <= endIndex; ++pageIndex) {
+                if (pageIndex < 1) {
+                    continue;
+                }
                 Page page = new Page();
                 page.setActive(pageIndex == activePageNumber);
                 page.setNumber(pageIndex);

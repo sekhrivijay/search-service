@@ -26,6 +26,9 @@ public class SortDelegate extends BaseDelegate {
     @Value("${service.sortList}")
     private List<String> sortList;
 
+    @Value("${service.searchEndpoint}")
+    private String searchEndpoint;
+
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
 //        if (StringUtils.isNotEmpty(searchServiceRequest.getSort())) {
@@ -58,7 +61,9 @@ public class SortDelegate extends BaseDelegate {
     private SortTerm buildSortTerm(String sortTermString, SearchServiceResponse searchServiceResponse) {
         SortTerm sortTerm = new SortTerm();
         sortTerm.setSortBy(sortTermString);
-        String urlPrefix = SORT_FIELD + sortTermString + " ";
+        String urlPrefix = SORT_FIELD +
+                sortTermString
+                + " ";
         String ascUrl = urlPrefix + SortOrder.ASCENDING.getName();
         String descUrl = urlPrefix + SortOrder.DESCENDING.getName();
 
@@ -92,7 +97,9 @@ public class SortDelegate extends BaseDelegate {
 
     private SortDetail buildSortDetail(String url) {
         SortDetail sortDetail = new SortDetail();
-        sortDetail.setUrl(url);
+        sortDetail.setUrl(searchEndpoint +
+                GlobalConstants.QUESTION_MARK +
+                url);
         return sortDetail;
     }
 }

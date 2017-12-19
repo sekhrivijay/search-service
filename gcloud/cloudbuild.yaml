@@ -13,6 +13,6 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=development'
-  
+
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID']
 
