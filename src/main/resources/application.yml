@@ -41,9 +41,9 @@ spring:
 service:
   metrics:
     dropwizard:
-      enabled: false
+      enabled: true
     prometheus:
-      enabled: false
+      enabled: true
     jmx:
       enabled: true
   git:
@@ -54,7 +54,7 @@ service:
     enabled: true
 #    base-package: com.micro.services.search.resource
   logging:
-    enabled: false
+    enabled: true
   jsonp:
     enabled: true
   memcache:
