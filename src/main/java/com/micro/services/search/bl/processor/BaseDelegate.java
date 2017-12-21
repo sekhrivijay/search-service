@@ -1,8 +1,8 @@
 package com.micro.services.search.bl.processor;
 
+import com.micro.services.search.api.request.Domain;
 import com.micro.services.search.api.request.RequestType;
 import com.micro.services.search.api.request.SearchServiceRequest;
-import com.micro.services.search.api.request.Site;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
@@ -16,11 +16,11 @@ public abstract class BaseDelegate implements Delegate {
     @Value("${service.document.search.mobile.size}")
     private int searchMobileRows;
 
-    @Value("${service.document.browse.desktop.size}")
-    private int browseDesktopRows;
+//    @Value("${service.document.browse.desktop.size}")
+//    private int browseDesktopRows;
 
-    @Value("${service.document.browse.mobile.size}")
-    private int browseMobileRows;
+//    @Value("${service.document.browse.mobile.size}")
+//    private int browseMobileRows;
 
     @Value("${service.document.autofill.desktop.size}")
     private int autofillDesktopRows;
@@ -65,27 +65,27 @@ public abstract class BaseDelegate implements Delegate {
 
     public int getRows(SearchServiceRequest searchServiceRequest) {
         RequestType requestType = searchServiceRequest.getRequestType();
-        Site site = searchServiceRequest.getSite();
-        if (site == Site.DESKTOP && requestType == RequestType.SEARCH) {
+        Domain domain = searchServiceRequest.getDomain();
+        if (domain == Domain.DESKTOP && requestType == RequestType.SEARCH) {
             return searchDesktopRows;
         }
-        if (site == Site.MOBILE && requestType == RequestType.SEARCH) {
+        if (domain == Domain.MOBILE && requestType == RequestType.SEARCH) {
             return searchMobileRows;
         }
 
-        if (site == Site.DESKTOP && requestType == RequestType.AUTOFILL) {
+        if (domain == Domain.DESKTOP && requestType == RequestType.AUTOFILL) {
             return autofillDesktopRows;
         }
-        if (site == Site.MOBILE && requestType == RequestType.AUTOFILL) {
+        if (domain == Domain.MOBILE && requestType == RequestType.AUTOFILL) {
             return autofillMobileRows;
         }
 
-        if (site == Site.DESKTOP && requestType == RequestType.BROWSE) {
-            return browseDesktopRows;
-        }
-        if (site == Site.MOBILE && requestType == RequestType.BROWSE) {
-            return browseMobileRows;
-        }
+//        if (domain == Domain.DESKTOP && requestType == RequestType.BROWSE) {
+//            return browseDesktopRows;
+//        }
+//        if (domain == Domain.MOBILE && requestType == RequestType.BROWSE) {
+//            return browseMobileRows;
+//        }
 
         return searchDesktopRows;
     }

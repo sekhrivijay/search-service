@@ -20,6 +20,7 @@ public class SearchServiceRequest implements Serializable {
     private int round;
     private SearchServiceRequest parent;
     private String qt;
+    private String siteId;
     private String facetSort = COUNT;
     private String[] facetFields;
     private String[] groupFields;
@@ -28,7 +29,7 @@ public class SearchServiceRequest implements Serializable {
     private boolean isMustMatchFiftyPercent;
     private boolean isMustMatchSeventyFivePercent;
     private From from = From.DEFAULT;
-    private Site site = Site.DESKTOP;
+    private Domain domain = Domain.DESKTOP;
     private RequestType requestType = RequestType.SEARCH;
     private Map<String, List<String>> parameters;
     private Map<String, String[]> parametersOriginal;
@@ -204,12 +205,12 @@ public class SearchServiceRequest implements Serializable {
     }
 
 
-    public Site getSite() {
-        return site;
+    public Domain getDomain() {
+        return domain;
     }
 
-    public void setSite(Site site) {
-        this.site = site;
+    public void setDomain(Domain domain) {
+        this.domain = domain;
     }
 
     public Holder getHolder() {
@@ -218,6 +219,15 @@ public class SearchServiceRequest implements Serializable {
 
     public void setHolder(Holder holder) {
         this.holder = holder;
+    }
+
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
     }
 
     @Override
@@ -233,6 +243,7 @@ public class SearchServiceRequest implements Serializable {
                 ", round=" + round +
                 ", parent=" + parent +
                 ", qt='" + qt + '\'' +
+                ", siteId='" + siteId + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +
@@ -242,7 +253,7 @@ public class SearchServiceRequest implements Serializable {
                 ", isMustMatchSeventyFivePercent=" + isMustMatchSeventyFivePercent +
                 ", from=" + from +
                 ", holder=" + holder +
-                ", site=" + site +
+                ", domain=" + domain +
                 ", requestType=" + requestType +
                 ", parameters=" + parameters +
                 ", parametersOriginal=" + parametersOriginal +
@@ -256,8 +267,9 @@ public class SearchServiceRequest implements Serializable {
                 ", sortOrder='" + sortOrder + '\'' +
                 ", rows=" + rows +
                 ", start=" + start +
-                ", site=" + site +
-                ", fq='" + fq + '\'' +
+                ", domain=" + domain +
+                ", fq='" + Arrays.toString(fq) + '\'' +
+                ", siteId='" + siteId + '\'' +
                 ", debug=" + debug +
                 ", round=" + round +
                 ", requestType=" + requestType +

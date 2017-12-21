@@ -7,6 +7,7 @@ import com.micro.services.search.api.response.Document;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.config.GlobalConstants;
 import com.micro.services.search.util.SolrDocumentUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -30,7 +31,8 @@ public class ProductsDelegate extends BaseDelegate {
     @Value("${service.productEndpoint}")
     private String productEndpoint;
 
-    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD;
+//    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD;
+    public static final String PDP_QUERY_SUFFIX = StringUtils.EMPTY;
 //            + GlobalConstants.TYPE_PREFIX
 //            + RequestType.PDP.getName();
 

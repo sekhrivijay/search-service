@@ -33,6 +33,7 @@ public class DelegateInitializer {
     private Delegate groupDelegate;
     private Delegate paginationDelegate;
     private Delegate requestHandlerDelegate;
+    private Delegate siteDelegate;
 //    private Delegate breadCrumbDelegate;
     private Delegate didYouMeanDelegate;
     private Delegate fuzzySearchDelegate;
@@ -48,6 +49,7 @@ public class DelegateInitializer {
         mainDelegateList.add(timeAllowedDelegate);
         mainDelegateList.add(productsDelegate);
         mainDelegateList.add(filterDelegate);
+        mainDelegateList.add(siteDelegate);
 //        mainDelegateList.add(breadCrumbDelegate);
         mainDelegateList.add(rowsPreDelegate);
         mainDelegateList.add(parameterDelegate);
@@ -191,5 +193,11 @@ public class DelegateInitializer {
     @Named("rulesDelegate")
     public void setRulesDelegate(Delegate rulesDelegate) {
         this.rulesDelegate = rulesDelegate;
+    }
+
+    @Inject
+    @Named("siteDelegate")
+    public void setSiteDelegate(Delegate siteDelegate) {
+        this.siteDelegate = siteDelegate;
     }
 }

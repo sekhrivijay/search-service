@@ -2,12 +2,12 @@ package com.micro.services.search.api.request;
 
 import com.micro.services.search.config.GlobalConstants;
 
-public enum Site {
+public enum Domain {
     DESKTOP(GlobalConstants.DESKTOP),
     MOBILE(GlobalConstants.MOBILE);
     private String name;
 
-    Site(String name) {
+    Domain(String name) {
         this.name = name;
     }
 
@@ -15,10 +15,10 @@ public enum Site {
         return name;
     }
 
-    public static Site getSite(String name) {
-        for (Site site: Site.values()) {
-            if (site.getName().equals(name)) {
-                return site;
+    public static Domain getDomain(String name) {
+        for (Domain domain : Domain.values()) {
+            if (domain.getName().equals(name)) {
+                return domain;
             }
         }
         return DESKTOP;

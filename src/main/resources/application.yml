@@ -74,7 +74,9 @@ service:
   queryTimeAllowed : 10000
   groupLimitValue : 5
   breadCrumbList: index_name
-  sortList: id
+  sortList:
+    - id
+    - standard_price
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
@@ -94,11 +96,11 @@ service:
         size: 10
       mobile:
         size: 8
-    browse:
-      desktop:
-        size: 50
-      mobile:
-        size: 30
+#    browse:
+#      desktop:
+#        size: 50
+#      mobile:
+#        size: 30
     spell:
       desktop:
         size: 3
@@ -157,5 +159,4 @@ logging:
 #    mode: static
 #    expiration: 5000
 
-#    com.amazonaws: DEBUG
 

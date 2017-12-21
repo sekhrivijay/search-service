@@ -42,7 +42,8 @@ public class GlobalConstants {
     public static final String START = "start";
     public static final String SORT = "sort";
     public static final String TYPE = "type";
-    public static final String SITE = "site";
+    public static final String SITE_ID = "siteId";
+    public static final String DOMAIN = "domain";
     public static final String SORT_ORDER = "sort.order";
     public static final String DEBUG = "debug";
     public static final String FROM = "from";

@@ -6,9 +6,11 @@ import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.api.response.SortDetail;
 import com.micro.services.search.api.response.SortOrder;
 import com.micro.services.search.api.response.SortTerm;
+import com.micro.services.search.config.AppConfig;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Named;
@@ -23,11 +25,18 @@ public class SortDelegate extends BaseDelegate {
     public static final String SORT_FIELD = GlobalConstants.AMPERSAND + GlobalConstants.SORT + GlobalConstants.EQUAL;
 //    private static final Logger LOGGER = LoggerFactory.getLogger(SortDelegate.class);
 
-    @Value("${service.sortList}")
-    private List<String> sortList;
+
+    private AppConfig appConfig;
+
 
     @Value("${service.searchEndpoint}")
     private String searchEndpoint;
+
+
+    @Autowired
+    public void setAppConfig(AppConfig appConfig) {
+        this.appConfig = appConfig;
+    }
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -48,6 +57,7 @@ public class SortDelegate extends BaseDelegate {
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
+        List<String> sortList = appConfig.getSortList();
         if (sortList == null) {
             return searchServiceResponse;
         }
@@ -92,7 +102,6 @@ public class SortDelegate extends BaseDelegate {
         }
         return sortTerm;
     }
-
 
 
     private SortDetail buildSortDetail(String url) {
