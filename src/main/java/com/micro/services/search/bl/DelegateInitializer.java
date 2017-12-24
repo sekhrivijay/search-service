@@ -39,6 +39,7 @@ public class DelegateInitializer {
     private Delegate fuzzySearchDelegate;
     private Delegate mustMatchDelegate;
     private Delegate rulesDelegate;
+    private Delegate boostDelegate;
 
 
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
@@ -74,6 +75,7 @@ public class DelegateInitializer {
 
     private void addSecondaryDelegates(List<Delegate> mainDelegateList) {
         mainDelegateList.add(rulesDelegate);
+        mainDelegateList.add(boostDelegate);
         mainDelegateList.add(fuzzySearchDelegate);
         mainDelegateList.add(facetDelegate);
         mainDelegateList.add(startDelegate);
@@ -199,5 +201,11 @@ public class DelegateInitializer {
     @Named("siteDelegate")
     public void setSiteDelegate(Delegate siteDelegate) {
         this.siteDelegate = siteDelegate;
+    }
+
+    @Inject
+    @Named("boostDelegate")
+    public void setBoostDelegate(Delegate boostDelegate) {
+        this.boostDelegate = boostDelegate;
     }
 }

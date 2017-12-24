@@ -11,6 +11,7 @@ import static com.micro.services.search.config.GlobalConstants.COUNT;
 
 public class SearchServiceRequest implements Serializable {
     private String q = "*";
+    private String bf;
     private String sort = GlobalConstants.ID;
     private String sortOrder = GlobalConstants.ASC;
     private int rows;
@@ -20,7 +21,7 @@ public class SearchServiceRequest implements Serializable {
     private int round;
     private SearchServiceRequest parent;
     private String qt;
-    private String siteId;
+    private String siteId = GlobalConstants.FTD;
     private String facetSort = COUNT;
     private String[] facetFields;
     private String[] groupFields;
@@ -230,6 +231,14 @@ public class SearchServiceRequest implements Serializable {
         this.siteId = siteId;
     }
 
+    public String getBf() {
+        return bf;
+    }
+
+    public void setBf(String bf) {
+        this.bf = bf;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceRequest{" +
@@ -243,6 +252,7 @@ public class SearchServiceRequest implements Serializable {
                 ", round=" + round +
                 ", parent=" + parent +
                 ", qt='" + qt + '\'' +
+                ", bf='" + bf + '\'' +
                 ", siteId='" + siteId + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
@@ -274,6 +284,7 @@ public class SearchServiceRequest implements Serializable {
                 ", round=" + round +
                 ", requestType=" + requestType +
                 ", qt='" + qt + '\'' +
+                ", bf='" + bf + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +

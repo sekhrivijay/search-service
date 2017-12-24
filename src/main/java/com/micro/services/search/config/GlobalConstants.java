@@ -16,7 +16,9 @@ public class GlobalConstants {
     public static final String FORWARD_SLASH = "/";
     public static final String SELECT_HANDLER = "select";
     public static final String SUGGEST_HANDLER = "suggest";
+    public static final String FTD = "ftd";
     public static final String QT = "qt";
+    public static final String BF = "bf";
     public static final String ASC = "asc";
     public static final List<String> KNOWN_PARAMETERS;
     public static final String INDEX = "index";
@@ -80,6 +82,7 @@ public class GlobalConstants {
         KNOWN_PARAMETERS = Arrays.asList(
                 Q,
                 FQ,
+                BF,
                 FACET_FIELDS,
                 FACET_SORT,
                 GROUP_FIELDS,

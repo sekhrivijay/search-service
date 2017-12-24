@@ -39,26 +39,26 @@ public class ResourceUtil {
         String groupFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.GROUP_FIELDS));
 
         String type = getFirstIfPresent(queryParams.get(GlobalConstants.TYPE));
-        if (StringUtils.isNoneEmpty(type)) {
+        if (StringUtils.isNotEmpty(type)) {
             searchServiceRequest.setRequestType(RequestType.getRequestType(type));
         }
 
         String domain = getFirstIfPresent(queryParams.get(GlobalConstants.DOMAIN));
-        if (StringUtils.isNoneEmpty(domain)) {
+        if (StringUtils.isNotEmpty(domain)) {
             searchServiceRequest.setDomain(Domain.getDomain(domain));
         }
 
         String siteId = getFirstIfPresent(queryParams.get(GlobalConstants.SITE_ID));
-        if (StringUtils.isNoneEmpty(siteId)) {
-            searchServiceRequest.setDomain(Domain.getDomain(domain));
+        if (StringUtils.isNotEmpty(siteId)) {
+            searchServiceRequest.setSiteId(siteId);
         }
 
         String sort = getFirstIfPresent(queryParams.get(GlobalConstants.SORT));
-        if (StringUtils.isNoneEmpty(sort)) {
+        if (StringUtils.isNotEmpty(sort)) {
             searchServiceRequest.setSort(sort);
         }
         String sortOrder = getFirstIfPresent(queryParams.get(GlobalConstants.SORT_ORDER));
-        if (StringUtils.isNoneEmpty(sortOrder)) {
+        if (StringUtils.isNotEmpty(sortOrder)) {
             searchServiceRequest.setSortOrder(sortOrder);
         }
         if (StringUtils.isNumeric(rows)) {

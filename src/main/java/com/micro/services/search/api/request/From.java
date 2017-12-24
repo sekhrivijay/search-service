@@ -28,4 +28,11 @@ public enum From  implements Serializable {
         }
         return DEFAULT;
     }
+
+    @Override
+    public String toString() {
+        return "From{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

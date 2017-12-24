@@ -9,6 +9,14 @@ public class SearchModelWrapper  implements Serializable {
     private SearchServiceRequest searchServiceRequest;
     private SearchServiceResponse searchServiceResponse;
 
+    public SearchModelWrapper() {
+    }
+
+    public SearchModelWrapper(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse) {
+        this.searchServiceRequest = searchServiceRequest;
+        this.searchServiceResponse = searchServiceResponse;
+    }
+
     public SearchServiceRequest getSearchServiceRequest() {
         return searchServiceRequest;
     }

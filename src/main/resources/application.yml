@@ -121,6 +121,11 @@ service:
     enabled: true
     baseUrl: http://localhost:8070/api/rules
 
+  sitesBfMap:
+    default: ftd_bso_order_cnt_l^3 ftd_bso_order_amt_d^4 ftd_bso_order_margin_d^2
+    proflowers: proflowers_bso_order_cnt_l^3 proflowers_bso_order_amt_d^4 proflowers_bso_order_margin_d^2
+    ftd: ftd_bso_order_cnt_l^3 ftd_bso_order_amt_d^4 ftd_bso_order_margin_d^2
+
 
 hystrix:
    command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 2000
