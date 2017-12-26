@@ -5,5 +5,5 @@
 set -e
 
 echo "Executing java ${JAVA_ARGS} "$@""
-java ${JAVA_ARGS} -jar generic-search-1.0-SNAPSHOT.jar
+java ${JAVA_ARGS} -jar generic-search-0.0.1.jar
 

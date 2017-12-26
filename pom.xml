@@ -6,8 +6,8 @@
 
     <groupId>com.services.micro</groupId>
     <artifactId>generic-search</artifactId>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
 
 
     <name>generic-search</name>
@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>1.5.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -41,7 +41,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Dalston.SR3</spring-cloud.version>
+        <spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
         <myMavenRepoReadUrl>https://mymavenrepo.com/repo/Ko7hlTF72DbglwWKg7h2/</myMavenRepoReadUrl>
         <myMavenRepoWriteUrl>https://mymavenrepo.com/repo/Eyq6Bd6COULiONw5AvFa/</myMavenRepoWriteUrl>
     </properties>

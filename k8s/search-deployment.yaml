@@ -21,7 +21,6 @@ spec:
       containers:
       - name: search-service
         imagePullPolicy: Always
-#        image: "sekhrivijay/generic-search:ddb645f5a6525565a54445ab2e5f98de1ab72319"
         image: "gcr.io/deep-thought-185318/search-service:e6b8b6fdce964f0b2c0aaecf9256d16fdfc6bfc8"
         resources:
           requests:
@@ -31,12 +30,14 @@ spec:
         - containerPort: 8080
           name: server
         env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "group"
         - name: SERVICE_ZKENSEMBLEDESTINATION
           value: "zk-group-0.zk-hs-group.default.svc.cluster.local:2181,zk-group-1.zk-hs-group.default.svc.cluster.local:2181,zk-group-2.zk-hs-group.default.svc.cluster.local:2181"
         - name: SERVICE_MEMCACHE_ENABLED
           value: "false"
-        - name: SERVICE_RULESSERVICE_ENABLED
-          value: "false"
+        - name: SERVICE_RULESSERVICE_BASEURL
+          value: "http://search-rules-service-group:8070/api/rules"
         - name: JAVA_ARGS
           value: "-Dservice.memcache.configs[0].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211 -Dservice.memcache.configs[1].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211"
 
