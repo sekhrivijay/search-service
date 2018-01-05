@@ -1,4 +1,4 @@
-package com.micro.services.search.resource;
+package com.micro.services.search.controller;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
@@ -21,12 +21,12 @@ import org.springframework.web.context.request.WebRequest;
 @RestController
 @RefreshScope
 @RequestMapping("/api")
-public class ServiceResource {
+public class ServiceController {
     private QueryService queryService;
 
 //    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceResource.class.getName());
 
-    public ServiceResource() {
+    public ServiceController() {
     }
 
     @Autowired

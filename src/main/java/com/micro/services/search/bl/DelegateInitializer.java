@@ -20,7 +20,7 @@ public class DelegateInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(DelegateInitializer.class);
     private Delegate queryTermDelegate;
 
-    private Delegate productsDelegate;
+    private Delegate documentsDelegate;
     private Delegate timeAllowedDelegate;
     private Delegate filterDelegate;
     private Delegate sortDelegate;
@@ -48,7 +48,7 @@ public class DelegateInitializer {
         mainDelegateList.add(requestHandlerDelegate);
 
         mainDelegateList.add(timeAllowedDelegate);
-        mainDelegateList.add(productsDelegate);
+        mainDelegateList.add(documentsDelegate);
         mainDelegateList.add(filterDelegate);
         mainDelegateList.add(siteDelegate);
 //        mainDelegateList.add(breadCrumbDelegate);
@@ -108,9 +108,9 @@ public class DelegateInitializer {
     }
 
     @Inject
-    @Named("productsDelegate")
-    public void setProductsDelegate(Delegate productsDelegate) {
-        this.productsDelegate = productsDelegate;
+    @Named("documentsDelegate")
+    public void setDocumentsDelegate(Delegate documentsDelegate) {
+        this.documentsDelegate = documentsDelegate;
     }
 
     @Inject

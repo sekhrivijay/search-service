@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Named("productsDelegate")
-public class ProductsDelegate extends BaseDelegate {
+@Named("documentsDelegate")
+public class DocumentsDelegate extends BaseDelegate {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductsDelegate.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentsDelegate.class);
 
     @Value("${service.productEndpoint}")
     private String productEndpoint;

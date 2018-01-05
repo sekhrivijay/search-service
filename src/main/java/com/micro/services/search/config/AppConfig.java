@@ -1,8 +1,11 @@
 package com.micro.services.search.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +15,12 @@ import java.util.Map;
 @EnableConfigurationProperties
 @Configuration
 public class AppConfig {
+    @Bean
+    @ConditionalOnMissingBean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
     private List<String> sortList;
     private Map<String, String> sitesBfMap;
 

@@ -1,6 +1,5 @@
 package com.micro.services.search.bl.processor;
 
-import com.google.gson.Gson;
 import com.micro.services.search.api.SearchModelWrapper;
 import com.micro.services.search.api.request.Holder;
 import com.micro.services.search.api.request.SearchServiceRequest;
@@ -56,8 +55,8 @@ public class RulesDelegate extends BaseDelegate {
             Holder holder = new Holder();
             if (searchModelWrapperModified.getSearchServiceResponse() != null
                     && searchModelWrapperModified.getSearchServiceResponse().getRedirect() != null) {
-                        holder.setRedirect(searchModelWrapperModified.getSearchServiceResponse().getRedirect());
-                        holder.setRedirect(true);
+                holder.setRedirect(searchModelWrapperModified.getSearchServiceResponse().getRedirect());
+                holder.setRedirect(true);
 
             }
             if (searchModelWrapperModified.getSearchServiceRequest() != null) {
@@ -86,8 +85,8 @@ public class RulesDelegate extends BaseDelegate {
                 new SearchServiceResponse());
         if (rulesServiceEnabled) {
             HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
-            LOGGER.info("Calling rule service with ");
-            LOGGER.info(new Gson().toJson(searchModelWrapper.toString()));
+//            LOGGER.info("Calling rule service with ");
+//            LOGGER.info(new Gson().toJson(searchModelWrapper.toString()));
             ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
                     rulesServiceBaseUrl + "/executePre",
                     HttpMethod.POST, request,
