@@ -1,0 +1,3 @@
+service:
+  memcache:
+    enabled: false
