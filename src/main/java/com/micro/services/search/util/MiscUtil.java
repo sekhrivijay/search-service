@@ -1,13 +1,19 @@
 package com.micro.services.search.util;
 
+import com.micro.services.search.api.SearchModelWrapper;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
+import com.micro.services.search.bl.rules.RuleServiceImpl;
 import com.micro.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.StringUtils;
 
 
 public class MiscUtil {
 
+    public static boolean isValidResponse(SearchModelWrapper searchModelWrapper) {
+        return searchModelWrapper != RuleServiceImpl.FALLBACK_RULE_RESPONSE;
+
+    }
     public static boolean isValidResponse(SearchServiceResponse searchServiceResponse) {
         return searchServiceResponse != null
                 && searchServiceResponse.isCacheable()

@@ -84,7 +84,7 @@ public class QueryServiceImpl implements QueryService {
         return query(searchServiceRequest);
     }
 
-    @Cacheable(cacheNames = "default",
+    @Cacheable(cacheNames = "search",
             key = "T(com.micro.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
             condition = "#searchServiceRequest.from != T(com.micro.services.search.api.request.From).INDEX",
             unless = "T(com.micro.services.search.util.MiscUtil).isValidResponse(#result) == false")

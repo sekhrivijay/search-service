@@ -62,10 +62,16 @@ service:
     configs:
       - ttl: 3600
         servers: localhost:11211
-        name: default
+        name: search
       - ttl: 36000
         servers: localhost:11211
         name: autofill
+      - ttl: 36000
+        servers: localhost:11211
+        name: rules
+      - ttl: 36000
+        servers: localhost:11211
+        name: product
 
   zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
   collectionDestination : products
