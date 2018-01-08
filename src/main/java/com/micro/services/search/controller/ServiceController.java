@@ -1,16 +1,5 @@
 package com.micro.services.search.controller;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
-import com.codahale.metrics.annotation.Timed;
-import com.micro.services.search.api.request.RequestType;
-import com.micro.services.search.api.request.SearchServiceRequest;
-import com.micro.services.search.api.response.SearchServiceResponse;
-import com.micro.services.search.bl.QueryService;
-import com.micro.services.search.util.ResourceUtil;
-import com.services.micro.commons.logging.annotation.LogExecutionTime;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +7,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
+import com.micro.services.search.api.request.RequestType;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.SearchServiceResponse;
+import com.micro.services.search.bl.DetailsService;
+import com.micro.services.search.bl.QueryService;
+import com.micro.services.search.util.ResourceUtil;
+import com.services.micro.commons.logging.annotation.LogExecutionTime;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RefreshScope
 @RequestMapping("/api")
 public class ServiceController {
     private QueryService queryService;
+    private DetailsService detailsService;
 
 //    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceResource.class.getName());
 
@@ -32,6 +36,101 @@ public class ServiceController {
     @Autowired
     public void setQueryService(QueryService queryService) {
         this.queryService = queryService;
+    }
+
+    @Autowired
+    public void setDetailsService(DetailsService detailsService) {
+        this.detailsService = detailsService;
+    }
+
+    @Timed
+    @ExceptionMetered
+    @ApiOperation(
+            value = "Get search results with all details orchestrated",
+            notes = "Pass q and other parameters to get relevant suggestions back ",
+            response = SearchServiceResponse.class
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "q",
+                    value = "Search keyword parameter ",
+                    required = true,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "fq",
+                    value = "Provide solr filter capabilities ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "qt",
+                    value = "Provide solr handler capabilities ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "facet.fields",
+                    value = "comma seperated list of fields that we need to return facet on ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "facet.sort",
+                    value = "To sort facet response",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "rows",
+                    value = "To limit the number of rows returned",
+                    required = false,
+                    dataType = "integer",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "start",
+                    value = "To return documents starting from that number . To help with pagination",
+                    required = false,
+                    dataType = "integer",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "from",
+                    value = "To bypass cache by sending value from=index",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "sort",
+                    value = "To sort the returned response",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "sort.order",
+                    value = "To modify the sort order as asc and desc",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+//            @ApiImplicitParam(name = "type",
+//                    value = "To determine what the different request types are. " +
+//                            "Valid examples type=[search, browse, autofill, spell, pdp] ",
+//                    required = false,
+//                    dataType = "string",
+//                    paramType = "query"),
+            @ApiImplicitParam(name = "siteId",
+                    value = "To determine how the response is returned. Valid examples siteId=[proflowers, ftd]",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "domain",
+                    value = "To determine how the response is returned. Valid examples site=[desktop, mobile]",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+            @ApiImplicitParam(name = "debug",
+                    value = "To enable debugging ",
+                    required = false,
+                    dataType = "string",
+                    paramType = "query"),
+    })
+    @GetMapping("${service.detailsEndpoint}")
+    @LogExecutionTime
+    public SearchServiceResponse details(WebRequest webRequest) throws Exception {
+        SearchServiceRequest searchServiceRequest = ResourceUtil.buildServiceRequest(webRequest.getParameterMap());
+        searchServiceRequest.setRequestType(RequestType.DETAILS);
+        SearchServiceResponse searchResponse = queryService.query(searchServiceRequest);
+        detailsService.postQueryDetails(searchServiceRequest, searchResponse);
+        return searchResponse;
     }
 
     @Timed

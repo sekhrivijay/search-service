@@ -82,6 +82,7 @@ service:
   mustMatchNumfoundThreshhold: 1
   searchEndpoint: /search
   browseEndpoint: /browse
+  detailsEndpoint: /details
   autofillEndpoint: /autofill
   spellEndpoint: /spell
   productEndpoint: /product
@@ -120,6 +121,18 @@ service:
   rulesService:
     enabled: true
     baseUrl: http://localhost:8070/api/rules
+
+  availabilityService:
+    enabled: true
+    baseUrl: http://35.227.193.133/api/productAvailability
+
+  productService:
+    enabled: true
+    baseUrl: http://35.227.193.133/api/products
+
+  pricingService:
+    enabled: true
+    baseUrl: http://35.227.193.133/api/pricing
 
   sitesBfMap:
     default: ftd_bso_order_cnt_l^3 ftd_bso_order_amt_d^4 ftd_bso_order_margin_d^2

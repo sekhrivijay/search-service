@@ -1,5 +1,6 @@
 package com.sears.search.generic.service.impl;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 import java.net.URL;
@@ -39,47 +40,67 @@ public class QueryServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        this.base = new URL("http://localhost:" + port + "/api/search");
+        this.base = new URL("http://localhost:" + port + "/api/");
     }
 
     @Test
-    public void searchForEverything() throws Exception {
-        final Long expectedNumberFound = new Long(17);
-        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
-                base.toString() + "?q=*:*",
-                SearchServiceResponse.class);
-        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
-        Assert.assertEquals("number found", expectedNumberFound, response.getBody().getNumFound());
-    }
-
-    @Test
-    public void searchForNothing2() throws Exception {
-        final Long expectedNumberFound = new Long(13);
-        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
-                base.toString() + "?q=:*",
-                SearchServiceResponse.class);
-        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
-        Assert.assertEquals("number found", expectedNumberFound, response.getBody().getNumFound());
-    }
-
-    @Test
-    public void searchForNothing() throws Exception {
-        final Long expectedNumberFound = new Long(13);
-        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
-                base.toString(),
-                SearchServiceResponse.class);
-        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
-        Assert.assertEquals("number found", expectedNumberFound, response.getBody().getNumFound());
-    }
-
-    @Test
-    public void searchForNonExistentProducts() throws Exception {
+    public void search() throws Exception {
         final Long expectedNumberFound = new Long(0);
         ResponseEntity<SearchServiceResponse> response = template.getForEntity(
-                base.toString() + "?q=ThisIsNotAProduct",
+                base.toString() + "search?q=*:*",
                 SearchServiceResponse.class);
         Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
-        Assert.assertEquals("number found", expectedNumberFound, response.getBody().getNumFound());
+        Assert.assertTrue("number found should be > 0 for search",
+                expectedNumberFound.longValue() < response.getBody().getNumFound().longValue());
+    }
+
+    @Test
+    public void details() throws Exception {
+        final Long expectedNumberFound = new Long(0);
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
+                base.toString() + "details?q=*:*",
+                SearchServiceResponse.class);
+        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
+        Assert.assertTrue("number found should be > 0 for details",
+                expectedNumberFound.longValue() < response.getBody().getNumFound().longValue());
+    }
+
+    @Test
+    public void browse() throws Exception {
+        final Long expectedNumberFound = new Long(0);
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
+                base.toString() + "browse?q=*:*",
+                SearchServiceResponse.class);
+        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
+        Assert.assertTrue("number found should be > 0 for browse",
+                expectedNumberFound.longValue() < response.getBody().getNumFound().longValue());
+    }
+
+
+    @Test
+    public void autofill() throws Exception {
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
+                base.toString() + "autofill?q=*:*",
+                SearchServiceResponse.class);
+        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
+    }
+
+
+    @Test
+    public void spell() throws Exception {
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
+                base.toString() + "spell",
+                SearchServiceResponse.class);
+        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
+    }
+
+
+    @Test
+    public void pdp() throws Exception {
+        ResponseEntity<SearchServiceResponse> response = template.getForEntity(
+                base.toString() + "pdp",
+                SearchServiceResponse.class);
+        Assert.assertEquals("checking for page not found", NOT_FOUND, response.getStatusCode());
     }
 
 }
