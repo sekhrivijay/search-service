@@ -57,32 +57,41 @@ public class PricingClient {
     }
 
     /**
-     * Public visibility for jUnit testing, otherwise consider to be private.
+     * Visibility for jUnit testing, otherwise consider to be private.
      *
      * @param productIds
      * @param siteId
      * @param memberType
      * @return
      */
-    public String buildFullUrl(List<String> productIds, String siteId, String memberType) {
+    String buildFullUrl(List<String> productIds, String siteId, String memberType) {
         /*
          * Create the url with a comma separated list, removing the last unneeded comma.
          */
         StringBuilder url = new StringBuilder();
-        url.append(baseUrl);
-        url.append('/');
         productIds.stream().forEach(id -> url.append(id).append(','));
-        url.setLength(url.length() - 1);
+        if (url.length() > 0) {
+            url.setLength(url.length() - 1);
+        }
 
         url.append("?site=").append(siteId);
-        url.append("&memberType=").append(memberType);
+
+        if (memberType != null && memberType.trim().length() > 0) {
+            url.append("&memberType=").append(memberType);
+        }
 
         return url.toString();
     }
 
-    private String contactServiceForDetails(String url) throws HttpClientErrorException {
-        ResponseEntity<String> response = restTemplate.getForEntity(baseUrl, String.class);
-        LOGGER.debug("Calling {} results: {}", url, new Gson().toJson(response));
+    String contactServiceForDetails(String url) throws HttpClientErrorException {
+        StringBuilder fullUrl = new StringBuilder();
+        fullUrl.append(baseUrl);
+        fullUrl.append('/');
+        if (url != null && url.trim().length() > 0) {
+            fullUrl.append(url);
+        }
+        ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
+        LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new Gson().toJson(response));
         return response.getBody();
     }
 

@@ -1,4 +1,4 @@
-package com.sears.search.generic.service.impl;
+package com.micro.services.search.bl.details;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.micro.services.search.bl.details.AvailabilityClient;
 
 public class AvailabilityClientTest {
 
@@ -25,7 +23,7 @@ public class AvailabilityClientTest {
         List<String> pIds = new ArrayList<>();
         String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M7), LocalDate.of(M2018, M1, M9), "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\",\"endDate\":\"2018-01-09\"}],"
                         + "\"zipCode\":\"60532\"}",
                 result);
@@ -36,7 +34,7 @@ public class AvailabilityClientTest {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
         String result = pc.buildFullUrl(null, LocalDate.of(M2018, M1, M7), LocalDate.of(M2018, M1, M9), "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\",\"endDate\":\"2018-01-09\"}],"
                         + "\"zipCode\":\"60532\"}",
                 result);
@@ -48,7 +46,7 @@ public class AvailabilityClientTest {
         List<String> pIds = new ArrayList<>();
         String result = pc.buildFullUrl(pIds, null, null, "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"zipCode\":\"60532\"}",
                 result);
     }
@@ -59,7 +57,7 @@ public class AvailabilityClientTest {
         List<String> pIds = new ArrayList<>();
         String result = pc.buildFullUrl(pIds, null, LocalDate.of(M2018, M1, M7), "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"deliveryDateRanges\":[{\"endDate\":\"2018-01-07\"}],"
                         + "\"zipCode\":\"60532\"}",
                 result);
@@ -71,7 +69,7 @@ public class AvailabilityClientTest {
         List<String> pIds = new ArrayList<>();
         String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M7), null, "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\"}],"
                         + "\"zipCode\":\"60532\"}",
                 result);
@@ -83,7 +81,7 @@ public class AvailabilityClientTest {
         List<String> pIds = new ArrayList<>();
         String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M7), LocalDate.of(M2018, M1, M9), null);
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\",\"endDate\":\"2018-01-09\"}]}",
                 result);
     }
@@ -95,7 +93,7 @@ public class AvailabilityClientTest {
         pIds.add("960");
         String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M1), LocalDate.of(M2018, M1, M9), "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"products\":[{\"productIds\":[\"960\"]}],"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-01\",\"endDate\":\"2018-01-09\"}],"
                         + "\"zipCode\":\"60532\"}",
@@ -110,7 +108,7 @@ public class AvailabilityClientTest {
         pIds.add("961");
         String result = pc.buildFullUrl(pIds, LocalDate.of(M2017, M12, M31), LocalDate.of(M2018, M1, M1), "60532");
         Assert.assertEquals(
-                "junit?params={"
+                "params={"
                         + "\"products\":[{\"productIds\":[\"960\",\"961\"]}],"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2017-12-31\",\"endDate\":\"2018-01-01\"}],"
                         + "\"zipCode\":\"60532\"}",

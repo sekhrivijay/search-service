@@ -55,26 +55,34 @@ public class ProductClient {
     }
 
     /**
-     * Public visibility for jUnit testing, otherwise consider to be private.
+     * Visibility for jUnit testing, otherwise consider to be private.
      *
      * @param productIds
      * @return
      */
-    public String buildFullUrl(List<String> productIds) {
+    String buildFullUrl(List<String> productIds) {
         /*
          * Create the url with a comma separated list, removing the last unneeded comma.
          */
         StringBuilder url = new StringBuilder();
-        url.append(baseUrl);
-        url.append('/');
         productIds.stream().forEach(id -> url.append(id).append(','));
+        if (url.length() == 0) {
+            return "";
+        }
         url.setLength(url.length() - 1);
         return url.toString();
     }
 
-    private String contactServiceForDetails(String url) throws HttpClientErrorException {
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        LOGGER.debug("Calling {} results: {}", url, new Gson().toJson(response));
+    String contactServiceForDetails(String url) throws HttpClientErrorException {
+        StringBuilder fullUrl = new StringBuilder();
+        fullUrl.append(baseUrl);
+        fullUrl.append('/');
+        if (url != null && url.trim().length() > 0) {
+            fullUrl.append(url);
+        }
+        LOGGER.debug("Calling {}", fullUrl.toString());
+        ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
+        LOGGER.debug("results: {}", new Gson().toJson(response));
         return response.getBody();
     }
 

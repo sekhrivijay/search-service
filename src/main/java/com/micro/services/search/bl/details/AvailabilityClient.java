@@ -61,7 +61,7 @@ public class AvailabilityClient {
     }
 
     /**
-     * Public visibility for jUnit testing, otherwise consider to be private.
+     * Visibility for jUnit testing, otherwise consider to be private.
      *
      * @param productIds
      * @param startDate
@@ -69,7 +69,7 @@ public class AvailabilityClient {
      * @param zipCode
      * @return
      */
-    public String buildFullUrl(List<String> productIds, LocalDate startDate, LocalDate endDate, String zipCode) {
+    String buildFullUrl(List<String> productIds, LocalDate startDate, LocalDate endDate, String zipCode) {
 
         AvailabilityParms ap = new AvailabilityParms();
 
@@ -82,8 +82,7 @@ public class AvailabilityClient {
         ap.setZipCode(zipCode);
 
         StringBuilder url = new StringBuilder();
-        url.append(baseUrl);
-        url.append("?params=");
+        url.append("params=");
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         url.append(gson.toJson(ap));
@@ -91,9 +90,15 @@ public class AvailabilityClient {
         return url.toString();
     }
 
-    private String contactServiceForDetails(String url) throws HttpClientErrorException {
-        ResponseEntity<String> response = restTemplate.getForEntity(baseUrl, String.class);
-        LOGGER.debug("Calling {} results: {}", url, new Gson().toJson(response));
+    String contactServiceForDetails(String url) throws HttpClientErrorException {
+        StringBuilder fullUrl = new StringBuilder();
+        fullUrl.append(baseUrl);
+        fullUrl.append('?');
+        if (url != null && url.trim().length() > 0) {
+            fullUrl.append(url);
+        }
+        ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
+        LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new Gson().toJson(response));
         return response.getBody();
     }
 
