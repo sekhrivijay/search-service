@@ -11,7 +11,6 @@ import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -28,9 +27,9 @@ public class SortDelegate extends BaseDelegate {
 
     private AppConfig appConfig;
 
-
-    @Value("${service.searchEndpoint}")
-    private String searchEndpoint;
+//
+//    @Value("${service.searchEndpoint}")
+//    private String searchEndpoint;
 
 
     @Autowired
@@ -106,9 +105,10 @@ public class SortDelegate extends BaseDelegate {
 
     private SortDetail buildSortDetail(String url) {
         SortDetail sortDetail = new SortDetail();
-        sortDetail.setUrl(searchEndpoint +
+        sortDetail.setUrl(
+                //searchEndpoint +
                 GlobalConstants.QUESTION_MARK +
-                url);
+                        url);
         return sortDetail;
     }
 }

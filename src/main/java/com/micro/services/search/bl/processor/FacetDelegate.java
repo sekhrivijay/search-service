@@ -9,20 +9,20 @@ import com.micro.services.search.config.GlobalConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.springframework.beans.factory.annotation.Value;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
 @Named("facetDelegate")
-public class FacetDelegate  extends BaseDelegate {
+public class FacetDelegate extends BaseDelegate {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(FacetDelegate.class);
 
-    @Value("${service.searchEndpoint}")
-    private String searchEndpoint;
+//    @Value("${service.searchEndpoint}")
+//    private String searchEndpoint;
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -70,11 +70,12 @@ public class FacetDelegate  extends BaseDelegate {
                         Facet facet) {
         facet.setUrl(getQuery(searchServiceResponse,
                 getQuery(facetField, count),
-                searchEndpoint + GlobalConstants.QUESTION_MARK));
+//                searchEndpoint +
+                GlobalConstants.QUESTION_MARK));
     }
 
     private String getQuery(FacetField facetField, FacetField.Count count) {
-        return  GlobalConstants.FQ_PREFIX +
+        return GlobalConstants.FQ_PREFIX +
                 facetField.getName() +
                 GlobalConstants.COLON +
                 count.getName();

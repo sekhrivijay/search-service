@@ -14,7 +14,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -28,10 +27,10 @@ public class DocumentsDelegate extends BaseDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentsDelegate.class);
 
-    @Value("${service.productEndpoint}")
-    private String productEndpoint;
+//    @Value("${service.productEndpoint}")
+//    private String productEndpoint;
 
-//    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD;
+    //    public static final String PDP_QUERY_SUFFIX = GlobalConstants.Q_STAR_FIELD;
     public static final String PDP_QUERY_SUFFIX = StringUtils.EMPTY;
 //            + GlobalConstants.TYPE_PREFIX
 //            + RequestType.PDP.getName();
@@ -89,9 +88,10 @@ public class DocumentsDelegate extends BaseDelegate {
 
     private String getQuery(SearchServiceResponse searchServiceResponse, SolrDocument solrDocument) {
         LOGGER.debug(searchServiceResponse.toString());
-        return productEndpoint + GlobalConstants.QUESTION_MARK + GlobalConstants.ID_FIELD_FILTER
-                + SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
-                + PDP_QUERY_SUFFIX;
+        return //productEndpoint +
+                GlobalConstants.QUESTION_MARK + GlobalConstants.ID_FIELD_FILTER
+                        + SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
+                        + PDP_QUERY_SUFFIX;
     }
 
 }

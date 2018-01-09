@@ -4,19 +4,15 @@ import com.micro.services.search.api.SearchModelWrapper;
 import com.micro.services.search.api.request.Holder;
 import com.micro.services.search.api.request.SearchServiceRequest;
 import com.micro.services.search.api.response.SearchServiceResponse;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.micro.services.search.bl.rules.RuleService;
+import com.micro.services.search.bl.rules.RuleServiceImpl;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.lang.reflect.InvocationTargetException;
 
@@ -24,13 +20,15 @@ import java.lang.reflect.InvocationTargetException;
 public class RulesDelegate extends BaseDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(RulesDelegate.class);
 
-    private RestTemplate restTemplate;
+//    private RestTemplate restTemplate;
 
-    @Value("${service.rulesService.enabled:false}")
-    private boolean rulesServiceEnabled;
+//    @Value("${service.rulesService.enabled:false}")
+//    private boolean rulesServiceEnabled;
+//
+//    @Value("${service.rulesService.baseUrl}")
+//    private String rulesServiceBaseUrl;
 
-    @Value("${service.rulesService.baseUrl}")
-    private String rulesServiceBaseUrl;
+    private RuleService ruleService;
 
     public static final Holder FALLBACK_RULE_RESPONSE = new Holder();
 
@@ -38,18 +36,28 @@ public class RulesDelegate extends BaseDelegate {
         FALLBACK_RULE_RESPONSE.setCacheable(false);
     }
 
-    @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Inject
+    @Named("ruleService")
+    public void setRuleService(RuleService ruleService) {
+        this.ruleService = ruleService;
     }
+//
+//    @Autowired
+//    public void setRestTemplate(RestTemplate restTemplate) {
+//        this.restTemplate = restTemplate;
+//    }
 
     @Override
-    @HystrixCommand(groupKey = "hystrixGroup",
-            commandKey = "ruleServiceKey",
-            threadPoolKey = "ruleThreadPoolKey",
-            fallbackMethod = "preProcessFallback")
+//    @HystrixCommand(groupKey = "hystrixGroup",
+//            commandKey = "ruleServiceKey",
+//            threadPoolKey = "ruleThreadPoolKey",
+//            fallbackMethod = "preProcessFallback")
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        SearchModelWrapper searchModelWrapperModified = callSearchRulesService(searchServiceRequest);
+        SearchModelWrapper searchModelWrapperModified = ruleService.callSearchRulesService(searchServiceRequest);
+        if (searchModelWrapperModified == RuleServiceImpl.FALLBACK_RULE_RESPONSE) {
+            searchServiceRequest.setHolder(FALLBACK_RULE_RESPONSE);
+            return solrQuery;
+        }
         if (searchModelWrapperModified != null) {
             LOGGER.info("Response from Rule service " + searchModelWrapperModified.toString());
             Holder holder = new Holder();
@@ -73,28 +81,27 @@ public class RulesDelegate extends BaseDelegate {
         return solrQuery;
     }
 
-    public SolrQuery preProcessFallback(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        searchServiceRequest.setHolder(FALLBACK_RULE_RESPONSE);
-        return solrQuery;
-    }
+//    public SolrQuery preProcessFallback(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+//        searchServiceRequest.setHolder(FALLBACK_RULE_RESPONSE);
+//        return solrQuery;
+//    }
 
-    private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
-//        LOGGER.info(searchServiceRequest.toString());
-        SearchModelWrapper searchModelWrapper = new SearchModelWrapper(
-                searchServiceRequest,
-                new SearchServiceResponse());
-        if (rulesServiceEnabled) {
-            HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
-//            LOGGER.info("Calling rule service with ");
-//            LOGGER.info(new Gson().toJson(searchModelWrapper.toString()));
-            ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
-                    rulesServiceBaseUrl + "/executePre",
-                    HttpMethod.POST, request,
-                    SearchModelWrapper.class);
-            return response.getBody();
-        }
-        return searchModelWrapper;
-    }
+//    private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
+////        LOGGER.info(searchServiceRequest.toString());
+//        SearchModelWrapper searchModelWrapper = new SearchModelWrapper(
+//                searchServiceRequest,
+//                new SearchServiceResponse());
+//        if (rulesServiceEnabled) {
+//            HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
+////            LOGGER.info("Calling rule service with ");
+//            ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
+//                    rulesServiceBaseUrl + "/executePre",
+//                    HttpMethod.POST, request,
+//                    SearchModelWrapper.class);
+//            return response.getBody();
+//        }
+//        return searchModelWrapper;
+//    }
 
     @Override
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
