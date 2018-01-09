@@ -1,6 +1,5 @@
 package com.micro.services.search.bl.details;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,19 +8,11 @@ import org.junit.Test;
 
 public class AvailabilityClientTest {
 
-    static final int M2017 = 2017;
-    static final int M2018 = 2018;
-    static final int M1    = 1;
-    static final int M7    = 7;
-    static final int M9    = 9;
-    static final int M12   = 12;
-    static final int M31   = 31;
-
     @Test
     public void noProducts() {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
         List<String> pIds = new ArrayList<>();
-        String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M7), LocalDate.of(M2018, M1, M9), "60532");
+        String result = pc.buildFullUrl(pIds, "2018-01-07", "2018-01-09", "60532");
         Assert.assertEquals(
                 "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\",\"endDate\":\"2018-01-09\"}],"
@@ -32,7 +23,7 @@ public class AvailabilityClientTest {
     @Test
     public void nullProducts() {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        String result = pc.buildFullUrl(null, LocalDate.of(M2018, M1, M7), LocalDate.of(M2018, M1, M9), "60532");
+        String result = pc.buildFullUrl(null, "2018-01-07", "2018-01-09", "60532");
         Assert.assertEquals(
                 "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\",\"endDate\":\"2018-01-09\"}],"
@@ -55,7 +46,7 @@ public class AvailabilityClientTest {
     public void endDateOnly() {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
         List<String> pIds = new ArrayList<>();
-        String result = pc.buildFullUrl(pIds, null, LocalDate.of(M2018, M1, M7), "60532");
+        String result = pc.buildFullUrl(pIds, null, "2018-01-07", "60532");
         Assert.assertEquals(
                 "params={"
                         + "\"deliveryDateRanges\":[{\"endDate\":\"2018-01-07\"}],"
@@ -67,7 +58,7 @@ public class AvailabilityClientTest {
     public void startDateOnly() {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
         List<String> pIds = new ArrayList<>();
-        String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M7), null, "60532");
+        String result = pc.buildFullUrl(pIds, "2018-01-07", null, "60532");
         Assert.assertEquals(
                 "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\"}],"
@@ -79,7 +70,7 @@ public class AvailabilityClientTest {
     public void noZipCode() {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
         List<String> pIds = new ArrayList<>();
-        String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M7), LocalDate.of(M2018, M1, M9), null);
+        String result = pc.buildFullUrl(pIds, "2018-01-07", "2018-01-09", null);
         Assert.assertEquals(
                 "params={"
                         + "\"deliveryDateRanges\":[{\"startDate\":\"2018-01-07\",\"endDate\":\"2018-01-09\"}]}",
@@ -91,7 +82,7 @@ public class AvailabilityClientTest {
         AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
         List<String> pIds = new ArrayList<>();
         pIds.add("960");
-        String result = pc.buildFullUrl(pIds, LocalDate.of(M2018, M1, M1), LocalDate.of(M2018, M1, M9), "60532");
+        String result = pc.buildFullUrl(pIds, "2018-01-01", "2018-01-09", "60532");
         Assert.assertEquals(
                 "params={"
                         + "\"products\":[{\"productIds\":[\"960\"]}],"
@@ -106,7 +97,7 @@ public class AvailabilityClientTest {
         List<String> pIds = new ArrayList<>();
         pIds.add("960");
         pIds.add("961");
-        String result = pc.buildFullUrl(pIds, LocalDate.of(M2017, M12, M31), LocalDate.of(M2018, M1, M1), "60532");
+        String result = pc.buildFullUrl(pIds, "2017-12-31", "2018-01-01", "60532");
         Assert.assertEquals(
                 "params={"
                         + "\"products\":[{\"productIds\":[\"960\",\"961\"]}],"

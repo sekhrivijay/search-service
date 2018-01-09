@@ -45,6 +45,10 @@ public class GlobalConstants {
     public static final String SORT = "sort";
     public static final String TYPE = "type";
     public static final String SITE_ID = "siteId";
+    public static final String MEMBER_TYPE = "memberType";
+    public static final String ZIPCODE = "zipCode";
+    public static final String AVAIL_FROM = "availFrom";
+    public static final String AVAIL_TO = "availTo";
     public static final String DOMAIN = "domain";
     public static final String SORT_ORDER = "sort.order";
     public static final String DEBUG = "debug";

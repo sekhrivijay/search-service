@@ -1,15 +1,18 @@
 package com.micro.services.search.api.request;
 
-import com.micro.services.search.config.GlobalConstants;
+import static com.micro.services.search.config.GlobalConstants.COUNT;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.micro.services.search.config.GlobalConstants.COUNT;
+import com.micro.services.search.config.GlobalConstants;
 
 public class SearchServiceRequest implements Serializable {
+
+    private static final long serialVersionUID = 7074581649415958670L;
+
     private String q = "*";
     private String bf;
     private String sort = GlobalConstants.ID;
@@ -35,6 +38,11 @@ public class SearchServiceRequest implements Serializable {
     private Map<String, List<String>> parameters;
     private Map<String, String[]> parametersOriginal;
     private Holder holder;
+
+    private String memberType;
+    private String zipCode;
+    private String availFrom;
+    private String availTo;
 
     public String getQ() {
         return q;
@@ -267,6 +275,11 @@ public class SearchServiceRequest implements Serializable {
                 ", requestType=" + requestType +
                 ", parameters=" + parameters +
                 ", parametersOriginal=" + parametersOriginal +
+
+                ", memberType=" + memberType +
+                ", availFrom=" + availFrom +
+                ", availTo=" + availTo +
+                ", zipCode=" + zipCode +
                 '}';
     }
 
@@ -294,6 +307,38 @@ public class SearchServiceRequest implements Serializable {
 
     public String getCacheKey() {
         return String.valueOf(toCacheKey().hashCode());
+    }
+
+    public String getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(String memberType) {
+        this.memberType = memberType;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getAvailFrom() {
+        return availFrom;
+    }
+
+    public void setAvailFrom(String availFrom) {
+        this.availFrom = availFrom;
+    }
+
+    public String getAvailTo() {
+        return availTo;
+    }
+
+    public void setAvailTo(String availTo) {
+        this.availTo = availTo;
     }
 
 

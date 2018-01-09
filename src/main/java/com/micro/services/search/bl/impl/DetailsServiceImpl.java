@@ -1,6 +1,5 @@
 package com.micro.services.search.bl.impl;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -66,11 +65,11 @@ public class DetailsServiceImpl implements DetailsService {
          * TODO got these parameters from the request. First, add the variables to the
          * request
          */
-        LocalDate startDate = LocalDate.now();
-        LocalDate endDate = LocalDate.now();
-        String zipCode = "60532";
-        String siteId = "1";
-        String memberId = "2";
+        String startDate = searchServiceRequest.getAvailFrom();
+        String endDate = searchServiceRequest.getAvailTo();
+        String zipCode = searchServiceRequest.getZipCode();
+        String siteId = searchServiceRequest.getSiteId();
+        String memberId = searchServiceRequest.getMemberType();
         /*
          * Gather all details in parallel
          */

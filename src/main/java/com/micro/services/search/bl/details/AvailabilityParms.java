@@ -1,9 +1,6 @@
 package com.micro.services.search.bl.details;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
@@ -31,13 +28,13 @@ public class AvailabilityParms {
 
         @SerializedName("startDate")
         @Expose
-        private Date startDate;
+        private String startDate;
 
         @SerializedName("endDate")
         @Expose
-        private Date endDate;
+        private String endDate;
 
-        DeliveryDateRange(Date start, Date end) {
+        DeliveryDateRange(String start, String end) {
             startDate = start;
             endDate = end;
         }
@@ -93,36 +90,14 @@ public class AvailabilityParms {
     }
 
     /**
-     * Set the dates using the LocalDate types.
+     * Set the dates using String types.
      *
      * @param start
      *            is the beginning of the date range.
      * @param end
      *            is the ending of the date range.
      */
-    public void addDateRange(LocalDate start, LocalDate end) {
-        if (deliveryDateRanges == null) {
-            deliveryDateRanges = new ArrayList<>();
-        }
-        Date startDate = null, endDate = null;
-        if (start != null) {
-            startDate = Date.from(start.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        }
-        if (end != null) {
-            endDate = Date.from(end.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        }
-        deliveryDateRanges.add(new DeliveryDateRange(startDate, endDate));
-    }
-
-    /**
-     * Set the dates using the Date types.
-     *
-     * @param start
-     *            is the beginning of the date range.
-     * @param end
-     *            is the ending of the date range.
-     */
-    public void addDateRange(Date start, Date end) {
+    public void addDateRange(String start, String end) {
         if (deliveryDateRanges == null) {
             deliveryDateRanges = new ArrayList<>();
         }

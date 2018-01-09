@@ -1,6 +1,5 @@
 package com.micro.services.search.bl.details;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class AvailabilityClient {
      */
     public List<DetailsDocument> findDetails(
             List<String> productIds,
-            LocalDate startDate,
-            LocalDate endDate,
+            String startDate,
+            String endDate,
             String zipCode) {
         List<DetailsDocument> results = new ArrayList<>(productIds.size());
 
@@ -74,7 +73,7 @@ public class AvailabilityClient {
      * @param zipCode
      * @return
      */
-    String buildFullUrl(List<String> productIds, LocalDate startDate, LocalDate endDate, String zipCode) {
+    String buildFullUrl(List<String> productIds, String startDate, String endDate, String zipCode) {
 
         AvailabilityParms ap = new AvailabilityParms();
 

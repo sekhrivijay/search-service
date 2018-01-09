@@ -58,7 +58,8 @@ public class QueryServiceImplTest {
     public void details() throws Exception {
         final Long expectedNumberFound = new Long(0);
         ResponseEntity<SearchServiceResponse> response = template.getForEntity(
-                base.toString() + "details?q=*:*",
+                base.toString() + "details?q=*:*"
+                        + "&siteId=ftd&memberType=WHAT&availFrom=2018-01-01&availTo=2018-01-02&zipCode=60532",
                 SearchServiceResponse.class);
         Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
         Assert.assertTrue("number found should be > 0 for details",
@@ -73,7 +74,6 @@ public class QueryServiceImplTest {
         Assert.assertEquals("checking for page not found", NOT_FOUND, response.getStatusCode());
     }
 
-
     @Test
     public void autofill() throws Exception {
         ResponseEntity<SearchServiceResponse> response = template.getForEntity(
@@ -82,7 +82,6 @@ public class QueryServiceImplTest {
         Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
     }
 
-
     @Test
     public void spell() throws Exception {
         ResponseEntity<SearchServiceResponse> response = template.getForEntity(
@@ -90,7 +89,6 @@ public class QueryServiceImplTest {
                 SearchServiceResponse.class);
         Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
     }
-
 
     @Test
     public void pdp() throws Exception {

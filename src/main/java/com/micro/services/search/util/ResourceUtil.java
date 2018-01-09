@@ -1,19 +1,20 @@
 package com.micro.services.search.util;
 
-import com.micro.services.search.api.request.Domain;
-import com.micro.services.search.api.request.From;
-import com.micro.services.search.api.request.RequestType;
-import com.micro.services.search.api.request.SearchServiceRequest;
-import com.micro.services.search.config.GlobalConstants;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.micro.services.search.api.request.Domain;
+import com.micro.services.search.api.request.From;
+import com.micro.services.search.api.request.RequestType;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.config.GlobalConstants;
 
 public class ResourceUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourceUtil.class);
@@ -51,6 +52,23 @@ public class ResourceUtil {
         String siteId = getFirstIfPresent(queryParams.get(GlobalConstants.SITE_ID));
         if (StringUtils.isNotEmpty(siteId)) {
             searchServiceRequest.setSiteId(siteId);
+        }
+
+        String value = getFirstIfPresent(queryParams.get(GlobalConstants.MEMBER_TYPE));
+        if (StringUtils.isNotEmpty(value)) {
+            searchServiceRequest.setMemberType(value);
+        }
+        value = getFirstIfPresent(queryParams.get(GlobalConstants.ZIPCODE));
+        if (StringUtils.isNotEmpty(value)) {
+            searchServiceRequest.setZipCode(value);
+        }
+        value = getFirstIfPresent(queryParams.get(GlobalConstants.AVAIL_FROM));
+        if (StringUtils.isNotEmpty(value)) {
+            searchServiceRequest.setAvailFrom(value);
+        }
+        value = getFirstIfPresent(queryParams.get(GlobalConstants.AVAIL_TO));
+        if (StringUtils.isNotEmpty(value)) {
+            searchServiceRequest.setAvailTo(value);
         }
 
         String sort = getFirstIfPresent(queryParams.get(GlobalConstants.SORT));
