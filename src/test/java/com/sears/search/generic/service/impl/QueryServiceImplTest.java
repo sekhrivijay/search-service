@@ -67,13 +67,10 @@ public class QueryServiceImplTest {
 
     @Test
     public void browse() throws Exception {
-        final Long expectedNumberFound = new Long(0);
         ResponseEntity<SearchServiceResponse> response = template.getForEntity(
                 base.toString() + "browse?q=*:*",
                 SearchServiceResponse.class);
-        Assert.assertEquals("checking for 200 OK", OK, response.getStatusCode());
-        Assert.assertTrue("number found should be > 0 for browse",
-                expectedNumberFound.longValue() < response.getBody().getNumFound().longValue());
+        Assert.assertEquals("checking for page not found", NOT_FOUND, response.getStatusCode());
     }
 
 

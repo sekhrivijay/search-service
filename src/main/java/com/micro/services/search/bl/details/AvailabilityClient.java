@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
@@ -31,13 +32,17 @@ public class AvailabilityClient {
     private String              baseUrl;
 
     public AvailabilityClient(
-            @Named("restTemplate") RestTemplate restTemplate,
+            @Autowired RestTemplate restTemplate,
             @Value("${service.availabilityService.baseUrl}") String baseUrl,
             @Value("${service.availabilityService.enabled:false}") boolean enabled) {
 
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
         this.enabled = enabled;
+
+        if (!isEnabled()) {
+            LOGGER.warn("the availability service is NOT enabled");
+        }
     }
 
     /**
@@ -98,7 +103,7 @@ public class AvailabilityClient {
             fullUrl.append(url);
         }
         ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
-        LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new Gson().toJson(response));
+        // LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new Gson().toJson(response));
         return response.getBody();
     }
 

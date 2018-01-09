@@ -7,12 +7,11 @@ import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.google.gson.Gson;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+ProductIdGroup+Service
@@ -29,13 +28,17 @@ public class ProductClient {
     private String              baseUrl;
 
     public ProductClient(
-            @Named("restTemplate") RestTemplate restTemplate,
+            @Autowired RestTemplate restTemplate,
             @Value("${service.productService.baseUrl}") String baseUrl,
             @Value("${service.productService.enabled:false}") boolean enabled) {
 
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
         this.enabled = enabled;
+
+        if (!isEnabled()) {
+            LOGGER.warn("the product service is NOT enabled");
+        }
     }
 
     public List<DetailsDocument> findDetails(List<String> productIds) {
@@ -80,9 +83,9 @@ public class ProductClient {
         if (url != null && url.trim().length() > 0) {
             fullUrl.append(url);
         }
-        LOGGER.debug("Calling {}", fullUrl.toString());
+        // LOGGER.debug("Calling {}", fullUrl.toString());
         ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
-        LOGGER.debug("results: {}", new Gson().toJson(response));
+        // LOGGER.debug("results: {}", new Gson().toJson(response));
         return response.getBody();
     }
 

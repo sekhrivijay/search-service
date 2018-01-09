@@ -127,7 +127,7 @@ public class ServiceController {
     @LogExecutionTime
     public SearchServiceResponse details(WebRequest webRequest) throws Exception {
         SearchServiceRequest searchServiceRequest = ResourceUtil.buildServiceRequest(webRequest.getParameterMap());
-        searchServiceRequest.setRequestType(RequestType.DETAILS);
+        searchServiceRequest.setRequestType(RequestType.SEARCH);
         SearchServiceResponse searchResponse = queryService.query(searchServiceRequest);
         detailsService.postQueryDetails(searchServiceRequest, searchResponse);
         return searchResponse;

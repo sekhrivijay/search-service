@@ -7,12 +7,11 @@ import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.google.gson.Gson;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+Pricing+Service
@@ -29,13 +28,17 @@ public class PricingClient {
     private String              baseUrl;
 
     public PricingClient(
-            @Named("restTemplate") RestTemplate restTemplate,
+            @Autowired RestTemplate restTemplate,
             @Value("${service.pricingService.baseUrl}") String baseUrl,
             @Value("${service.pricingService.enabled:false}") boolean enabled) {
 
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
         this.enabled = enabled;
+
+        if (!isEnabled()) {
+            LOGGER.warn("the pricing service is NOT enabled");
+        }
     }
 
     public List<DetailsDocument> findDetails(
@@ -91,7 +94,8 @@ public class PricingClient {
             fullUrl.append(url);
         }
         ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
-        LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new Gson().toJson(response));
+        // LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new
+        // Gson().toJson(response));
         return response.getBody();
     }
 

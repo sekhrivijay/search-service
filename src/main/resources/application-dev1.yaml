@@ -1,6 +1,13 @@
 service:
   memcache:
     enabled: false
+  availabilityService:
+    enabled: false
+  pricingService:
+    enabled: false
+  productService:
+    enabled: true
+ 
 logging:
   level:
     ROOT: WARN
