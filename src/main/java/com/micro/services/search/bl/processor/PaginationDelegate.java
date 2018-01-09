@@ -20,8 +20,8 @@ public class PaginationDelegate  extends BaseDelegate {
 //    @Value("${service.defaultRows}")
 //    private int rows;
 
-    @Value("${service.searchEndpoint}")
-    private String searchEndpoint;
+//    @Value("${service.searchEndpoint}")
+//    private String searchEndpoint;
 
     @Value("${service.pagination.first.size}")
     private int numberOfFirstPages;
@@ -67,7 +67,8 @@ public class PaginationDelegate  extends BaseDelegate {
         long activePageNumber = Math.round(Math.ceil((double) (recordOffset) / numberOfRecordsPerPage) + 1);
 
 
-        String url = searchEndpoint +
+        String url =
+//                searchEndpoint +
                 GlobalConstants.QUESTION_MARK +
                 searchServiceResponse.getOriginalQuery();
 

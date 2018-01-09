@@ -16,6 +16,7 @@ public class GlobalConstants {
     public static final String FORWARD_SLASH = "/";
     public static final String SELECT_HANDLER = "select";
     public static final String SUGGEST_HANDLER = "suggest";
+    public static final String DOLLAR = "$";
     public static final String FTD = "ftd";
     public static final String QT = "qt";
     public static final String BF = "bf";

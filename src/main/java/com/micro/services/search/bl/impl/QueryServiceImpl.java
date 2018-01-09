@@ -71,7 +71,7 @@ public class QueryServiceImpl implements QueryService {
     private SolrService solrService;
 
     @Inject
-    public void setSolrService(SolrServiceImpl solrService) {
+    public void setSolrService(SolrService solrService) {
         this.solrService = solrService;
     }
 

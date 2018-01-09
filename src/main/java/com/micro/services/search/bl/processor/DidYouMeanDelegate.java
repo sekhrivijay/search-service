@@ -14,7 +14,6 @@ import org.languagetool.rules.RuleMatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
@@ -25,8 +24,8 @@ import java.util.List;
 public class DidYouMeanDelegate extends BaseDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(DidYouMeanDelegate.class);
 
-    @Value("${service.searchEndpoint}")
-    private String searchEndpoint;
+//    @Value("${service.searchEndpoint}")
+//    private String searchEndpoint;
 
     private SpellCorrectUtil spellCorrectUtil;
 
@@ -106,8 +105,8 @@ public class DidYouMeanDelegate extends BaseDelegate {
                 DidYouMean didYouMean = new DidYouMean();
                 didYouMean.setSuggestedTerm(finalSuggestion);
                 didYouMean.setUrl(
-                        searchEndpoint +
-                                GlobalConstants.QUESTION_MARK +
+//                        searchEndpoint +
+                        GlobalConstants.QUESTION_MARK +
                                 searchServiceResponse.getOriginalQuery().replace(
                                         originalQuery,
                                         GlobalConstants.Q_PREFIX + finalSuggestion));
@@ -148,8 +147,8 @@ public class DidYouMeanDelegate extends BaseDelegate {
                                 didYouMean.setNumberOfResults(alternativeFrequencies.get(count));
 
                                 didYouMean.setUrl(
-                                        searchEndpoint +
-                                                GlobalConstants.QUESTION_MARK +
+//                                        searchEndpoint +
+                                        GlobalConstants.QUESTION_MARK +
                                                 searchServiceResponse.getOriginalQuery().replace(
                                                         originalQuery,
                                                         GlobalConstants.Q_PREFIX + alternative));
@@ -169,8 +168,8 @@ public class DidYouMeanDelegate extends BaseDelegate {
                     didYouMean.setSuggestedTerm(collation.getCollationQueryString());
                     didYouMean.setNumberOfResults(collation.getNumberOfHits());
                     didYouMean.setUrl(
-                            searchEndpoint +
-                                    GlobalConstants.QUESTION_MARK +
+//                            searchEndpoint +
+                            GlobalConstants.QUESTION_MARK +
                                     searchServiceResponse.getOriginalQuery().replace(
                                             originalQuery,
                                             GlobalConstants.Q_PREFIX + collation.getCollationQueryString()));
