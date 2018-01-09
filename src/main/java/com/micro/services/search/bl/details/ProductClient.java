@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 /**
- * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+Product+Service
+ * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+ProductIdGroup+Service
  *
  * @author cdegreef
  *

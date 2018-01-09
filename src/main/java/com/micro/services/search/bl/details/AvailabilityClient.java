@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/ProductAvailability
@@ -69,22 +70,23 @@ public class AvailabilityClient {
      * @return
      */
     public String buildFullUrl(List<String> productIds, LocalDate startDate, LocalDate endDate, String zipCode) {
-        // TODO use Gson to encode a JSON request string from the provided parameters.
-        /*
-         * /ftdcom/ProductAvailability ?params= {"products"
-         * :[{"productIds":[123,456]},{"productIds":[789]}]
-         * ,"deliveryDateRanges":[{"startDate":"2017-12-15",
-         * "endDate":"2017-12-15"},{"startDate":"2017-12-16", "endDate":"2017-12-20"}]
-         * ,"zipCode":"92101"}
-         */
-        /*
-         * Create the url with a comma separated list, removing the last unneeded comma.
-         */
+
+        AvailabilityParms ap = new AvailabilityParms();
+
+        if (productIds != null) {
+            productIds.stream().forEach(id -> ap.addProductId(0, id));
+        }
+        if (startDate != null || endDate != null) {
+            ap.addDateRange(startDate, endDate);
+        }
+        ap.setZipCode(zipCode);
+
         StringBuilder url = new StringBuilder();
         url.append(baseUrl);
-        url.append('/');
-        productIds.stream().forEach(id -> url.append(id).append(','));
-        url.setLength(url.length() - 1);
+        url.append("?params=");
+
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        url.append(gson.toJson(ap));
 
         return url.toString();
     }
