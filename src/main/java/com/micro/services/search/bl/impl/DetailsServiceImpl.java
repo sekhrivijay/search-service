@@ -1,11 +1,15 @@
 package com.micro.services.search.bl.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +18,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.Document;
 import com.micro.services.search.api.response.SearchServiceResponse;
 import com.micro.services.search.bl.DetailsService;
 import com.micro.services.search.bl.details.AvailabilityClient;
-import com.micro.services.search.bl.details.DetailsDocument;
 import com.micro.services.search.bl.details.PricingClient;
 import com.micro.services.search.bl.details.ProductClient;
 
 @Service("detailsService")
 public class DetailsServiceImpl implements DetailsService {
+
     private static final Logger LOGGER   = LoggerFactory.getLogger(DetailsServiceImpl.class);
 
     private AvailabilityClient  availabilityClient;
@@ -31,13 +36,13 @@ public class DetailsServiceImpl implements DetailsService {
 
     private ExecutorService     executor = Executors.newCachedThreadPool();
 
-    @Value("${availabilityService.timeout:1000}")
+    @Value("${service.availabilityService.timeout:1000}")
     private long                availabilityServiceTimeout;
 
-    @Value("${pricingService.timeout:1000}")
+    @Value("${service.pricingService.timeout:1000}")
     private long                pricingServiceTimeout;
 
-    @Value("${productService.timeout:1000}")
+    @Value("${service.productService.timeout:1000}")
     private long                productServiceTimeout;
 
     public DetailsServiceImpl(
@@ -49,21 +54,39 @@ public class DetailsServiceImpl implements DetailsService {
         this.productClient = productClient;
     }
 
+    @PostConstruct
+    private void logIdentification() {
+        LOGGER.info("service call timeouts: availability: {}, product: {}, pricing: {}",
+                availabilityServiceTimeout, productServiceTimeout, pricingServiceTimeout);
+    }
+
     @Override
     public void postQueryDetails(
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) {
 
         // LOGGER.debug("orchestrating search service response details");
-
-        List<String> productIds = new ArrayList<>();
+        if (searchServiceResponse == null
+                || searchServiceResponse.getDocumentList() == null) {
+            return;
+        }
         /*
-         * TODO extract the product ids from the response.
+         * Convert the search results to a map of productKey->document. The document is
+         * a map of attribute names and values. At the end of this method the documents
+         * in this map will be updated with details. The documents are references to
+         * what is in the searchServiceResponse, so they too will be updated.
          */
+        Map<String, Document> productMap = searchServiceResponse.getDocumentList().stream()
+                .collect(Collectors.toMap(doc -> doc.getRecord().get("id"), doc -> doc));
+        /*
+         * Create a list of product ids that will be used in the detail services.
+         */
+        // Set<String> productIds = productMap.keySet();
+        // TODO remove this test code
+        final Set<String> productIds = new HashSet<String>();
         productIds.add("960");
         /*
-         * TODO got these parameters from the request. First, add the variables to the
-         * request
+         * Get orchestration parameters from the request URL
          */
         String startDate = searchServiceRequest.getAvailFrom();
         String endDate = searchServiceRequest.getAvailTo();
@@ -73,35 +96,53 @@ public class DetailsServiceImpl implements DetailsService {
         /*
          * Gather all details in parallel
          */
-        Future<List<DetailsDocument>> availableDetails = executor.submit(
+        Future<Map<String, Document>> availableDetails = executor.submit(
                 () -> availabilityClient.findDetails(productIds, startDate, endDate, zipCode));
-        Future<List<DetailsDocument>> pricingDetails = executor.submit(
+        Future<Map<String, Document>> pricingDetails = executor.submit(
                 () -> pricingClient.findDetails(productIds, siteId, memberId));
-        Future<List<DetailsDocument>> productDetails = executor.submit(
+        Future<Map<String, Document>> productDetails = executor.submit(
                 () -> productClient.findDetails(productIds));
         /*
          * Each future has a time limit. In the worst case, where all services time out,
-         * the total time waiting will be the sum of the timeouts.
+         * the total time waiting will be the sum of the timeouts. Each set of details
+         * is applied to the search results in sequence so that there is no contention.
+         * This is instead of letting each future update the map itself.
          */
         try {
-            availableDetails.get(availabilityServiceTimeout, TimeUnit.MILLISECONDS);
+            applyAvailabilityDocument(
+                    availableDetails.get(availabilityServiceTimeout, TimeUnit.MILLISECONDS),
+                    productMap);
         } catch (Exception e) {
             LOGGER.error("availabilityService error {}", e.getMessage());
         }
         try {
-            productDetails.get(productServiceTimeout, TimeUnit.MILLISECONDS);
+            applyProductDocument(
+                    productDetails.get(productServiceTimeout, TimeUnit.MILLISECONDS),
+                    productMap);
         } catch (Exception e) {
             LOGGER.error("productService error {}", e.getMessage());
         }
         try {
-            pricingDetails.get(pricingServiceTimeout, TimeUnit.MILLISECONDS);
+            applyPricingDocument(
+                    pricingDetails.get(pricingServiceTimeout, TimeUnit.MILLISECONDS),
+                    productMap);
         } catch (Exception e) {
             LOGGER.error("pricingService error {}", e.getMessage());
         }
+    }
 
-        /*
-         * TODO update the searchServiceResponse documents with the details documents.
-         */
+    void applyAvailabilityDocument(Map<String, Document> detailsMap, Map<String, Document> productMap) {
+        LOGGER.debug("applyAvailabilityDocument size={}", detailsMap.size());
+        // TODO
+    }
 
+    void applyPricingDocument(Map<String, Document> detailsMap, Map<String, Document> productMap) {
+        LOGGER.debug("applyPricingDocument size={}", detailsMap.size());
+        // TODO
+    }
+
+    void applyProductDocument(Map<String, Document> detailsMap, Map<String, Document> productMap) {
+        LOGGER.debug("applyProductDocument size={}", detailsMap.size());
+        // TODO
     }
 }

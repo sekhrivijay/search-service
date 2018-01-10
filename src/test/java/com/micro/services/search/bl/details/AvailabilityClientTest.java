@@ -1,7 +1,7 @@
 package com.micro.services.search.bl.details;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +10,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void noProducts() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         String result = pc.buildFullUrl(pIds, "2018-01-07", "2018-01-09", "60532");
         Assert.assertEquals(
                 "params={"
@@ -22,7 +22,7 @@ public class AvailabilityClientTest {
 
     @Test
     public void nullProducts() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
         String result = pc.buildFullUrl(null, "2018-01-07", "2018-01-09", "60532");
         Assert.assertEquals(
                 "params={"
@@ -33,8 +33,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void noDateRanges() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         String result = pc.buildFullUrl(pIds, null, null, "60532");
         Assert.assertEquals(
                 "params={"
@@ -44,8 +44,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void endDateOnly() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         String result = pc.buildFullUrl(pIds, null, "2018-01-07", "60532");
         Assert.assertEquals(
                 "params={"
@@ -56,8 +56,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void startDateOnly() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         String result = pc.buildFullUrl(pIds, "2018-01-07", null, "60532");
         Assert.assertEquals(
                 "params={"
@@ -68,8 +68,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void noZipCode() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         String result = pc.buildFullUrl(pIds, "2018-01-07", "2018-01-09", null);
         Assert.assertEquals(
                 "params={"
@@ -79,8 +79,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void oneProduct() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         pIds.add("960");
         String result = pc.buildFullUrl(pIds, "2018-01-01", "2018-01-09", "60532");
         Assert.assertEquals(
@@ -93,8 +93,8 @@ public class AvailabilityClientTest {
 
     @Test
     public void twoProducts() {
-        AvailabilityClient pc = new AvailabilityClient(null, "junit", true);
-        List<String> pIds = new ArrayList<>();
+        AvailabilityClient pc = new AvailabilityClient(null, "junit");
+        Set<String> pIds = new HashSet<>();
         pIds.add("960");
         pIds.add("961");
         String result = pc.buildFullUrl(pIds, "2017-12-31", "2018-01-01", "60532");

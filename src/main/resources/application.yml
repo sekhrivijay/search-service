@@ -132,16 +132,19 @@ service:
     enabled: true
     baseUrl: http://35.227.193.133/api/productAvailability
     timeout: 1000
+    version: 0
 
   productService:
     enabled: true
     baseUrl: http://35.227.193.133/api/products
     timeout: 1000
+    version: 0
 
   pricingService:
     enabled: true
     baseUrl: http://35.227.193.133/api/pricing
     timeout: 1000
+    version: 0
 
   sitesBfMap:
     default: ftd_bso_order_cnt_l^3 ftd_bso_order_amt_d^4 ftd_bso_order_margin_d^2

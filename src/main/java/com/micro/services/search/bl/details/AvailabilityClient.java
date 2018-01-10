@@ -1,20 +1,26 @@
 package com.micro.services.search.bl.details;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.micro.services.search.api.response.Document;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/ProductAvailability
@@ -24,35 +30,39 @@ import com.google.gson.GsonBuilder;
  */
 @Named("availabilityClient")
 public class AvailabilityClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AvailabilityClient.class);
+    private static final Logger LOGGER  = LoggerFactory.getLogger(AvailabilityClient.class);
 
     private RestTemplate        restTemplate;
-    private boolean             enabled;
     private String              baseUrl;
+
+    @Value("${service.availabilityService.enabled:true}")
+    private boolean             enabled = true;
+
+    @Value("${service.availabilityService.version:0.1}")
+    private String              version;
 
     public AvailabilityClient(
             @Autowired RestTemplate restTemplate,
-            @Value("${service.availabilityService.baseUrl}") String baseUrl,
-            @Value("${service.availabilityService.enabled:false}") boolean enabled) {
+            @Value("${service.availabilityService.baseUrl}") String baseUrl) {
 
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
-        this.enabled = enabled;
+    }
 
-        if (!isEnabled()) {
-            LOGGER.warn("the availability service is NOT enabled");
-        }
+    @PostConstruct
+    private void logIdentification() {
+        LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 
     /**
      * A list of documents for the provided productIds, respectively.
      */
-    public List<DetailsDocument> findDetails(
-            List<String> productIds,
+    public Map<String, Document> findDetails(
+            Set<String> productIds,
             String startDate,
             String endDate,
             String zipCode) {
-        List<DetailsDocument> results = new ArrayList<>(productIds.size());
+        Map<String, Document> results = new HashMap<>(productIds.size());
 
         if (isEnabled()) {
             try {
@@ -73,7 +83,7 @@ public class AvailabilityClient {
      * @param zipCode
      * @return
      */
-    String buildFullUrl(List<String> productIds, String startDate, String endDate, String zipCode) {
+    String buildFullUrl(Set<String> productIds, String startDate, String endDate, String zipCode) {
 
         AvailabilityParms ap = new AvailabilityParms();
 
@@ -94,6 +104,12 @@ public class AvailabilityClient {
         return url.toString();
     }
 
+    private HttpHeaders createHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("version", version);
+        return headers;
+    }
+
     String contactServiceForDetails(String url) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
@@ -101,8 +117,9 @@ public class AvailabilityClient {
         if (url != null && url.trim().length() > 0) {
             fullUrl.append(url);
         }
-        ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
-        // LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new Gson().toJson(response));
+        HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
+        ResponseEntity<String> response = restTemplate.exchange(
+                fullUrl.toString(), HttpMethod.GET, entity, String.class);
         return response.getBody();
     }
 

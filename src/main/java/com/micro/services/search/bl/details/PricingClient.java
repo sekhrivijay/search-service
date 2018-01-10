@@ -1,17 +1,24 @@
 package com.micro.services.search.bl.details;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import com.micro.services.search.api.response.Document;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+Pricing+Service
@@ -21,34 +28,38 @@ import org.springframework.web.client.RestTemplate;
  */
 @Named("pricingClient")
 public class PricingClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PricingClient.class);
+    private static final Logger LOGGER  = LoggerFactory.getLogger(PricingClient.class);
 
     private RestTemplate        restTemplate;
-    private boolean             enabled;
     private String              baseUrl;
+
+    @Value("${service.pricingService.enabled:true}")
+    private boolean             enabled = true;
+
+    @Value("${service.pricingService.version:0.1}")
+    private String              version;
 
     public PricingClient(
             @Autowired RestTemplate restTemplate,
-            @Value("${service.pricingService.baseUrl}") String baseUrl,
-            @Value("${service.pricingService.enabled:false}") boolean enabled) {
+            @Value("${service.pricingService.baseUrl}") String baseUrl) {
 
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
-        this.enabled = enabled;
-
-        if (!isEnabled()) {
-            LOGGER.warn("the pricing service is NOT enabled");
-        }
     }
 
-    public List<DetailsDocument> findDetails(
-            List<String> productIds,
+    @PostConstruct
+    private void logIdentification() {
+        LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
+    }
+
+    public Map<String, Document> findDetails(
+            Set<String> productIds,
             String siteId,
             String memberType) {
         /*
          * A list of documents for the provided productIds, respectively.
          */
-        List<DetailsDocument> results = new ArrayList<>(productIds.size());
+        Map<String, Document> results = new HashMap<>(productIds.size());
         if (isEnabled()) {
             try {
                 contactServiceForDetails(buildFullUrl(productIds, siteId, memberType));
@@ -67,7 +78,7 @@ public class PricingClient {
      * @param memberType
      * @return
      */
-    String buildFullUrl(List<String> productIds, String siteId, String memberType) {
+    String buildFullUrl(Set<String> productIds, String siteId, String memberType) {
         /*
          * Create the url with a comma separated list, removing the last unneeded comma.
          */
@@ -86,6 +97,12 @@ public class PricingClient {
         return url.toString();
     }
 
+    private HttpHeaders createHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("version", version);
+        return headers;
+    }
+
     String contactServiceForDetails(String url) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
@@ -93,9 +110,9 @@ public class PricingClient {
         if (url != null && url.trim().length() > 0) {
             fullUrl.append(url);
         }
-        ResponseEntity<String> response = restTemplate.getForEntity(fullUrl.toString(), String.class);
-        // LOGGER.debug("Calling {} results: {}", fullUrl.toString(), new
-        // Gson().toJson(response));
+        HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
+        ResponseEntity<String> response = restTemplate.exchange(
+                fullUrl.toString(), HttpMethod.GET, entity, String.class);
         return response.getBody();
     }
 
