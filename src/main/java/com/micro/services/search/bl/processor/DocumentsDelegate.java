@@ -1,12 +1,14 @@
 package com.micro.services.search.bl.processor;
 
 
-import com.micro.services.search.api.request.RequestType;
-import com.micro.services.search.api.request.SearchServiceRequest;
-import com.micro.services.search.api.response.Document;
-import com.micro.services.search.api.response.SearchServiceResponse;
-import com.micro.services.search.config.GlobalConstants;
-import com.micro.services.search.util.SolrDocumentUtil;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Named;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -15,12 +17,12 @@ import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.micro.services.search.api.request.RequestType;
+import com.micro.services.search.api.request.SearchServiceRequest;
+import com.micro.services.search.api.response.Document;
+import com.micro.services.search.api.response.SearchServiceResponse;
+import com.micro.services.search.config.GlobalConstants;
+import com.micro.services.search.util.SolrDocumentUtil;
 
 @Named("documentsDelegate")
 public class DocumentsDelegate extends BaseDelegate {
@@ -66,7 +68,7 @@ public class DocumentsDelegate extends BaseDelegate {
         List<Document> documentList = new ArrayList<>();
         for (SolrDocument solrDocument : solrDocuments) {
             Collection<String> fieldNames = solrDocument.getFieldNames();
-            Map<String, String> record = new HashMap<>();
+            Map<String, Object> record = new HashMap<>();
             for (String key : fieldNames) {
                 record.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
             }

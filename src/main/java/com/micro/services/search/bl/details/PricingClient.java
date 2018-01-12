@@ -18,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.micro.services.search.api.response.Document;
-
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+Pricing+Service
  *
@@ -52,17 +50,28 @@ public class PricingClient {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 
-    public Map<String, Document> findDetails(
+    public Map<String, Object> findDetails(
             Set<String> productIds,
             String siteId,
             String memberType) {
         /*
          * A list of documents for the provided productIds, respectively.
          */
-        Map<String, Document> results = new HashMap<>(productIds.size());
+        Map<String, Object> results = new HashMap<>(productIds.size());
         if (isEnabled()) {
+
             try {
-                contactServiceForDetails(buildFullUrl(productIds, siteId, memberType));
+                /*
+                 * The JSON string is an array of "product" instances. We want to figure out the
+                 * id for each of them and put the id as the key with the product object being
+                 * the value.
+                 */
+                String json = contactServiceForDetails(buildUniquePartOfUrl(productIds, siteId, memberType));
+                // TODO
+                //  PricingServiceResponse products = new Gson().fromJson(json, PricingServiceResponse.class);
+                //  for (Product product : products.getProducts()) {
+                //      results.put(product.getId(), product);
+                //  }
             } catch (HttpClientErrorException e) {
                 LOGGER.warn("{}", e.getMessage());
             }
@@ -78,7 +87,7 @@ public class PricingClient {
      * @param memberType
      * @return
      */
-    String buildFullUrl(Set<String> productIds, String siteId, String memberType) {
+    String buildUniquePartOfUrl(Set<String> productIds, String siteId, String memberType) {
         /*
          * Create the url with a comma separated list, removing the last unneeded comma.
          */
@@ -103,12 +112,12 @@ public class PricingClient {
         return headers;
     }
 
-    String contactServiceForDetails(String url) throws HttpClientErrorException {
+    String contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
         fullUrl.append('/');
-        if (url != null && url.trim().length() > 0) {
-            fullUrl.append(url);
+        if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
+            fullUrl.append(uniquePartOfUrl);
         }
         HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
         ResponseEntity<String> response = restTemplate.exchange(

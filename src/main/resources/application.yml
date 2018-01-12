@@ -92,6 +92,7 @@ service:
   autofillEndpoint: /autofill
   spellEndpoint: /spell
   productEndpoint: /product
+  detailsTimeout: 1000
   document:
     autofill:
       desktop:
@@ -131,19 +132,16 @@ service:
   availabilityService:
     enabled: true
     baseUrl: http://35.227.193.133/api/productAvailability
-    timeout: 1000
     version: 0
 
   productService:
     enabled: true
     baseUrl: http://35.227.193.133/api/products
-    timeout: 1000
     version: 0
 
   pricingService:
     enabled: true
     baseUrl: http://35.227.193.133/api/pricing
-    timeout: 1000
     version: 0
 
   sitesBfMap:

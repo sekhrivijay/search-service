@@ -1,16 +1,18 @@
 service:
+
+  detailsTimeout: 1000000
+
   memcache:
     enabled: false
 
   availabilityService:
-    enabled: false
+    enabled: true
 
   productService:
     enabled: true
-    timeout: 100000
 
   pricingService:
-    enabled: false
+    enabled: true
  
 logging:
   level:

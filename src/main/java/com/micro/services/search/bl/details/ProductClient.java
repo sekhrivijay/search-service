@@ -18,8 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.ftd.services.product.api.domain.response.Product;
+import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.google.gson.Gson;
-import com.micro.services.search.api.response.Document;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+ProductIdGroup+Service
@@ -29,6 +30,7 @@ import com.micro.services.search.api.response.Document;
  */
 @Named("productClient")
 public class ProductClient {
+
     private static final Logger LOGGER  = LoggerFactory.getLogger(ProductClient.class);
 
     private RestTemplate        restTemplate;
@@ -53,19 +55,25 @@ public class ProductClient {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 
-    public Map<String, Document> findDetails(Set<String> productIds) {
+    public Map<String, Object> findDetails(Set<String> productIds) {
         /*
          * A list of documents for the provided productIds, respectively.
          */
-        Map<String, Document> results = new HashMap<>(productIds.size());
+        Map<String, Object> results = new HashMap<>(productIds.size());
         if (isEnabled()) {
 
             try {
-                String json = contactServiceForDetails(buildFullUrl(productIds));
-                @SuppressWarnings("unchecked")
-                Map<String, Object> documentRecord = new Gson().fromJson(json, Map.class);
-                // TODO what to do?
-                System.out.println(documentRecord);
+                /*
+                 * The JSON string is an array of "product" instances. We want to figure out the
+                 * id for each of them and put the id as the key with the product object being
+                 * the value.
+                 */
+                String json = contactServiceForDetails(buildUniquePartOfUrl(productIds));
+                ProductServiceResponse products = new Gson().fromJson(json, ProductServiceResponse.class);
+                for (Product product : products.getProducts()) {
+                    results.put(product.getId(), product);
+                }
+
             } catch (HttpClientErrorException e) {
                 LOGGER.warn("{}", e.getMessage());
             }
@@ -79,7 +87,7 @@ public class ProductClient {
      * @param productIds
      * @return
      */
-    String buildFullUrl(Set<String> productIds) {
+    String buildUniquePartOfUrl(Set<String> productIds) {
         /*
          * Create the url with a comma separated list, removing the last unneeded comma.
          */
@@ -98,12 +106,12 @@ public class ProductClient {
         return headers;
     }
 
-    String contactServiceForDetails(String url) throws HttpClientErrorException {
+    String contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
         fullUrl.append('/');
-        if (url != null && url.trim().length() > 0) {
-            fullUrl.append(url);
+        if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
+            fullUrl.append(uniquePartOfUrl);
         }
         HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
         ResponseEntity<String> response = restTemplate.exchange(

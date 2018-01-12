@@ -5,14 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Document implements Serializable {
-    private Map<String, String> record = new HashMap<>();
+    private static final long serialVersionUID = 7441169816499491466L;
+
+    private Map<String, Object> record = new HashMap<>();
     private String url;
 
-    public Map<String, String> getRecord() {
+    public Map<String, Object> getRecord() {
         return record;
     }
 
-    public void setRecord(Map<String, String> record) {
+    public void setRecord(Map<String, Object> record) {
         this.record = record;
     }
 

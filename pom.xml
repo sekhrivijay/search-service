@@ -20,12 +20,16 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <repositories>
-        <repository>
-            <id>myMavenRepo</id>
-            <url>${myMavenRepoReadUrl}</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>myMavenRepo</id>
+			<url>${myMavenRepoReadUrl}</url>
+		</repository>
+		<repository>
+            <id>dintuMavenRepo</id>
+            <url>https://rkande.jfrog.io/rkande/libs-snapshot-local/</url>
+        </repository>        
+     </repositories>
     <distributionManagement>
         <repository>
             <id>myMavenRepo</id>
@@ -167,6 +171,19 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>com.ftd.services</groupId>
+            <artifactId>product-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>client</classifier>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

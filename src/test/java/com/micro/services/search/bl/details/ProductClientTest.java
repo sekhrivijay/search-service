@@ -12,7 +12,7 @@ public class ProductClientTest {
     public void noProducts() {
         ProductClient pc = new ProductClient(null, "junit");
         Set<String> pIds = new HashSet<>();
-        String result = pc.buildFullUrl(pIds);
+        String result = pc.buildUniquePartOfUrl(pIds);
         Assert.assertEquals("", result);
     }
 
@@ -21,7 +21,7 @@ public class ProductClientTest {
         ProductClient pc = new ProductClient(null, "junit");
         Set<String> pIds = new HashSet<>();
         pIds.add("960");
-        String result = pc.buildFullUrl(pIds);
+        String result = pc.buildUniquePartOfUrl(pIds);
         Assert.assertEquals("960", result);
     }
 
@@ -31,7 +31,7 @@ public class ProductClientTest {
         Set<String> pIds = new HashSet<>();
         pIds.add("960");
         pIds.add("961");
-        String result = pc.buildFullUrl(pIds);
+        String result = pc.buildUniquePartOfUrl(pIds);
         Assert.assertEquals("960,961", result);
     }
 

@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.micro.services.search.api.response.Document;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/ProductAvailability
@@ -57,18 +56,31 @@ public class AvailabilityClient {
     /**
      * A list of documents for the provided productIds, respectively.
      */
-    public Map<String, Document> findDetails(
+    public Map<String, Object> findDetails(
             Set<String> productIds,
             String startDate,
             String endDate,
             String zipCode) {
-        Map<String, Document> results = new HashMap<>(productIds.size());
-
+        /*
+         * A list of documents for the provided productIds, respectively.
+         */
+        Map<String, Object> results = new HashMap<>(productIds.size());
         if (isEnabled()) {
+
             try {
-                contactServiceForDetails(buildFullUrl(productIds, startDate, endDate, zipCode));
+                /*
+                 * The JSON string is an array of "product" instances. We want to figure out the
+                 * id for each of them and put the id as the key with the product object being
+                 * the value.
+                 */
+                String json = contactServiceForDetails(buildUniquePartOfUrl(productIds, startDate, endDate, zipCode));
+                // TODO
+                //  AvailabilityServiceResponse products = new Gson().fromJson(json, AvailabilityServiceResponse.class);
+                //  for (Product product : products.getProducts()) {
+                //      results.put(product.getId(), product);
+                //  }
             } catch (HttpClientErrorException e) {
-                LOGGER.warn("{} returned {}", baseUrl, e.getMessage());
+                LOGGER.warn("{}", e.getMessage());
             }
         }
         return results;
@@ -83,7 +95,7 @@ public class AvailabilityClient {
      * @param zipCode
      * @return
      */
-    String buildFullUrl(Set<String> productIds, String startDate, String endDate, String zipCode) {
+    String buildUniquePartOfUrl(Set<String> productIds, String startDate, String endDate, String zipCode) {
 
         AvailabilityParms ap = new AvailabilityParms();
 
@@ -110,12 +122,12 @@ public class AvailabilityClient {
         return headers;
     }
 
-    String contactServiceForDetails(String url) throws HttpClientErrorException {
+    String contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
         fullUrl.append('?');
-        if (url != null && url.trim().length() > 0) {
-            fullUrl.append(url);
+        if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
+            fullUrl.append(uniquePartOfUrl);
         }
         HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
         ResponseEntity<String> response = restTemplate.exchange(
