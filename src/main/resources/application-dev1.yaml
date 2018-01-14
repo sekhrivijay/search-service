@@ -19,3 +19,5 @@ logging:
     ROOT: WARN
     com: INFO
     com.micro.services.search: DEBUG
+#    org.apache.http: DEBUG
+    org.springframework.web.client: DEBUG

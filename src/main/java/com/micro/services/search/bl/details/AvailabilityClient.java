@@ -1,6 +1,9 @@
 package com.micro.services.search.bl.details;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,9 +18,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.ftd.services.product.api.domain.response.Product;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -39,6 +42,13 @@ public class AvailabilityClient {
 
     @Value("${service.availabilityService.version:0.1}")
     private String              version;
+
+    // TODO remove this when the service provides the domain objects
+    class AvailabilityServiceResponse {
+        public List<Product> getProducts() {
+            return new ArrayList<Product>();
+        }
+    }
 
     public AvailabilityClient(
             @Autowired RestTemplate restTemplate,
@@ -73,13 +83,12 @@ public class AvailabilityClient {
                  * id for each of them and put the id as the key with the product object being
                  * the value.
                  */
-                String json = contactServiceForDetails(buildUniquePartOfUrl(productIds, startDate, endDate, zipCode));
-                // TODO
-                //  AvailabilityServiceResponse products = new Gson().fromJson(json, AvailabilityServiceResponse.class);
-                //  for (Product product : products.getProducts()) {
-                //      results.put(product.getId(), product);
-                //  }
-            } catch (HttpClientErrorException e) {
+                AvailabilityServiceResponse products = contactServiceForDetails(
+                        buildUniquePartOfUrl(productIds, startDate, endDate, zipCode));
+                for (Product product : products.getProducts()) {
+                    results.put(product.getId(), product);
+                }
+            } catch (Exception e) {
                 LOGGER.warn("{}", e.getMessage());
             }
         }
@@ -95,7 +104,12 @@ public class AvailabilityClient {
      * @param zipCode
      * @return
      */
-    String buildUniquePartOfUrl(Set<String> productIds, String startDate, String endDate, String zipCode) {
+    String buildUniquePartOfUrl(
+            Set<String> productIds,
+            String startDate,
+            String endDate,
+            String zipCode)
+            throws Exception {
 
         AvailabilityParms ap = new AvailabilityParms();
 
@@ -107,10 +121,9 @@ public class AvailabilityClient {
         }
         ap.setZipCode(zipCode);
 
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         StringBuilder url = new StringBuilder();
         url.append("params=");
-
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         url.append(gson.toJson(ap));
 
         return url.toString();
@@ -122,16 +135,17 @@ public class AvailabilityClient {
         return headers;
     }
 
-    String contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
+    AvailabilityServiceResponse contactServiceForDetails(String uniquePartOfUrl) throws Exception {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
-        fullUrl.append('?');
         if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
-            fullUrl.append(uniquePartOfUrl);
+            fullUrl.append("?");
+            fullUrl.append(URLEncoder.encode(uniquePartOfUrl, "UTF-8"));
         }
-        HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
-        ResponseEntity<String> response = restTemplate.exchange(
-                fullUrl.toString(), HttpMethod.GET, entity, String.class);
+
+        HttpEntity<AvailabilityServiceResponse> entity = new HttpEntity<>(createHttpHeaders());
+        ResponseEntity<AvailabilityServiceResponse> response = restTemplate.exchange(
+                fullUrl.toString(), HttpMethod.GET, entity, AvailabilityServiceResponse.class);
         return response.getBody();
     }
 

@@ -41,7 +41,7 @@ public class DetailsServiceImpl implements DetailsService {
     /*
      * This should always be > 0.
      */
-    @Value("${service.detailsTimeout:1000}")
+    @Value("${service.detailsTimeout:10000}")
     private long                serviceTimeout                 = DEFAULT_SERVICE_TIMEOUT_MILLIS;
 
     public DetailsServiceImpl(
@@ -77,10 +77,10 @@ public class DetailsServiceImpl implements DetailsService {
         /*
          * Create a list of product ids that will be used in the detail services.
          */
-        // Set<String> productIds = productMap.keySet();
+//        Set<String> productIds = productMap.keySet();
         // TODO remove this test code
-        final Set<String> productIds = new HashSet<String>();
-        productIds.add("960");
+         final Set<String> productIds = new HashSet<String>();
+         productIds.add("960");
         /*
          * Get orchestration parameters from the request URL
          */
@@ -158,7 +158,6 @@ public class DetailsServiceImpl implements DetailsService {
                             searchServiceProductDocuments.get(productId)));
 
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.error("applying {} detected an error: {}", prefix, e.getMessage());
         }
     }

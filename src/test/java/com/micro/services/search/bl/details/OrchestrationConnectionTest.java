@@ -32,7 +32,7 @@ public class OrchestrationConnectionTest {
     }
 
     @Test
-    public void availabilityService() {
+    public void availabilityService() throws Exception {
         availabilityClient.contactServiceForDetails("notaproduct");
     }
 

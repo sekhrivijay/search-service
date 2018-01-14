@@ -1,5 +1,6 @@
 package com.micro.services.search.bl.details;
 
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ftd.services.product.api.domain.response.Product;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
-import com.google.gson.Gson;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+ProductIdGroup+Service
@@ -55,6 +55,16 @@ public class ProductClient {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 
+    /**
+     * Find details returns a map of the products with the product id being the key.
+     * This is done because the service can return the products in any order rather
+     * than the specific order that we need for the search response. The map will
+     * make it easier to process the results.
+     *
+     * @param productIds
+     *            to be looked up
+     * @return a map of productId/product pairs
+     */
     public Map<String, Object> findDetails(Set<String> productIds) {
         /*
          * A list of documents for the provided productIds, respectively.
@@ -64,17 +74,27 @@ public class ProductClient {
 
             try {
                 /*
-                 * The JSON string is an array of "product" instances. We want to figure out the
-                 * id for each of them and put the id as the key with the product object being
-                 * the value.
+                 * Ask the service in one request for all of the products that are needed.
                  */
-                String json = contactServiceForDetails(buildUniquePartOfUrl(productIds));
-                ProductServiceResponse products = new Gson().fromJson(json, ProductServiceResponse.class);
-                for (Product product : products.getProducts()) {
-                    results.put(product.getId(), product);
+                ProductServiceResponse response = contactServiceForDetails(buildUniquePartOfUrl(productIds));
+                /*
+                 * The service may return a null body if none of the product ids were found.
+                 */
+                if (response != null) {
+                    for (Product product : response.getProducts()) {
+                        /*
+                         * Add each product to the map.
+                         */
+                        results.put(product.getId(), product);
+                    }
                 }
 
             } catch (HttpClientErrorException e) {
+                /*
+                 * It is likely that the service may set an return code other than 200 if there
+                 * were no products found. When we find out what this error is we may want to
+                 * handle it special rather than produce a warning.
+                 */
                 LOGGER.warn("{}", e.getMessage());
             }
         }
@@ -106,16 +126,20 @@ public class ProductClient {
         return headers;
     }
 
-    String contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
+    ProductServiceResponse contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
         fullUrl.append('/');
         if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
             fullUrl.append(uniquePartOfUrl);
         }
-        HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
-        ResponseEntity<String> response = restTemplate.exchange(
-                fullUrl.toString(), HttpMethod.GET, entity, String.class);
+        fullUrl.append("&dim={1}");
+
+        Dimension dm = new Dimension(1, 2);
+
+        HttpEntity<ProductServiceResponse> entity = new HttpEntity<>(createHttpHeaders());
+        ResponseEntity<ProductServiceResponse> response = restTemplate.exchange(
+                fullUrl.toString(), HttpMethod.GET, entity, ProductServiceResponse.class, dm);
         return response.getBody();
     }
 

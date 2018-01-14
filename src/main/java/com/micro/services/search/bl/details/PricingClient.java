@@ -1,6 +1,8 @@
 package com.micro.services.search.bl.details;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +19,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import com.ftd.services.product.api.domain.response.Product;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+Pricing+Service
@@ -36,6 +40,13 @@ public class PricingClient {
 
     @Value("${service.pricingService.version:0.1}")
     private String              version;
+
+    // TODO remove this when the service provides the domain objects
+    class PricingServiceResponse {
+        public List<Product> getProducts() {
+            return new ArrayList<Product>();
+        }
+    }
 
     public PricingClient(
             @Autowired RestTemplate restTemplate,
@@ -66,12 +77,11 @@ public class PricingClient {
                  * id for each of them and put the id as the key with the product object being
                  * the value.
                  */
-                String json = contactServiceForDetails(buildUniquePartOfUrl(productIds, siteId, memberType));
-                // TODO
-                //  PricingServiceResponse products = new Gson().fromJson(json, PricingServiceResponse.class);
-                //  for (Product product : products.getProducts()) {
-                //      results.put(product.getId(), product);
-                //  }
+                  PricingServiceResponse products
+                      = contactServiceForDetails(buildUniquePartOfUrl(productIds, siteId, memberType));
+                  for (Product product : products.getProducts()) {
+                      results.put(product.getId(), product);
+                  }
             } catch (HttpClientErrorException e) {
                 LOGGER.warn("{}", e.getMessage());
             }
@@ -112,16 +122,16 @@ public class PricingClient {
         return headers;
     }
 
-    String contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
+    PricingServiceResponse contactServiceForDetails(String uniquePartOfUrl) throws HttpClientErrorException {
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);
         fullUrl.append('/');
         if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
             fullUrl.append(uniquePartOfUrl);
         }
-        HttpEntity<String> entity = new HttpEntity<>(createHttpHeaders());
-        ResponseEntity<String> response = restTemplate.exchange(
-                fullUrl.toString(), HttpMethod.GET, entity, String.class);
+        HttpEntity<PricingServiceResponse> entity = new HttpEntity<>(createHttpHeaders());
+        ResponseEntity<PricingServiceResponse> response = restTemplate.exchange(
+                fullUrl.toString(), HttpMethod.GET, entity, PricingServiceResponse.class);
         return response.getBody();
     }
 
