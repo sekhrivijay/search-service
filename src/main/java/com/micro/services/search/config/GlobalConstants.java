@@ -56,6 +56,7 @@ public class GlobalConstants {
     public static final String FROM = "from";
     public static final String COMMA = ",";
     public static final String COLON = ":";
+    public static final String KEYWORD = "keyword";
     public static final String PERCENT = "%";
     public static final String MM = "mm";
     public static final String QUESTION_MARK = "?";
