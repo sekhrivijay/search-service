@@ -52,7 +52,7 @@ service:
     enabled: false
   swagger:
     enabled: true
-#    base-package: com.micro.services.search.resource
+#    base-package: com.ftd.service.search.resource
   logging:
     enabled: true
   jsonp:

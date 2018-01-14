@@ -18,6 +18,6 @@ logging:
   level:
     ROOT: WARN
     com: INFO
-    com.micro.services.search: DEBUG
+    com.ftd.service.search: DEBUG
 #    org.apache.http: DEBUG
     org.springframework.web.client: DEBUG
