@@ -50,7 +50,7 @@ public class ProductClient {
     }
 
     @PostConstruct
-    private void logIdentification() {
+    public void logIdentification() {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 

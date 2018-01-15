@@ -46,7 +46,7 @@ public class AvailabilityClient {
     // TODO remove this when the service provides the domain objects
     class AvailabilityServiceResponse {
         public List<Product> getProducts() {
-            return new ArrayList<Product>();
+            return new ArrayList<>();
         }
     }
 
@@ -59,7 +59,7 @@ public class AvailabilityClient {
     }
 
     @PostConstruct
-    private void logIdentification() {
+    public void logIdentification() {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 

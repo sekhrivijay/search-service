@@ -1,10 +1,10 @@
 package com.ftd.services.search.bl.details;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is used to format the parameters to the Availability service. It
@@ -106,5 +106,9 @@ public class AvailabilityParms {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getZipCode() {
+        return zipCode;
     }
 }
