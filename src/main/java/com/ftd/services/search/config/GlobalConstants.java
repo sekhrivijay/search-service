@@ -18,10 +18,10 @@ public class GlobalConstants {
     public static final String SUGGEST_HANDLER = "suggest";
     public static final String DOLLAR = "$";
     public static final String FTD = "ftd";
+    public static final String PROFLOWERS = "proflowers";
     public static final String QT = "qt";
     public static final String BF = "bf";
     public static final String ASC = "asc";
-    public static final List<String> KNOWN_PARAMETERS;
     public static final String INDEX = "index";
     public static final String DESKTOP = "desktop";
     public static final String MOBILE = "mobile";
@@ -34,6 +34,7 @@ public class GlobalConstants {
     public static final String AMPERSAND = "&";
     public static final String Q = "q";
     public static final String EQUAL = "=";
+    public static final String UNDERSCORE = "_";
     public static final String TILDE = "~";
     public static final String SPACE = " ";
     public static final String STAR = "*";
@@ -56,19 +57,26 @@ public class GlobalConstants {
     public static final String FROM = "from";
     public static final String COMMA = ",";
     public static final String COLON = ":";
-    public static final String KEYWORD = "keyword";
     public static final String PERCENT = "%";
     public static final String MM = "mm";
     public static final String QUESTION_MARK = "?";
     public static final String DISTRIB = "distrib";
+    public static final String KEYWORD = "keyword";
+    public static final String SEARCH_KEYWORDS = "searchKeywords";
+    public static final String AUTOFILL_KEYWORDS = "autofillKeywords";
     public static final String AUTOFILL = "autofill";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
     public static final String TITLE = "title";
     public static final String KEYWORDS = "keywords";
     public static final String CATEGORIES = "categories";
-    public static final String IS_ACTIVE = "is_active";
+    public static final String IS_ACTIVE = "isActive";
     public static final String IMAGE = "image";
+    public static final String SKU_ID = "skuId";
+    public static final String SMALL = "small";
+    public static final String SMALL_IMAGE = "smallImage";
+    public static final String PRIMARY_IMAGE = "primaryImage";
+    public static final String PRIMARY = "primary";
 
     public static final String RELAXED_MUST_MATCH_FIFTY_PERCENT = "50" + PERCENT;
     public static final String RELAXED_MUST_MATCH_SEVENTY_FIVE_PERCENT = "75" + PERCENT;
@@ -90,6 +98,7 @@ public class GlobalConstants {
             ID +
             COLON;
     public static final String Q_STAR_FIELD = Q_PREFIX + STAR + COLON + STAR;
+    public static final List<String> KNOWN_PARAMETERS;
 
 
 
