@@ -61,6 +61,15 @@ public class GlobalConstants {
     public static final String MM = "mm";
     public static final String QUESTION_MARK = "?";
     public static final String DISTRIB = "distrib";
+    public static final String AUTOFILL = "autofill";
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String TITLE = "title";
+    public static final String KEYWORDS = "keywords";
+    public static final String CATEGORIES = "categories";
+    public static final String IS_ACTIVE = "is_active";
+    public static final String IMAGE = "image";
+
     public static final String RELAXED_MUST_MATCH_FIFTY_PERCENT = "50" + PERCENT;
     public static final String RELAXED_MUST_MATCH_SEVENTY_FIVE_PERCENT = "75" + PERCENT;
     public static final String MUST_MATCH_HUNDRED_PERCENT = "100" + PERCENT;

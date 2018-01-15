@@ -19,7 +19,7 @@
         <version>1.5.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    
+
 
 	<repositories>
 		<repository>
