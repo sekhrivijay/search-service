@@ -46,7 +46,7 @@ public class AvailabilityClient {
     // TODO remove this when the service provides the domain objects
     class AvailabilityServiceResponse {
         public List<Product> getProducts() {
-            return new ArrayList<Product>();
+            return new ArrayList<>();
         }
     }
 
