@@ -107,4 +107,8 @@ public class AvailabilityParms {
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
+
+    public String gettZipCode() {
+        return zipCode;
+    }
 }

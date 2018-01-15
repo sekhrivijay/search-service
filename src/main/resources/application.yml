@@ -130,17 +130,17 @@ service:
     baseUrl: http://localhost:8070/api/rules
 
   availabilityService:
-    enabled: true
+    enabled: false
     baseUrl: http://35.227.193.133/api/productAvailability
     version: 0
 
   productService:
-    enabled: true
+    enabled: false
     baseUrl: http://35.227.193.133/api/products
     version: 0
 
   pricingService:
-    enabled: true
+    enabled: false
     baseUrl: http://35.227.193.133/api/pricing
     version: 0
 

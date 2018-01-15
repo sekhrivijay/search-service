@@ -13,27 +13,33 @@ import com.ftd.services.search.ServiceApplication;
 public class OrchestrationConnectionTest {
 
     @Autowired
-    private ProductClient productClient;
+    private ProductClient      productClient;
 
     @Autowired
-    private PricingClient pricingClient;
+    private PricingClient      pricingClient;
 
     @Autowired
     private AvailabilityClient availabilityClient;
 
     @Test
     public void productService() {
-        productClient.contactServiceForDetails("notaproduct");
+        if (productClient.isEnabled()) {
+            productClient.contactServiceForDetails("notaproduct");
+        }
     }
 
     @Test
     public void pricingService() {
-        pricingClient.contactServiceForDetails("notaproduct");
+        if (pricingClient.isEnabled()) {
+            pricingClient.contactServiceForDetails("notaproduct");
+        }
     }
 
     @Test
     public void availabilityService() throws Exception {
-        availabilityClient.contactServiceForDetails("notaproduct");
+        if (availabilityClient.isEnabled()) {
+            availabilityClient.contactServiceForDetails("notaproduct");
+        }
     }
 
 }

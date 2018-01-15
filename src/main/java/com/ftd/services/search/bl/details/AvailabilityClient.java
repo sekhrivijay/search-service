@@ -38,7 +38,7 @@ public class AvailabilityClient {
     private String              baseUrl;
 
     @Value("${service.availabilityService.enabled:true}")
-    private boolean             enabled = true;
+    private boolean             enabled = false;
 
     @Value("${service.availabilityService.version:0.1}")
     private String              version;
@@ -59,7 +59,7 @@ public class AvailabilityClient {
     }
 
     @PostConstruct
-    private void logIdentification() {
+    void logIdentification() {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 
@@ -149,7 +149,7 @@ public class AvailabilityClient {
         return response.getBody();
     }
 
-    private boolean isEnabled() {
+    boolean isEnabled() {
         return enabled;
     }
 }

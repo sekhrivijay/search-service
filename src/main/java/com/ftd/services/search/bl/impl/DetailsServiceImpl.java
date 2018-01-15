@@ -54,7 +54,7 @@ public class DetailsServiceImpl implements DetailsService {
     }
 
     @PostConstruct
-    private void logIdentification() {
+    void logIdentification() {
         LOGGER.info("service call timeout: {}", serviceTimeout);
     }
 

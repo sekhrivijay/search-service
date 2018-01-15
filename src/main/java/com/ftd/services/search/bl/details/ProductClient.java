@@ -50,7 +50,7 @@ public class ProductClient {
     }
 
     @PostConstruct
-    private void logIdentification() {
+    void logIdentification() {
         LOGGER.info("url: {}, version: {}, enabled: {}", baseUrl, version, enabled);
     }
 
@@ -138,7 +138,7 @@ public class ProductClient {
         return response.getBody();
     }
 
-    private boolean isEnabled() {
+    boolean isEnabled() {
         return enabled;
     }
 }
