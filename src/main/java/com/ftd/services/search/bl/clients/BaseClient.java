@@ -1,8 +1,14 @@
 package com.ftd.services.search.bl.clients;
 
+import com.ftd.services.search.api.response.Document;
+import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.config.GlobalConstants;
 import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BaseClient {
 
@@ -27,4 +33,22 @@ public class BaseClient {
         headers.add(HttpHeaders.ACCEPT, GlobalConstants.APPLICATION_JSON);
         return headers;
     }
+
+    protected Set<String> getPids(SearchServiceResponse searchServiceResponse) {
+        if (searchServiceResponse != null
+                && searchServiceResponse.getDocumentList() != null) {
+
+            return
+                    searchServiceResponse
+                            .getDocumentList()
+                            .stream()
+                            .map(Document::getRecord)
+                            .map(e -> e.get(GlobalConstants.ID))
+                            .map(String::valueOf)
+                            .collect(Collectors.toSet());
+        }
+        return new HashSet<>();
+
+    }
+
 }

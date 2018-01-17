@@ -24,7 +24,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -131,8 +130,10 @@ public class AvailabilityClientImpl extends BaseClient implements AvailabilityCl
         String startDate = searchServiceRequest.getAvailFrom();
         String endDate = searchServiceRequest.getAvailTo();
         String zipCode = searchServiceRequest.getZipCode();
-        final Set<String> productIds = new HashSet<String>();
-        productIds.add("960");
+//        final Set<String> productIds = new HashSet<>();
+//        productIds.add("960");
+        Set<String> productIds = getPids(searchServiceResponse);
+
         String uniquePartOfUrl = buildUniquePartOfUrl(productIds, startDate, endDate, zipCode);
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);

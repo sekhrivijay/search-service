@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -123,8 +122,9 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
         }
         String siteId = searchServiceRequest.getSiteId();
         String memberId = searchServiceRequest.getMemberType();
-        final Set<String> productIds = new HashSet<String>();
-        productIds.add("960");
+//        final Set<String> productIds = new HashSet<String>();
+//        productIds.add("960");
+        Set<String> productIds = getPids(searchServiceResponse);
         String uniquePartOfUrl = buildUniquePartOfUrl(productIds, siteId, memberId);
         StringBuilder fullUrl = new StringBuilder();
         fullUrl.append(baseUrl);

@@ -25,7 +25,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -140,8 +139,10 @@ public class ProductClientImpl extends BaseClient implements ProductClient {
             return DUMMY_PRODUCT_RESPONSE;
         }
         String siteId = searchServiceRequest.getSiteId();
-        final Set<String> productIds = new HashSet<>();
-        productIds.add("960");
+//        final Set<String> productIds = new HashSet<>();
+//        productIds.add("960");
+
+        Set<String> productIds = getPids(searchServiceResponse);
         String uniquePartOfUrl = buildUniquePartOfUrl(productIds);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl + GlobalConstants.FORWARD_SLASH)
                 .queryParam(GlobalConstants.SITE_ID, siteId)

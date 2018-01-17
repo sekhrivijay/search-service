@@ -343,16 +343,16 @@ public class SearchServiceRequest implements Serializable {
 
 
     public static final class SearchServiceRequestBuilder {
-        private String q = "*";
         private String bf;
         private String sort = GlobalConstants.ID;
         private String sortOrder = GlobalConstants.ASC;
         private int rows;
+        private SearchServiceRequest parent;
         private int start;
+        private String q = "*";
         private String[] fq;
         private boolean debug;
         private int round;
-        private SearchServiceRequest parent;
         private String qt;
         private String siteId = GlobalConstants.FTD;
         private String facetSort = COUNT;
