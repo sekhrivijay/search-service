@@ -74,10 +74,10 @@ service:
         name: product
 
 #  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
-  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
-  collectionDestination : products
-  zkTimeoutDestination : 20000
-  solrQueryTimeout : 10000
+#  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
+#  collectionDestination : products
+#  zkTimeoutDestination : 20000
+#  solrQueryTimeout : 10000
   queryTimeAllowed : 10000
   groupLimitValue : 5
   breadCrumbList: categories
@@ -126,6 +126,13 @@ service:
     next:
       size: 2
 
+  solrService:
+    enabled: true
+    zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
+    collectionDestination : products
+    zkTimeoutDestination : 20000
+    queryTimeout : 10000
+
   rulesService:
     enabled: true
     baseUrl: http://localhost:8070/api/rules
@@ -136,7 +143,7 @@ service:
     version: 0
 
   productService:
-    enabled: false
+    enabled: true
     baseUrl: http://35.227.193.133/api/products
     version: 0
 

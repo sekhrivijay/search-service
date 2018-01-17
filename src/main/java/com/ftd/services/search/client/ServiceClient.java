@@ -15,7 +15,7 @@ public class ServiceClient {
 //        return new RestTemplate();
 //    }
 //    public static void mainTest(String[] args) {
-//        SpringApplication.run(ServiceClient.class, args);
+//        SpringApplication.runInThread(ServiceClient.class, args);
 //    }
     public void run(String... string) throws Exception {
 //        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + response);

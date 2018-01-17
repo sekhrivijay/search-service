@@ -1,4 +1,4 @@
-package com.ftd.services.search.util;
+package com.ftd.services.search.bl.clients.solr.util;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
@@ -12,13 +12,13 @@ public class SolrServerInitializer {
     private SolrClient solrClient;
 
 
-    @Value("${service.zkEnsembleDestination}")
+    @Value("${service.solrService.zkEnsembleDestination}")
     private String zkEnsembleDestination;
 
-    @Value("${service.collectionDestination}")
+    @Value("${service.solrService.collectionDestination}")
     private String collectionDestination;
 
-    @Value("${service.zkTimeoutDestination}")
+    @Value("${service.solrService.zkTimeoutDestination}")
     private int zkTimeoutDestination;
 
     SolrServerInitializer() { }

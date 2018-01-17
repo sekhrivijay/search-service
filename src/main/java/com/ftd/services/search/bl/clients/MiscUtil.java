@@ -1,4 +1,4 @@
-package com.ftd.services.search.util;
+package com.ftd.services.search.bl.clients;
 
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.search.bl.clients.product.ProductClientImpl;

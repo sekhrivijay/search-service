@@ -22,7 +22,7 @@ import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.Document;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.config.GlobalConstants;
-import com.ftd.services.search.util.SolrDocumentUtil;
+import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
 
 @Named("documentsDelegate")
 public class DocumentsDelegate extends BaseDelegate {

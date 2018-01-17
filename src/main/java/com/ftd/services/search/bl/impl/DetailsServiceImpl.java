@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -77,8 +75,8 @@ public class DetailsServiceImpl implements DetailsService {
          */
 //        Set<String> productIds = productMap.keySet();
         // TODO remove this test code
-        final Set<String> productIds = new HashSet<String>();
-        productIds.add("960");
+//        final Set<String> productIds = new HashSet<String>();
+//        productIds.add("960");
         /*
          * Get orchestration parameters from the request URL
          */

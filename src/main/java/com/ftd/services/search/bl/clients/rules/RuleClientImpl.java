@@ -57,9 +57,9 @@ public class RuleClientImpl extends BaseClient implements RuleClient {
             threadPoolKey = "ruleThreadPoolKey",
             fallbackMethod = "callSearchRulesServiceFallback")
     @Cacheable(cacheNames = "rules",
-            key = "T(com.ftd.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
+            key = "T(com.ftd.services.search.bl.clients.MiscUtil).getCacheKey(#searchServiceRequest)",
             condition = "#searchServiceRequest.from != T(com.ftd.services.search.api.request.From).INDEX",
-            unless = "T(com.ftd.services.search.util.MiscUtil).isValidResponse(#result) == false")
+            unless = "T(com.ftd.services.search.bl.clients.MiscUtil).isValidResponse(#result) == false")
     public RuleServiceResponse callSearchRulesService(SearchServiceRequest searchServiceRequest,
                                                       SearchServiceResponse searchServiceResponse) {
         RuleServiceResponse ruleServiceResponse = new RuleServiceResponse(

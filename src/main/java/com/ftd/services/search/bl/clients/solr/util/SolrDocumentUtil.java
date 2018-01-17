@@ -1,4 +1,4 @@
-package com.ftd.services.search.util;
+package com.ftd.services.search.bl.clients.solr.util;
 
 
 import org.apache.solr.common.SolrDocument;

@@ -7,22 +7,22 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
-import com.ftd.services.search.bl.solr.SolrService;
+import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
 
 @Component
 public class SolrHealthCheck implements HealthIndicator  {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolrHealthCheck.class);
-    private SolrService solrService;
+    private EnhancedSolrClient enhancedSolrClient;
 
     @Autowired
-    public void setSolrService(SolrService solrService) {
-        this.solrService = solrService;
+    public void setEnhancedSolrClient(EnhancedSolrClient enhancedSolrClient) {
+        this.enhancedSolrClient = enhancedSolrClient;
     }
 
     @Override
     public Health health() {
         try {
-            int res = solrService.ping();
+            int res = enhancedSolrClient.ping();
             if (res != 0) {
                 return Health.down().build();
             }

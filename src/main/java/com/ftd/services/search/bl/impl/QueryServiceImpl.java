@@ -18,10 +18,10 @@ import com.ftd.services.search.bl.DelegateInitializer;
 import com.ftd.services.search.bl.QueryService;
 import com.ftd.services.search.bl.processor.Delegate;
 import com.ftd.services.search.bl.processor.RulesDelegate;
-import com.ftd.services.search.bl.solr.SolrService;
-import com.ftd.services.search.bl.solr.SolrServiceImpl;
+import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
+import com.ftd.services.search.bl.clients.solr.EnhancedSolrClientImpl;
 import com.ftd.services.search.config.GlobalConstants;
-import com.ftd.services.search.util.SolrUtil;
+import com.ftd.services.search.bl.clients.solr.util.SolrUtil;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class QueryServiceImpl implements QueryService {
         this.delegateInitializer = delegateInitializer;
     }
 
-    @Value("${service.solrQueryTimeout}")
+    @Value("${service.solrService.queryTimeout}")
     private long solrQueryTimeout;
 
     @Value("${service.maxQueryRounds:5}")
@@ -69,26 +69,26 @@ public class QueryServiceImpl implements QueryService {
         GlobalConstants.setEnvironment(environment);
     }
 
-    private SolrService solrService;
+    private EnhancedSolrClient enhancedSolrClient;
 
     @Inject
-    public void setSolrService(SolrService solrService) {
-        this.solrService = solrService;
+    public void setEnhancedSolrClient(EnhancedSolrClient enhancedSolrClient) {
+        this.enhancedSolrClient = enhancedSolrClient;
     }
 
 
     @Cacheable(cacheNames = "autofill",
-            key = "T(com.ftd.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
+            key = "T(com.ftd.services.search.bl.clients.MiscUtil).getCacheKey(#searchServiceRequest)",
             condition = "#searchServiceRequest.from != T(com.ftd.services.search.api.request.From).INDEX",
-            unless = "T(com.ftd.services.search.util.MiscUtil).isValidResponse(#result) == false")
+            unless = "T(com.ftd.services.search.bl.clients.MiscUtil).isValidResponse(#result) == false")
     public SearchServiceResponse queryAutofill(SearchServiceRequest searchServiceRequest) throws Exception {
         return query(searchServiceRequest);
     }
 
     @Cacheable(cacheNames = "search",
-            key = "T(com.ftd.services.search.util.MiscUtil).getCacheKey(#searchServiceRequest)",
+            key = "T(com.ftd.services.search.bl.clients.MiscUtil).getCacheKey(#searchServiceRequest)",
             condition = "#searchServiceRequest.from != T(com.ftd.services.search.api.request.From).INDEX",
-            unless = "T(com.ftd.services.search.util.MiscUtil).isValidResponse(#result) == false")
+            unless = "T(com.ftd.services.search.bl.clients.MiscUtil).isValidResponse(#result) == false")
     public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
         LOGGER.info(searchServiceRequest.toString());
 
@@ -116,7 +116,7 @@ public class QueryServiceImpl implements QueryService {
 
         for (String key : delegateMapList.keySet()) {
             QueryResponse queryResponse = solrUtil.getQueryResponse(futureMap, key, solrQueryTimeout);
-            if (queryResponse == null || queryResponse == SolrServiceImpl.FALLBACK_QUERY_RESPONSE) {
+            if (queryResponse == null || queryResponse == EnhancedSolrClientImpl.FALLBACK_QUERY_RESPONSE) {
                 searchServiceResponse.setCacheable(false);
                 continue;
             }
@@ -136,7 +136,7 @@ public class QueryServiceImpl implements QueryService {
     public Map<String, Future<QueryResponse>> submitQueries(Map<String, SolrQuery> solrQueryMap) throws Exception {
         Map<String, Future<QueryResponse>> toReturn = new HashMap<>();
         for (String key : solrQueryMap.keySet()) {
-            toReturn.put(key, solrService.run(solrQueryMap.get(key)));
+            toReturn.put(key, enhancedSolrClient.runInThread(solrQueryMap.get(key)));
         }
         return toReturn;
     }
