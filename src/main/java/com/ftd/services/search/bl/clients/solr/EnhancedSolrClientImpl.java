@@ -66,9 +66,6 @@ public class EnhancedSolrClientImpl extends BaseClient implements EnhancedSolrCl
             @Autowired SolrUtil solrUtil) {
         this.solrClient = solrClient;
         this.solrUtil = solrUtil;
-    }
-
-    public EnhancedSolrClientImpl() {
         ping.getParams().add(GlobalConstants.DISTRIB, GlobalConstants.TRUE);
         ping.getParams().add(GlobalConstants.QT, GlobalConstants.FORWARD_SLASH + RequestType.SEARCH.getName());
     }

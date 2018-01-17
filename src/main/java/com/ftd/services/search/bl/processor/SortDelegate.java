@@ -1,6 +1,7 @@
 package com.ftd.services.search.bl.processor;
 
 
+import com.ftd.services.search.config.AppConfigProperties;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.api.response.SortDetail;
 import com.ftd.services.search.api.response.SortOrder;
 import com.ftd.services.search.api.response.SortTerm;
-import com.ftd.services.search.config.AppConfig;
 import com.ftd.services.search.config.GlobalConstants;
 
 import javax.inject.Named;
@@ -26,7 +26,7 @@ public class SortDelegate extends BaseDelegate {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(SortDelegate.class);
 
 
-    private AppConfig appConfig;
+    private AppConfigProperties appConfigProperties;
 
 //
 //    @Value("${service.searchEndpoint}")
@@ -34,8 +34,8 @@ public class SortDelegate extends BaseDelegate {
 
 
     @Autowired
-    public void setAppConfig(AppConfig appConfig) {
-        this.appConfig = appConfig;
+    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+        this.appConfigProperties = appConfigProperties;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SortDelegate extends BaseDelegate {
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,
                                                    QueryResponse queryResponse,
                                                    SearchServiceResponse searchServiceResponse) {
-        List<String> sortList = appConfig.getSortList();
+        List<String> sortList = appConfigProperties.getSortList();
         if (sortList == null) {
             return searchServiceResponse;
         }

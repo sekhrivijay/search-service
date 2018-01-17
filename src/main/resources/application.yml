@@ -132,10 +132,12 @@ service:
     collectionDestination : products
     zkTimeoutDestination : 20000
     queryTimeout : 10000
+    version: 0
 
   rulesService:
-    enabled: true
+    enabled: false
     baseUrl: http://localhost:8070/api/rules
+    version: 0
 
   availabilityService:
     enabled: false

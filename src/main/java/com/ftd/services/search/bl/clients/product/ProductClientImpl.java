@@ -150,12 +150,15 @@ public class ProductClientImpl extends BaseClient implements ProductClient {
                 .queryParam(GlobalConstants.SITE_ID, siteId)
                 .path(uniquePartOfUrl);
 
+        LOGGER.info("calling product service " + builder.build().encode().toUri());
+        LOGGER.info("Headers " + createHttpHeaders(version));
         HttpEntity<ProductServiceResponse> entity = new HttpEntity<>(createHttpHeaders(version));
         ResponseEntity<ProductServiceResponse> response = restTemplate.exchange(
                 builder.build().encode().toUri(),
                 HttpMethod.GET,
                 entity,
                 ProductServiceResponse.class);
+        LOGGER.info("product response " + response.getBody());
         return response.getBody();
     }
 

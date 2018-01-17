@@ -7,6 +7,7 @@ import com.ftd.services.search.bl.DetailsService;
 import com.ftd.services.search.bl.clients.availibility.AvailabilityClient;
 import com.ftd.services.search.bl.clients.price.PriceClient;
 import com.ftd.services.search.bl.clients.product.ProductClientImpl;
+import com.ftd.services.search.config.GlobalConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +84,15 @@ public class DetailsServiceImpl implements DetailsService {
         /*
          * Gather all details in parallel
          */
-        Future<Map<String, Object>> availableDetails = executor.submit(
-                () -> availabilityClient.buildMap(
-                        availabilityClient.callAvailabilityService(
-                                searchServiceRequest, searchServiceResponse)));
-        Future<Map<String, Object>> pricingDetails = executor.submit(
-                () -> pricingClient.buildMap(pricingClient.callPriceService(
-                        searchServiceRequest, searchServiceResponse)));
+//        Future<Map<String, Object>> availableDetails = executor.submit(
+//                () -> availabilityClient.buildMap(
+//                        availabilityClient.callAvailabilityService(
+//                                searchServiceRequest, searchServiceResponse)));
+//        Future<Map<String, Object>> pricingDetails = executor.submit(
+//                () -> pricingClient.buildMap(pricingClient.callPriceService(
+//                        searchServiceRequest, searchServiceResponse)));
+        LOGGER.info("availabilityClient " + availabilityClient);
+        LOGGER.info("pricingClient " + pricingClient);
         Future<Map<String, Object>> productDetails = executor.submit(
                 () -> productClient.buildMap(productClient.callProductService(
                         searchServiceRequest, searchServiceResponse)));
@@ -99,9 +102,9 @@ public class DetailsServiceImpl implements DetailsService {
          * is applied to the search results in sequence so that there is no contention.
          * This is instead of letting each future update the map itself.
          */
-        applyDetailDocument("availability", availableDetails, productMap);
+//        applyDetailDocument("availability", availableDetails, productMap);
         applyDetailDocument("product", productDetails, productMap);
-        applyDetailDocument("pricing", pricingDetails, productMap);
+//        applyDetailDocument("pricing", pricingDetails, productMap);
     }
 
     /**
@@ -112,7 +115,9 @@ public class DetailsServiceImpl implements DetailsService {
      * @return
      */
     Map<String, Document> searchResultsAsProductIdMap(List<Document> documentList) {
-        return documentList.stream().collect(Collectors.toMap(doc -> (String) doc.getRecord().get("id"), doc -> doc));
+        return documentList.stream()
+                .collect(Collectors.toMap(
+                        doc -> (String) doc.getRecord().get(GlobalConstants.PID), doc -> doc));
     }
 
     /**

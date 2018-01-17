@@ -36,6 +36,7 @@ import java.util.Set;
 public class AvailabilityClientImpl extends BaseClient implements AvailabilityClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(AvailabilityClientImpl.class);
     public static final AvailabilityServiceResponse FALLBACK_AVAILABILITY_RESPONSE = new AvailabilityServiceResponse();
+    public static final AvailabilityServiceResponse DUMMY_AVAILABILITY_RESPONSE = new AvailabilityServiceResponse();
 
     private RestTemplate restTemplate;
     private String baseUrl;
@@ -62,20 +63,18 @@ public class AvailabilityClientImpl extends BaseClient implements AvailabilityCl
 
     public Map<String, Object> buildMap(AvailabilityServiceResponse products) {
         Map<String, Object> results = new HashMap<>();
-        if (isEnabled()) {
 
-            try {
-                /*
-                 * The JSON string is an array of "product" instances. We want to figure out the
-                 * id for each of them and put the id as the key with the product object being
-                 * the value.
-                 */
-                for (Product product : products.getProducts()) {
-                    results.put(product.getId(), product);
-                }
-            } catch (Exception e) {
-                LOGGER.warn("{}", e.getMessage());
+        try {
+            /*
+             * The JSON string is an array of "product" instances. We want to figure out the
+             * id for each of them and put the id as the key with the product object being
+             * the value.
+             */
+            for (Product product : products.getProducts()) {
+                results.put(product.getId(), product);
             }
+        } catch (Exception e) {
+            LOGGER.warn("{}", e.getMessage());
         }
         return results;
 
@@ -127,6 +126,11 @@ public class AvailabilityClientImpl extends BaseClient implements AvailabilityCl
     callAvailabilityService(
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) throws Exception {
+
+        if (!enabled) {
+            return DUMMY_AVAILABILITY_RESPONSE;
+        }
+
         String startDate = searchServiceRequest.getAvailFrom();
         String endDate = searchServiceRequest.getAvailTo();
         String zipCode = searchServiceRequest.getZipCode();

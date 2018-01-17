@@ -1,5 +1,6 @@
 package com.ftd.services.search.bl.processor;
 
+import com.ftd.services.search.config.AppConfigProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.config.AppConfig;
 import com.ftd.services.search.config.GlobalConstants;
 
 import javax.inject.Named;
@@ -19,11 +19,11 @@ import java.util.Map;
 public class BoostDelegate extends BaseDelegate {
 //    private static final Logger LOGGER = LoggerFactory.getLogger(BoostDelegate.class);
 
-    private AppConfig appConfig;
+    private AppConfigProperties appConfigProperties;
 
     @Autowired
-    public void setAppConfig(AppConfig appConfig) {
-        this.appConfig = appConfig;
+    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+        this.appConfigProperties = appConfigProperties;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class BoostDelegate extends BaseDelegate {
         if (StringUtils.isNotEmpty(searchServiceRequest.getBf())) {
             bf = searchServiceRequest.getBf();
         } else {
-            Map<String, String> bfSiteMap =  appConfig.getSitesBfMap();
+            Map<String, String> bfSiteMap =  appConfigProperties.getSitesBfMap();
             String siteId = StringUtils.defaultString(searchServiceRequest.getSiteId(), GlobalConstants.DEFAULT);
             if (bfSiteMap != null && bfSiteMap.get(siteId) != null) {
                 bf = bfSiteMap.get(siteId);

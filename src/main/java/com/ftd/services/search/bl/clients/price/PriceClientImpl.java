@@ -133,6 +133,7 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
             fullUrl.append(uniquePartOfUrl);
         }
         HttpEntity<PricingServiceResponse> entity = new HttpEntity<>(createHttpHeaders(version));
+        LOGGER.info("calling pricing service " + fullUrl.toString());
         ResponseEntity<PricingServiceResponse> response = restTemplate.exchange(
                 fullUrl.toString(), HttpMethod.GET, entity, PricingServiceResponse.class);
         return response.getBody();

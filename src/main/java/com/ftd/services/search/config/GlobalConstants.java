@@ -12,6 +12,7 @@ public class GlobalConstants {
 
     public static final String REQUEST = "requests";
     public static final String ID = "id";
+    public static final String PID = "pid";
     public static final String TRUE = "true";
     public static final String FORWARD_SLASH = "/";
     public static final String SELECT_HANDLER = "select";
@@ -66,6 +67,7 @@ public class GlobalConstants {
     public static final String KEYWORD = "keyword";
     public static final String SEARCH_KEYWORDS = "searchKeywords";
     public static final String AUTOFILL_KEYWORDS = "autofillKeywords";
+    public static final String AUTOFILL_KEYWORD = "autofillKeyword";
     public static final String AUTOFILL = "autofill";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";

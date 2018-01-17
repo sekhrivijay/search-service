@@ -43,7 +43,7 @@ public class BaseClient {
                             .getDocumentList()
                             .stream()
                             .map(Document::getRecord)
-                            .map(e -> e.get(GlobalConstants.ID))
+                            .map(e -> e.get(GlobalConstants.PID))
                             .map(String::valueOf)
                             .collect(Collectors.toSet());
         }

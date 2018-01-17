@@ -1,19 +1,17 @@
 package com.ftd.services.search.config;
 
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.impl.CloudSolrClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-@ConfigurationProperties(prefix = "service")
-@EnableConfigurationProperties
 @Configuration
+@EnableConfigurationProperties(AppConfigProperties.class)
 public class AppConfig {
     @Bean
     @ConditionalOnMissingBean
@@ -21,26 +19,19 @@ public class AppConfig {
         return new RestTemplate();
     }
 
-    private List<String> sortList;
-    private Map<String, String> sitesBfMap;
-
-    AppConfig() {
-        this.sortList = new ArrayList<>();
+    @Bean
+    @ConditionalOnMissingBean
+    public SolrClient solrClient(
+            @Value("${service.solrService.zkEnsembleDestination}") String zkEnsembleDestination,
+            @Value("${service.solrService.collectionDestination}") String collectionDestination,
+            @Value("${service.solrService.zkTimeoutDestination}") int zkTimeoutDestination
+    ) {
+        CloudSolrClient cloudSolrClient = new CloudSolrClient.Builder()
+                .withZkHost(zkEnsembleDestination)
+                .build();
+        cloudSolrClient.setDefaultCollection(collectionDestination);
+        cloudSolrClient.setZkConnectTimeout(zkTimeoutDestination);
+        return cloudSolrClient;
     }
 
-    public List<String> getSortList() {
-        return sortList;
-    }
-
-    public void setSortList(List<String> sortList) {
-        this.sortList = sortList;
-    }
-
-    public Map<String, String> getSitesBfMap() {
-        return sitesBfMap;
-    }
-
-    public void setSitesBfMap(Map<String, String> sitesBfMap) {
-        this.sitesBfMap = sitesBfMap;
-    }
 }

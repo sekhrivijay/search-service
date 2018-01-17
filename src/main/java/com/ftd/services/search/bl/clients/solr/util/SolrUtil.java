@@ -50,6 +50,7 @@ public class SolrUtil {
             futureMap.get(key).cancel(true);
             throw timeoutException;
         }
+        LOGGER.info(queryResponse.toString());
         return queryResponse;
     }
 }
