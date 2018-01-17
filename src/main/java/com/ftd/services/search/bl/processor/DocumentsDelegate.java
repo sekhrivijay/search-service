@@ -23,6 +23,7 @@ import com.ftd.services.search.api.response.Document;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.config.GlobalConstants;
 import com.ftd.services.search.bl.clients.solr.util.SolrDocumentUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Named("documentsDelegate")
 public class DocumentsDelegate extends BaseDelegate {
@@ -36,6 +37,9 @@ public class DocumentsDelegate extends BaseDelegate {
     public static final String PDP_QUERY_SUFFIX = StringUtils.EMPTY;
 //            + GlobalConstants.TYPE_PREFIX
 //            + RequestType.PDP.getName();
+
+    @Autowired
+    private SolrDocumentUtil solrDocumentUtil;
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
@@ -70,7 +74,7 @@ public class DocumentsDelegate extends BaseDelegate {
             Collection<String> fieldNames = solrDocument.getFieldNames();
             Map<String, Object> record = new HashMap<>();
             for (String key : fieldNames) {
-                record.put(key, SolrDocumentUtil.getFieldValue(solrDocument, key));
+                record.put(key, solrDocumentUtil.getFieldValue(solrDocument, key));
             }
             Document document = new Document();
             document.setRecord(record);
@@ -92,7 +96,7 @@ public class DocumentsDelegate extends BaseDelegate {
         LOGGER.debug(searchServiceResponse.toString());
         return //productEndpoint +
                 GlobalConstants.QUESTION_MARK + GlobalConstants.ID_FIELD_FILTER
-                        + SolrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
+                        + solrDocumentUtil.getFieldValue(solrDocument, GlobalConstants.ID)
                         + PDP_QUERY_SUFFIX;
     }
 

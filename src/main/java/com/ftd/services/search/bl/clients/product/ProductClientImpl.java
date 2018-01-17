@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,6 +35,7 @@ import java.util.Set;
  * @author cdegreef
  */
 @Named("productClient")
+@Component
 public class ProductClientImpl extends BaseClient implements ProductClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductClientImpl.class);

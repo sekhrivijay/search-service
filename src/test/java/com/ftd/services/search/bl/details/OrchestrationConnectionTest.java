@@ -56,7 +56,6 @@ public class OrchestrationConnectionTest {
 
     @Test
     public void productService() {
-
         if (productClient.isEnabled()) {
             productClient.callProductService(searchServiceRequest, searchServiceResponse);
         }

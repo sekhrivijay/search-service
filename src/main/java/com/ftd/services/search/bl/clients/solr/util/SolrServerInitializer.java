@@ -3,11 +3,12 @@ package com.ftd.services.search.bl.clients.solr.util;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import javax.inject.Named;
-
-@Named
+@Configuration
+@EnableConfigurationProperties
 public class SolrServerInitializer {
     private SolrClient solrClient;
 
@@ -21,7 +22,8 @@ public class SolrServerInitializer {
     @Value("${service.solrService.zkTimeoutDestination}")
     private int zkTimeoutDestination;
 
-    SolrServerInitializer() { }
+    SolrServerInitializer() {
+    }
 
     @Bean
     public SolrClient getSolrClient() {

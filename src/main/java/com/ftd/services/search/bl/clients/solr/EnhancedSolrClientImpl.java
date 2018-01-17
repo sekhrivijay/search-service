@@ -20,15 +20,16 @@ import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.util.ContentStreamBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 import java.util.concurrent.Future;
+
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 @Named("enhancedSolrClient")
 public class EnhancedSolrClientImpl extends BaseClient implements EnhancedSolrClient {
@@ -60,14 +61,11 @@ public class EnhancedSolrClientImpl extends BaseClient implements EnhancedSolrCl
     @Value("${service.solrService.zkEnsembleDestination}")
     private String baseUrl;
 
-    @Inject
-    public void setSolrUtil(SolrUtil solrUtil) {
-        this.solrUtil = solrUtil;
-    }
-
-    @Inject
-    public void setSolrClient(SolrClient solrClient) {
+    public EnhancedSolrClientImpl(
+            @Autowired SolrClient solrClient,
+            @Autowired SolrUtil solrUtil) {
         this.solrClient = solrClient;
+        this.solrUtil = solrUtil;
     }
 
     public EnhancedSolrClientImpl() {
