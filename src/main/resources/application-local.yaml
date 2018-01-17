@@ -7,6 +7,16 @@ service:
 
   git:
     enabled: false
+  swagger:
+    enabled: false
+  metrics:
+    jmx:
+      enabled: false
+    dropwizard:
+      enabled: false
+    prometheus:
+      enabled: false
+
    
 logging:
   level:

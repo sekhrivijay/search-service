@@ -73,13 +73,14 @@ service:
         servers: localhost:11211
         name: product
 
-  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
+#  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
+  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
   collectionDestination : products
   zkTimeoutDestination : 20000
   solrQueryTimeout : 10000
   queryTimeAllowed : 10000
   groupLimitValue : 5
-  breadCrumbList: index_name
+  breadCrumbList: categories
   sortList:
     - id
     - standard_price
@@ -164,6 +165,27 @@ hystrix:
    command.ruleServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
    threadpool.ruleThreadPoolKey.coreSize: 30
    threadpool.ruleThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.productServiceKey.execution.isolation.thread.timeoutInMilliseconds: 2000
+   command.productServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.productServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.productServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.productThreadPoolKey.coreSize: 30
+   threadpool.productThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.priceServiceKey.execution.isolation.thread.timeoutInMilliseconds: 2000
+   command.priceServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.priceServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.priceServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.priceThreadPoolKey.coreSize: 30
+   threadpool.priceThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.availabilityServiceKey.execution.isolation.thread.timeoutInMilliseconds: 2000
+   command.availabilityServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.availabilityServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.availabilityServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.availabilityThreadPoolKey.coreSize: 30
+   threadpool.availabilityThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
 
 
 #endpoints:

@@ -1,5 +1,19 @@
 package com.ftd.services.search.bl.impl;
 
+import com.ftd.services.search.api.request.SearchServiceRequest;
+import com.ftd.services.search.api.response.Document;
+import com.ftd.services.search.api.response.SearchServiceResponse;
+import com.ftd.services.search.bl.DetailsService;
+import com.ftd.services.search.bl.clients.availibility.AvailabilityClient;
+import com.ftd.services.search.bl.clients.price.PriceClient;
+import com.ftd.services.search.bl.clients.product.ProductClientImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,44 +24,28 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import com.ftd.services.search.api.request.SearchServiceRequest;
-import com.ftd.services.search.api.response.Document;
-import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.bl.DetailsService;
-import com.ftd.services.search.bl.details.AvailabilityClient;
-import com.ftd.services.search.bl.details.PricingClient;
-import com.ftd.services.search.bl.details.ProductClient;
-
 @Service("detailsService")
 public class DetailsServiceImpl implements DetailsService {
-    private static final long   DEFAULT_SERVICE_TIMEOUT_MILLIS = 10000;
+    private static final long DEFAULT_SERVICE_TIMEOUT_MILLIS = 10000;
 
-    private static final Logger LOGGER                         = LoggerFactory.getLogger(DetailsServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DetailsServiceImpl.class);
 
-    private AvailabilityClient  availabilityClient;
-    private PricingClient       pricingClient;
-    private ProductClient       productClient;
+    private AvailabilityClient availabilityClient;
+    private PriceClient pricingClient;
+    private ProductClientImpl productClient;
 
-    private ExecutorService     executor                       = Executors.newCachedThreadPool();
+    private ExecutorService executor = Executors.newCachedThreadPool();
 
     /*
      * This should always be > 0.
      */
     @Value("${service.detailsTimeout:10000}")
-    private long                serviceTimeout                 = DEFAULT_SERVICE_TIMEOUT_MILLIS;
+    private long serviceTimeout = DEFAULT_SERVICE_TIMEOUT_MILLIS;
 
     public DetailsServiceImpl(
             @Autowired AvailabilityClient availabilityClient,
-            @Autowired ProductClient productClient,
-            @Autowired PricingClient pricingClient) {
+            @Autowired ProductClientImpl productClient,
+            @Autowired PriceClient pricingClient) {
         this.availabilityClient = availabilityClient;
         this.pricingClient = pricingClient;
         this.productClient = productClient;
@@ -79,25 +77,24 @@ public class DetailsServiceImpl implements DetailsService {
          */
 //        Set<String> productIds = productMap.keySet();
         // TODO remove this test code
-         final Set<String> productIds = new HashSet<String>();
-         productIds.add("960");
+        final Set<String> productIds = new HashSet<String>();
+        productIds.add("960");
         /*
          * Get orchestration parameters from the request URL
          */
-        String startDate = searchServiceRequest.getAvailFrom();
-        String endDate = searchServiceRequest.getAvailTo();
-        String zipCode = searchServiceRequest.getZipCode();
-        String siteId = searchServiceRequest.getSiteId();
-        String memberId = searchServiceRequest.getMemberType();
         /*
          * Gather all details in parallel
          */
         Future<Map<String, Object>> availableDetails = executor.submit(
-                () -> availabilityClient.findDetails(productIds, startDate, endDate, zipCode));
+                () -> availabilityClient.buildMap(
+                        availabilityClient.callAvailabilityService(
+                                searchServiceRequest, searchServiceResponse)));
         Future<Map<String, Object>> pricingDetails = executor.submit(
-                () -> pricingClient.findDetails(productIds, siteId, memberId));
+                () -> pricingClient.buildMap(pricingClient.callPriceService(
+                        searchServiceRequest, searchServiceResponse)));
         Future<Map<String, Object>> productDetails = executor.submit(
-                () -> productClient.findDetails(productIds));
+                () -> productClient.buildMap(productClient.callProductService(
+                        searchServiceRequest, searchServiceResponse)));
         /*
          * Each future has a time limit. In the worst case, where all services time out,
          * the total time waiting will be the sum of the timeouts. Each set of details
@@ -124,12 +121,9 @@ public class DetailsServiceImpl implements DetailsService {
      * This method will add new elements to the search service attribute map. The
      * prefix provides a way to ensure uniqueness across all services.
      *
-     * @param prefix
-     *            is the first node of the attribute name, distinct for each service
-     * @param detailService
-     *            is the service call that was issued in parallel
-     * @param searchServiceProductDocuments
-     *            is the search service attribute map, one entry per product id
+     * @param prefix                        is the first node of the attribute name, distinct for each service
+     * @param detailService                 is the service call that was issued in parallel
+     * @param searchServiceProductDocuments is the search service attribute map, one entry per product id
      */
     void applyDetailDocument(
             String prefix,

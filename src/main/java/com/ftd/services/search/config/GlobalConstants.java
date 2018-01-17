@@ -33,6 +33,7 @@ public class GlobalConstants {
     public static final String FQ = "fq";
     public static final String AMPERSAND = "&";
     public static final String Q = "q";
+    public static final String UTF_8 = "utf-8";
     public static final String EQUAL = "=";
     public static final String UNDERSCORE = "_";
     public static final String TILDE = "~";
@@ -61,6 +62,7 @@ public class GlobalConstants {
     public static final String MM = "mm";
     public static final String QUESTION_MARK = "?";
     public static final String DISTRIB = "distrib";
+    public static final String APPLICATION_JSON = "application/json";
     public static final String KEYWORD = "keyword";
     public static final String SEARCH_KEYWORDS = "searchKeywords";
     public static final String AUTOFILL_KEYWORDS = "autofillKeywords";
@@ -73,10 +75,13 @@ public class GlobalConstants {
     public static final String IS_ACTIVE = "isActive";
     public static final String IMAGE = "image";
     public static final String SKU_ID = "skuId";
+    public static final String CLIENT_ID = "clientId";
     public static final String SMALL = "small";
     public static final String SMALL_IMAGE = "smallImage";
     public static final String PRIMARY_IMAGE = "primaryImage";
     public static final String PRIMARY = "primary";
+    public static final String VERSION = "version";
+    public static final String LOG_IDENTIFICATION = "url: {}, version: {}, enabled: {}";
 
     public static final String RELAXED_MUST_MATCH_FIFTY_PERCENT = "50" + PERCENT;
     public static final String RELAXED_MUST_MATCH_SEVENTY_FIVE_PERCENT = "75" + PERCENT;
@@ -85,6 +90,12 @@ public class GlobalConstants {
     public static final int MUST_MATCH_ROUND_1 = 2;
     public static final int MUST_MATCH_ROUND_2 = 3;
     public static final int SPELL_CORRECT_SOLR_ROUND = 1;
+    public static final String SITE_ID_PARAM =
+            GlobalConstants.QUESTION_MARK +
+                    GlobalConstants.SITE_ID +
+                    GlobalConstants.EQUAL;
+    public static final String MEMBER_TYPE_PARAM = AMPERSAND + MEMBER_TYPE + EQUAL;
+
     public static final String FQ_PREFIX = AMPERSAND +
             FQ +
             EQUAL;

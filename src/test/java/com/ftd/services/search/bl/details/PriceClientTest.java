@@ -3,36 +3,37 @@ package com.ftd.services.search.bl.details;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.ftd.services.search.bl.clients.price.PriceClientImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class PricingClientTest {
+public class PriceClientTest {
 
     @Test
     public void noProducts() {
-        PricingClient pc = new PricingClient(null, "junit");
+        PriceClientImpl pc = new PriceClientImpl(null, "junit");
         Set<String> pIds = new HashSet<>();
         String result = pc.buildUniquePartOfUrl(pIds, "site1", "memberType1");
-        Assert.assertEquals("?site=site1&memberType=memberType1", result);
+        Assert.assertEquals("?siteId=site1&memberType=memberType1", result);
     }
 
     @Test
     public void oneProduct() {
-        PricingClient pc = new PricingClient(null, "junit");
+        PriceClientImpl pc = new PriceClientImpl(null, "junit");
         Set<String> pIds = new HashSet<>();
         pIds.add("960");
         String result = pc.buildUniquePartOfUrl(pIds, "site1", "memberType1");
-        Assert.assertEquals("960?site=site1&memberType=memberType1", result);
+        Assert.assertEquals("960?siteId=site1&memberType=memberType1", result);
     }
 
     @Test
     public void twoProducts() {
-        PricingClient pc = new PricingClient(null, "junit");
+        PriceClientImpl pc = new PriceClientImpl(null, "junit");
         Set<String> pIds = new HashSet<>();
         pIds.add("960");
         pIds.add("961");
         String result = pc.buildUniquePartOfUrl(pIds, "site1", "memberType1");
-        Assert.assertEquals("960,961?site=site1&memberType=memberType1", result);
+        Assert.assertEquals("960,961?siteId=site1&memberType=memberType1", result);
     }
 
 }

@@ -152,4 +152,117 @@ public class SearchServiceResponse implements Serializable {
                 ", cacheable=" + cacheable +
                 '}';
     }
+
+    public static final class SearchServiceResponseBuilder {
+        private Debug debug;
+        private Long numFound;
+        private Integer rows;
+        private List<FacetGroup> facetGroups;
+        private List<ResponseGroup> responseGroups;
+        private Redirect redirect;
+        private List<AutoCorrect> autoCorrectList;
+        private List<DidYouMean> didYouMeanList;
+        private Pagination pagination;
+        private List<BreadCrumbTrail> breadCrumbTrail;
+        private List<Document> documentList;
+        private String originalQuery;
+        private List<SortTerm> sortTermList;
+        private Boolean cacheable = true;
+
+        private SearchServiceResponseBuilder() {
+        }
+
+        public static SearchServiceResponseBuilder aSearchServiceResponse() {
+            return new SearchServiceResponseBuilder();
+        }
+
+        public SearchServiceResponseBuilder withDebug(Debug debug) {
+            this.debug = debug;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withNumFound(Long numFound) {
+            this.numFound = numFound;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withRows(Integer rows) {
+            this.rows = rows;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withFacetGroups(List<FacetGroup> facetGroups) {
+            this.facetGroups = facetGroups;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withResponseGroups(List<ResponseGroup> responseGroups) {
+            this.responseGroups = responseGroups;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withRedirect(Redirect redirect) {
+            this.redirect = redirect;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withAutoCorrectList(List<AutoCorrect> autoCorrectList) {
+            this.autoCorrectList = autoCorrectList;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withDidYouMeanList(List<DidYouMean> didYouMeanList) {
+            this.didYouMeanList = didYouMeanList;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withPagination(Pagination pagination) {
+            this.pagination = pagination;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withBreadCrumbTrail(List<BreadCrumbTrail> breadCrumbTrail) {
+            this.breadCrumbTrail = breadCrumbTrail;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withDocumentList(List<Document> documentList) {
+            this.documentList = documentList;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withOriginalQuery(String originalQuery) {
+            this.originalQuery = originalQuery;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withSortTermList(List<SortTerm> sortTermList) {
+            this.sortTermList = sortTermList;
+            return this;
+        }
+
+        public SearchServiceResponseBuilder withCacheable(Boolean cacheable) {
+            this.cacheable = cacheable;
+            return this;
+        }
+
+        public SearchServiceResponse build() {
+            SearchServiceResponse searchServiceResponse = new SearchServiceResponse();
+            searchServiceResponse.setDebug(debug);
+            searchServiceResponse.setNumFound(numFound);
+            searchServiceResponse.setRows(rows);
+            searchServiceResponse.setFacetGroups(facetGroups);
+            searchServiceResponse.setResponseGroups(responseGroups);
+            searchServiceResponse.setRedirect(redirect);
+            searchServiceResponse.setAutoCorrectList(autoCorrectList);
+            searchServiceResponse.setDidYouMeanList(didYouMeanList);
+            searchServiceResponse.setPagination(pagination);
+            searchServiceResponse.setBreadCrumbTrail(breadCrumbTrail);
+            searchServiceResponse.setDocumentList(documentList);
+            searchServiceResponse.setOriginalQuery(originalQuery);
+            searchServiceResponse.setSortTermList(sortTermList);
+            searchServiceResponse.setCacheable(cacheable);
+            return searchServiceResponse;
+        }
+    }
 }

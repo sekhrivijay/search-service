@@ -6,12 +6,12 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ftd.services.search.api.SearchModelWrapper;
+import com.ftd.services.search.bl.clients.rules.RuleServiceResponse;
 import com.ftd.services.search.api.request.Holder;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.bl.rules.RuleService;
-import com.ftd.services.search.bl.rules.RuleServiceImpl;
+import com.ftd.services.search.bl.clients.rules.RuleClient;
+import com.ftd.services.search.bl.clients.rules.RuleClientImpl;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,15 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 public class RulesDelegate extends BaseDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(RulesDelegate.class);
 
-//    private RestTemplate restTemplate;
 
-//    @Value("${service.rulesService.enabled:false}")
-//    private boolean rulesServiceEnabled;
-//
-//    @Value("${service.rulesService.baseUrl}")
-//    private String rulesServiceBaseUrl;
-
-    private RuleService ruleService;
+    private RuleClient ruleClient;
 
     public static final Holder FALLBACK_RULE_RESPONSE = new Holder();
 
@@ -39,40 +32,32 @@ public class RulesDelegate extends BaseDelegate {
 
     @Inject
     @Named("ruleService")
-    public void setRuleService(RuleService ruleService) {
-        this.ruleService = ruleService;
+    public void setRuleClient(RuleClient ruleClient) {
+        this.ruleClient = ruleClient;
     }
-//
-//    @Autowired
-//    public void setRestTemplate(RestTemplate restTemplate) {
-//        this.restTemplate = restTemplate;
-//    }
 
     @Override
-//    @HystrixCommand(groupKey = "hystrixGroup",
-//            commandKey = "ruleServiceKey",
-//            threadPoolKey = "ruleThreadPoolKey",
-//            fallbackMethod = "preProcessFallback")
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-        SearchModelWrapper searchModelWrapperModified = ruleService.callSearchRulesService(searchServiceRequest);
-        if (searchModelWrapperModified == RuleServiceImpl.FALLBACK_RULE_RESPONSE) {
+        RuleServiceResponse ruleServiceResponseModified = ruleClient.callSearchRulesService(
+                searchServiceRequest, new SearchServiceResponse());
+        if (ruleServiceResponseModified == RuleClientImpl.FALLBACK_RULE_RESPONSE) {
             searchServiceRequest.setHolder(FALLBACK_RULE_RESPONSE);
             return solrQuery;
         }
-        if (searchModelWrapperModified != null) {
-            LOGGER.info("Response from Rule service " + searchModelWrapperModified.toString());
+        if (ruleServiceResponseModified != null) {
+            LOGGER.info("Response from Rule service " + ruleServiceResponseModified.toString());
             Holder holder = new Holder();
-            if (searchModelWrapperModified.getSearchServiceResponse() != null
-                    && searchModelWrapperModified.getSearchServiceResponse().getRedirect() != null) {
-                holder.setRedirect(searchModelWrapperModified.getSearchServiceResponse().getRedirect());
+            if (ruleServiceResponseModified.getSearchServiceResponse() != null
+                    && ruleServiceResponseModified.getSearchServiceResponse().getRedirect() != null) {
+                holder.setRedirect(ruleServiceResponseModified.getSearchServiceResponse().getRedirect());
                 holder.setRedirect(true);
 
             }
-            if (searchModelWrapperModified.getSearchServiceRequest() != null) {
+            if (ruleServiceResponseModified.getSearchServiceRequest() != null) {
                 try {
                     BeanUtils.copyProperties(
                             searchServiceRequest,
-                            searchModelWrapperModified.getSearchServiceRequest());
+                            ruleServiceResponseModified.getSearchServiceRequest());
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     LOGGER.error("Error copying object state from rule service ", e);
                 }
@@ -82,27 +67,6 @@ public class RulesDelegate extends BaseDelegate {
         return solrQuery;
     }
 
-//    public SolrQuery preProcessFallback(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
-//        searchServiceRequest.setHolder(FALLBACK_RULE_RESPONSE);
-//        return solrQuery;
-//    }
-
-//    private SearchModelWrapper callSearchRulesService(SearchServiceRequest searchServiceRequest) {
-////        LOGGER.info(searchServiceRequest.toString());
-//        SearchModelWrapper searchModelWrapper = new SearchModelWrapper(
-//                searchServiceRequest,
-//                new SearchServiceResponse());
-//        if (rulesServiceEnabled) {
-//            HttpEntity<SearchModelWrapper> request = new HttpEntity<>(searchModelWrapper);
-////            LOGGER.info("Calling rule service with ");
-//            ResponseEntity<SearchModelWrapper> response = restTemplate.exchange(
-//                    rulesServiceBaseUrl + "/executePre",
-//                    HttpMethod.POST, request,
-//                    SearchModelWrapper.class);
-//            return response.getBody();
-//        }
-//        return searchModelWrapper;
-//    }
 
     @Override
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,

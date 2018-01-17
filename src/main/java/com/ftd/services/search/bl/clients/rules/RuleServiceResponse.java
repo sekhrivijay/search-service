@@ -1,18 +1,18 @@
-package com.ftd.services.search.api;
+package com.ftd.services.search.bl.clients.rules;
 
 import java.io.Serializable;
 
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 
-public class SearchModelWrapper  implements Serializable {
+public class RuleServiceResponse implements Serializable {
     private SearchServiceRequest searchServiceRequest;
     private SearchServiceResponse searchServiceResponse;
 
-    public SearchModelWrapper() {
+    public RuleServiceResponse() {
     }
 
-    public SearchModelWrapper(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse) {
+    public RuleServiceResponse(SearchServiceRequest searchServiceRequest, SearchServiceResponse searchServiceResponse) {
         this.searchServiceRequest = searchServiceRequest;
         this.searchServiceResponse = searchServiceResponse;
     }
@@ -37,7 +37,7 @@ public class SearchModelWrapper  implements Serializable {
 
     @Override
     public String toString() {
-        return "SearchModelWrapper{" +
+        return "RuleServiceResponse{" +
                 "searchServiceRequest=" + searchServiceRequest +
                 ", searchServiceResponse=" + searchServiceResponse +
                 '}';

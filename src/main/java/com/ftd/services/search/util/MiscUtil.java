@@ -1,20 +1,26 @@
 package com.ftd.services.search.util;
 
+import com.ftd.services.product.api.domain.response.ProductServiceResponse;
+import com.ftd.services.search.bl.clients.product.ProductClientImpl;
+import com.ftd.services.search.bl.clients.rules.RuleServiceResponse;
 import org.apache.commons.lang3.StringUtils;
 
-import com.ftd.services.search.api.SearchModelWrapper;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.bl.rules.RuleServiceImpl;
+import com.ftd.services.search.bl.clients.rules.RuleClientImpl;
 import com.ftd.services.search.config.GlobalConstants;
 
 
 public class MiscUtil {
 
-    public static boolean isValidResponse(SearchModelWrapper searchModelWrapper) {
-        return searchModelWrapper != RuleServiceImpl.FALLBACK_RULE_RESPONSE;
-
+    public static boolean isValidResponse(RuleServiceResponse ruleServiceResponse) {
+        return ruleServiceResponse != RuleClientImpl.FALLBACK_RULE_RESPONSE;
     }
+
+    public static boolean isValidResponse(ProductServiceResponse productServiceResponse) {
+        return productServiceResponse != ProductClientImpl.FALLBACK_PRODUCT_RESPONSE;
+    }
+
     public static boolean isValidResponse(SearchServiceResponse searchServiceResponse) {
         return searchServiceResponse != null
                 && searchServiceResponse.isCacheable()
