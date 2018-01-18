@@ -32,7 +32,7 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "group"
-        - name: SERVICE_ZKENSEMBLEDESTINATION
+        - name: SERVICE_SOLRSERVICE_ZKENSEMBLEDESTINATION
           value: "zk-group-0.zk-hs-group.default.svc.cluster.local:2181,zk-group-1.zk-hs-group.default.svc.cluster.local:2181,zk-group-2.zk-hs-group.default.svc.cluster.local:2181"
         - name: SERVICE_MEMCACHE_ENABLED
           value: "false"
