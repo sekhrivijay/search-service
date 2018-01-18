@@ -1,14 +1,12 @@
 package com.ftd.services.search.healthcheck;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SolrHealthCheck implements HealthIndicator  {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolrHealthCheck.class);
+public class SolrHealthCheck implements HealthIndicator {
+//    private static final Logger LOGGER = LoggerFactory.getLogger(SolrHealthCheck.class);
 //    private EnhancedSolrClient enhancedSolrClient;
 
 //    @Autowired
