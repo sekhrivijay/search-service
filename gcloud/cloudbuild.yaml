@@ -2,8 +2,8 @@
 
 steps:
 - name: 'gcr.io/cloud-builders/mvn'
-#  args: ['-U', '-DskipTests', '-B', 'clean', 'install']
-  args: ['-U', '-B', 'clean', 'install']
+  args: ['-U', '-DskipTests', '-B', 'clean', 'install']
+#  args: ['-U', '-B', 'clean', 'install']
 
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',  '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$REVISION_ID', '.']
