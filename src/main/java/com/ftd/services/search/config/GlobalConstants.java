@@ -63,6 +63,7 @@ public class GlobalConstants {
     public static final String MM = "mm";
     public static final String QUESTION_MARK = "?";
     public static final String DISTRIB = "distrib";
+    public static final String LONG = "long";
     public static final String APPLICATION_JSON = "application/json";
     public static final String KEYWORD = "keyword";
     public static final String SEARCH_KEYWORDS = "searchKeywords";
