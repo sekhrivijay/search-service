@@ -39,23 +39,28 @@ public class FacetDelegate extends BaseDelegate {
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         String[] facetFields = searchServiceRequest.getFacetFields();
         List<String> facetList = appConfigProperties.getFacetList();
-        if ((facetFields != null && facetFields.length > 0)
-                || (facetList != null && facetList.size() > 0)) {
+        if (isNotEmpty(facetFields) || isNotEmpty(facetList)) {
             solrQuery.setFacet(true);
             solrQuery.setFacetMinCount(1);
             solrQuery.setFacetSort(searchServiceRequest.getFacetSort());
         }
 
-        if (facetFields != null && facetFields.length > 0) {
+        if (isNotEmpty(facetFields)) {
             solrQuery.addFacetField(facetFields);
-        } else if (appConfigProperties.getFacetList() != null) {
-            appConfigProperties
-                    .getFacetList()
-                    .forEach(solrQuery::addFacetField);
+        } else if (isNotEmpty(facetList)) {
+            facetList.forEach(solrQuery::addFacetField);
         }
 
 
         return solrQuery;
+    }
+
+    private boolean isNotEmpty(List<String> facetList) {
+        return facetList != null && facetList.size() > 0;
+    }
+
+    private boolean isNotEmpty(String[] facetFields) {
+        return facetFields != null && facetFields.length > 0;
     }
 
 
