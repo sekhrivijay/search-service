@@ -1,6 +1,7 @@
 package com.ftd.services.search.bl.processor;
 
 
+import com.ftd.services.search.config.AppConfigProperties;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -10,6 +11,7 @@ import com.ftd.services.search.api.response.Facet;
 import com.ftd.services.search.api.response.FacetGroup;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.config.GlobalConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -25,17 +27,37 @@ public class FacetDelegate extends BaseDelegate {
 //    @Value("${service.searchEndpoint}")
 //    private String searchEndpoint;
 
+
+    private AppConfigProperties appConfigProperties;
+
+    @Autowired
+    public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
+        this.appConfigProperties = appConfigProperties;
+    }
+
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         String[] facetFields = searchServiceRequest.getFacetFields();
-        if (facetFields != null && facetFields.length > 0) {
+        List<String> facetList = appConfigProperties.getFacetList();
+        if ((facetFields != null && facetFields.length > 0)
+                || (facetList != null && facetList.size() > 0)) {
             solrQuery.setFacet(true);
             solrQuery.setFacetMinCount(1);
-            solrQuery.addFacetField(facetFields);
             solrQuery.setFacetSort(searchServiceRequest.getFacetSort());
         }
+
+        if (facetFields != null && facetFields.length > 0) {
+            solrQuery.addFacetField(facetFields);
+        } else if (appConfigProperties.getFacetList() != null) {
+            appConfigProperties
+                    .getFacetList()
+                    .forEach(solrQuery::addFacetField);
+        }
+
+
         return solrQuery;
     }
+
 
     @Override
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,

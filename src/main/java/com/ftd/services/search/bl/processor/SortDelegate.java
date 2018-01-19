@@ -28,11 +28,6 @@ public class SortDelegate extends BaseDelegate {
 
     private AppConfigProperties appConfigProperties;
 
-//
-//    @Value("${service.searchEndpoint}")
-//    private String searchEndpoint;
-
-
     @Autowired
     public void setAppConfigProperties(AppConfigProperties appConfigProperties) {
         this.appConfigProperties = appConfigProperties;
@@ -73,7 +68,7 @@ public class SortDelegate extends BaseDelegate {
         sortTerm.setSortBy(sortTermString);
         String urlPrefix = SORT_FIELD +
                 sortTermString
-                + " ";
+                + GlobalConstants.SPACE;
         String ascUrl = urlPrefix + SortOrder.ASCENDING.getName();
         String descUrl = urlPrefix + SortOrder.DESCENDING.getName();
 

@@ -84,6 +84,8 @@ service:
   sortList:
     - id
     - standard_price
+  facetList:
+    - categories
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
