@@ -5,7 +5,7 @@ import com.ftd.services.search.api.response.Document;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.bl.DetailsService;
 import com.ftd.services.search.bl.clients.availibility.AvailabilityClient;
-import com.ftd.services.search.bl.clients.price.PriceClient;
+import com.ftd.services.search.bl.clients.price.PricingClient;
 import com.ftd.services.search.bl.clients.product.ProductClientImpl;
 import com.ftd.services.search.config.GlobalConstants;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class DetailsServiceImpl implements DetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DetailsServiceImpl.class);
 
     private AvailabilityClient availabilityClient;
-    private PriceClient pricingClient;
+    private PricingClient pricingClient;
     private ProductClientImpl productClient;
 
     private ExecutorService executor = Executors.newCachedThreadPool();
@@ -44,7 +44,7 @@ public class DetailsServiceImpl implements DetailsService {
     public DetailsServiceImpl(
             @Autowired AvailabilityClient availabilityClient,
             @Autowired ProductClientImpl productClient,
-            @Autowired PriceClient pricingClient) {
+            @Autowired PricingClient pricingClient) {
         this.availabilityClient = availabilityClient;
         this.pricingClient = pricingClient;
         this.productClient = productClient;

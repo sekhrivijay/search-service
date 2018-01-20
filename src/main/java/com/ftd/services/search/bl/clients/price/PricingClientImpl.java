@@ -2,7 +2,7 @@ package com.ftd.services.search.bl.clients.price;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-import com.ftd.services.product.api.domain.response.Product;
+import com.ftd.services.pricing.api.domain.response.PricingResponse;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.bl.clients.BaseClient;
@@ -30,10 +30,10 @@ import java.util.Set;
  * @author cdegreef
  */
 @Named("pricingClient")
-public class PriceClientImpl extends BaseClient implements PriceClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PriceClientImpl.class);
-    public static final PricingServiceResponse FALLBACK_PRICE_RESPONSE = new PricingServiceResponse();
-    public static final PricingServiceResponse DUMMY_PRICE_RESPONSE = new PricingServiceResponse();
+public class PricingClientImpl extends BaseClient implements PricingClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PricingClientImpl.class);
+    public static final PricingResponse FALLBACK_PRICE_RESPONSE = new PricingResponse();
+    public static final PricingResponse DUMMY_PRICE_RESPONSE = new PricingResponse();
 
     private RestTemplate restTemplate;
     private String baseUrl;
@@ -44,7 +44,7 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
     @Value("${service.pricingService.version:0.1}")
     private String version;
 
-    public PriceClientImpl(
+    public PricingClientImpl(
             @Autowired RestTemplate restTemplate,
             @Value("${service.pricingService.baseUrl}") String baseUrl) {
 
@@ -57,7 +57,7 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
         logIdentification(LOGGER, baseUrl, version, enabled);
     }
 
-    public Map<String, Object> buildMap(PricingServiceResponse products) {
+    public Map<String, Object> buildMap(PricingResponse pricingResponse) {
         /*
          * A list of documents for the provided productIds, respectively.
          */
@@ -68,10 +68,10 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
              * id for each of them and put the id as the key with the product object being
              * the value.
              */
-
-            for (Product product : products.getProducts()) {
-                results.put(product.getId(), product);
-            }
+            LOGGER.info("TODO");
+//            for (Product product : pricingResponse.getProducts()) {
+//                results.put(product.getId(), product);
+//            }
         } catch (HttpClientErrorException e) {
             LOGGER.warn("{}", e.getMessage());
         }
@@ -113,7 +113,7 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
             commandKey = "priceServiceKey",
             threadPoolKey = "priceThreadPoolKey",
             fallbackMethod = "callPriceServiceFallback")
-    public PricingServiceResponse callPriceService(
+    public PricingResponse callPriceService(
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) throws HttpClientErrorException {
 
@@ -132,14 +132,14 @@ public class PriceClientImpl extends BaseClient implements PriceClient {
         if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
             fullUrl.append(uniquePartOfUrl);
         }
-        HttpEntity<PricingServiceResponse> entity = new HttpEntity<>(createHttpHeaders(version));
+        HttpEntity<PricingResponse> entity = new HttpEntity<>(createHttpHeaders(version));
         LOGGER.info("calling pricing service " + fullUrl.toString());
-        ResponseEntity<PricingServiceResponse> response = restTemplate.exchange(
-                fullUrl.toString(), HttpMethod.GET, entity, PricingServiceResponse.class);
+        ResponseEntity<PricingResponse> response = restTemplate.exchange(
+                fullUrl.toString(), HttpMethod.GET, entity, PricingResponse.class);
         return response.getBody();
     }
 
-    public PricingServiceResponse callPriceServiceFallback(
+    public PricingResponse callPriceServiceFallback(
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) throws HttpClientErrorException {
         return FALLBACK_PRICE_RESPONSE;

@@ -39,7 +39,9 @@ spec:
         - name: SERVICE_RULESSERVICE_BASEURL
           value: "http://search-rules-service-group:8070/api/rules"
         - name: SERVICE_PRODUCTSERVICE_BASEURL
-          value: "http://product-service-group:80/api/products"
+          value: "http://product-service-group/api/products"
+        - name: SERVICE_PRICINGSERVICE_BASEURL
+          value: "http://pricing-service-group/api/pricing"
         - name: JAVA_ARGS
           value: "-Dservice.memcache.configs[0].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211 -Dservice.memcache.configs[1].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211"
 

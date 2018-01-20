@@ -4,7 +4,7 @@ import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.Document;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.bl.clients.availibility.AvailabilityClientImpl;
-import com.ftd.services.search.bl.clients.price.PriceClientImpl;
+import com.ftd.services.search.bl.clients.price.PricingClientImpl;
 import com.ftd.services.search.bl.clients.product.ProductClientImpl;
 import com.ftd.services.search.config.GlobalConstants;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class OrchestrationConnectionTest {
     private ProductClientImpl productClient;
 
     @Autowired
-    private PriceClientImpl pricingClient;
+    private PricingClientImpl pricingClient;
 
     @Autowired
     private AvailabilityClientImpl availabilityClient;

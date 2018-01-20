@@ -82,6 +82,8 @@ public class GlobalConstants {
     public static final String SMALL = "small";
     public static final String SMALL_IMAGE = "smallImage";
     public static final String PRIMARY_IMAGE = "primaryImage";
+    public static final String REGULAR_PRICE = "regularPrice";
+    public static final String FINAL_PRICE = "finalPrice";
     public static final String PRIMARY = "primary";
     public static final String VERSION = "version";
     public static final String LOG_IDENTIFICATION = "url: {}, version: {}, enabled: {}";

@@ -188,6 +188,19 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ftd.services</groupId>
+            <artifactId>pricing-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <classifier>client</classifier>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
