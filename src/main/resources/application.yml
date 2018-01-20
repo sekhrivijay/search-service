@@ -152,8 +152,8 @@ service:
     version: 0
 
   pricingService:
-    enabled: false
-    baseUrl: http://35.227.193.133/api/pricing
+    enabled: true
+    baseUrl: http://35.227.252.218/api/pricing
     version: 0
 
   sitesBfMap:
@@ -177,14 +177,14 @@ hystrix:
    threadpool.ruleThreadPoolKey.coreSize: 30
    threadpool.ruleThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
 
-   command.productServiceKey.execution.isolation.thread.timeoutInMilliseconds: 2000
+   command.productServiceKey.execution.isolation.thread.timeoutInMilliseconds: 200000
    command.productServiceKey.circuitBreaker.requestVolumeThreshold: 4
    command.productServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
    command.productServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
    threadpool.productThreadPoolKey.coreSize: 30
    threadpool.productThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
 
-   command.priceServiceKey.execution.isolation.thread.timeoutInMilliseconds: 2000
+   command.priceServiceKey.execution.isolation.thread.timeoutInMilliseconds: 200000
    command.priceServiceKey.circuitBreaker.requestVolumeThreshold: 4
    command.priceServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
    command.priceServiceKey.metrics.rollingStats.timeInMilliseconds: 180000

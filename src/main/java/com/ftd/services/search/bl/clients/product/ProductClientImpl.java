@@ -27,7 +27,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * https://tools.publicis.sapient.com/confluence/display/FLTD/REST+EndPoint+Spec+-+ProductIdGroup+Service
@@ -70,35 +72,20 @@ public class ProductClientImpl extends BaseClient implements ProductClient {
      * than the specific order that we need for the search response. The map will
      * make it easier to process the results.
      *
-     * @param response to be looked up
+     * @param productServiceResponse to be looked up
      * @return a map of productId/product pairs
      */
-    public Map<String, Object> buildMap(ProductServiceResponse response) {
+    public Map<String, Product> buildMap(ProductServiceResponse productServiceResponse) {
         /*
          * A list of documents for the provided productIds, respectively.
          */
-        Map<String, Object> results = new HashMap<>();
-        try {
-
-            /*
-             * The service may return a null body if none of the product ids were found.
-             */
-            if (response != null) {
-                for (Product product : response.getProducts()) {
-                    /*
-                     * Add each product to the map.
-                     */
-                    results.put(product.getId(), product);
-                }
-            }
-
-        } catch (HttpClientErrorException e) {
-            /*
-             * It is likely that the service may set an return code other than 200 if there
-             * were no products found. When we find out what this error is we may want to
-             * handle it special rather than produce a warning.
-             */
-            LOGGER.warn("{}", e.getMessage());
+        Map<String, Product> results = new HashMap<>();
+        if (productServiceResponse != null && productServiceResponse.getProducts() != null) {
+            results = productServiceResponse.getProducts()
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .filter(e -> StringUtils.isNotEmpty(e.getId()))
+                    .collect(Collectors.toMap(Product::getId, e -> e));
         }
         return results;
     }
@@ -114,7 +101,7 @@ public class ProductClientImpl extends BaseClient implements ProductClient {
          * Create the url with a comma separated list, removing the last unneeded comma.
          */
         StringBuilder url = new StringBuilder();
-        productIds.stream().forEach(id -> url.append(id).append(GlobalConstants.COMMA));
+        productIds.forEach(id -> url.append(id).append(GlobalConstants.COMMA));
         if (url.length() == 0) {
             return StringUtils.EMPTY;
         }

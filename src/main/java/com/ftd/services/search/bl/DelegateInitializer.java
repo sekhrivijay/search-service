@@ -41,6 +41,8 @@ public class DelegateInitializer {
     private Delegate mustMatchDelegate;
     private Delegate rulesDelegate;
     private Delegate boostDelegate;
+    private Delegate typeDelegate;
+    private Delegate priceDelegate;
 
 
     public Map<String, List<Delegate>> buildDelegateMapList(SearchServiceRequest searchServiceRequest) {
@@ -49,6 +51,7 @@ public class DelegateInitializer {
         mainDelegateList.add(requestHandlerDelegate);
 
         mainDelegateList.add(timeAllowedDelegate);
+        mainDelegateList.add(typeDelegate);
         mainDelegateList.add(documentsDelegate);
         mainDelegateList.add(filterDelegate);
         mainDelegateList.add(siteDelegate);
@@ -68,6 +71,7 @@ public class DelegateInitializer {
         if (searchServiceRequest.isDebug()) {
             mainDelegateList.add(new DebugDelegate());
             LOGGER.info("Delegate Map List is " + mainDelegateList);
+            LOGGER.info(priceDelegate.toString());
         }
         delegateMapList.put("", mainDelegateList);
         return delegateMapList;
@@ -79,6 +83,7 @@ public class DelegateInitializer {
         mainDelegateList.add(boostDelegate);
         mainDelegateList.add(fuzzySearchDelegate);
         mainDelegateList.add(facetDelegate);
+//        mainDelegateList.add(priceDelegate);
         mainDelegateList.add(startDelegate);
         mainDelegateList.add(numFoundDelegate);
         mainDelegateList.add(mustMatchDelegate);
@@ -208,5 +213,17 @@ public class DelegateInitializer {
     @Named("boostDelegate")
     public void setBoostDelegate(Delegate boostDelegate) {
         this.boostDelegate = boostDelegate;
+    }
+
+    @Inject
+    @Named("typeDelegate")
+    public void setTypeDelegate(Delegate typeDelegate) {
+        this.typeDelegate = typeDelegate;
+    }
+
+    @Inject
+    @Named("priceDelegate")
+    public void setPriceDelegate(Delegate priceDelegate) {
+        this.priceDelegate = priceDelegate;
     }
 }

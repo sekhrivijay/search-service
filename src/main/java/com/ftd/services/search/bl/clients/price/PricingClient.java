@@ -1,5 +1,6 @@
 package com.ftd.services.search.bl.clients.price;
 
+import com.ftd.services.pricing.api.domain.response.Pricing;
 import com.ftd.services.pricing.api.domain.response.PricingResponse;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
@@ -12,5 +13,5 @@ public interface PricingClient {
     callPriceService(SearchServiceRequest searchServiceRequest,
                      SearchServiceResponse searchServiceResponse) throws HttpClientErrorException;
 
-    Map<String, Object> buildMap(PricingResponse products);
+    Map<String, Pricing> buildMap(PricingResponse products);
 }

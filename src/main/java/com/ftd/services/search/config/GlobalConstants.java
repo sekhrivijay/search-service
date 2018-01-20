@@ -86,6 +86,7 @@ public class GlobalConstants {
     public static final String FINAL_PRICE = "finalPrice";
     public static final String PRIMARY = "primary";
     public static final String VERSION = "version";
+    public static final String TYPE_COLON = GlobalConstants.TYPE + GlobalConstants.COLON;
     public static final String LOG_IDENTIFICATION = "url: {}, version: {}, enabled: {}";
 
     public static final String RELAXED_MUST_MATCH_FIFTY_PERCENT = "50" + PERCENT;

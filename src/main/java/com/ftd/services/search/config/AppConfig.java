@@ -34,4 +34,14 @@ public class AppConfig {
         return cloudSolrClient;
     }
 
+    @Value("${spring.application.name}")
+    public void setApplicationName(String applicationName) {
+        GlobalConstants.setApplicationName(applicationName);
+    }
+
+    @Value("${spring.profiles.active}")
+    public void setEnvironment(String environment) {
+        GlobalConstants.setEnvironment(environment);
+    }
+
 }

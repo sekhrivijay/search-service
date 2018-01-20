@@ -29,7 +29,7 @@ public class DetailsServiceImpl implements DetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DetailsServiceImpl.class);
 
-    private AvailabilityClient availabilityClient;
+        private AvailabilityClient availabilityClient;
     private PricingClient pricingClient;
     private ProductClientImpl productClient;
 
@@ -74,10 +74,7 @@ public class DetailsServiceImpl implements DetailsService {
         /*
          * Create a list of product ids that will be used in the detail services.
          */
-//        Set<String> productIds = productMap.keySet();
-        // TODO remove this test code
-//        final Set<String> productIds = new HashSet<String>();
-//        productIds.add("960");
+
         /*
          * Get orchestration parameters from the request URL
          */
@@ -88,12 +85,14 @@ public class DetailsServiceImpl implements DetailsService {
 //                () -> availabilityClient.buildMap(
 //                        availabilityClient.callAvailabilityService(
 //                                searchServiceRequest, searchServiceResponse)));
-//        Future<Map<String, Object>> pricingDetails = executor.submit(
-//                () -> pricingClient.buildMap(pricingClient.callPriceService(
-//                        searchServiceRequest, searchServiceResponse)));
+        Future<Map<String, ?>> pricingDetails = executor.submit(
+                () -> pricingClient.buildMap(pricingClient.callPriceService(
+                        searchServiceRequest, searchServiceResponse)));
         LOGGER.info("availabilityClient " + availabilityClient);
-        LOGGER.info("pricingClient " + pricingClient);
-        Future<Map<String, Object>> productDetails = executor.submit(
+//        LOGGER.info("pricingClient " + pricingClient);
+
+
+        Future<Map<String, ?>> productDetails = executor.submit(
                 () -> productClient.buildMap(productClient.callProductService(
                         searchServiceRequest, searchServiceResponse)));
         /*
@@ -104,7 +103,7 @@ public class DetailsServiceImpl implements DetailsService {
          */
 //        applyDetailDocument("availability", availableDetails, productMap);
         applyDetailDocument("product", productDetails, productMap);
-//        applyDetailDocument("pricing", pricingDetails, productMap);
+        applyDetailDocument("pricing", pricingDetails, productMap);
     }
 
     /**
@@ -114,7 +113,7 @@ public class DetailsServiceImpl implements DetailsService {
      * @param documentList
      * @return
      */
-    Map<String, Document> searchResultsAsProductIdMap(List<Document> documentList) {
+    private Map<String, Document> searchResultsAsProductIdMap(List<Document> documentList) {
         return documentList.stream()
                 .collect(Collectors.toMap(
                         doc -> (String) doc.getRecord().get(GlobalConstants.PID), doc -> doc));
@@ -128,16 +127,16 @@ public class DetailsServiceImpl implements DetailsService {
      * @param detailService                 is the service call that was issued in parallel
      * @param searchServiceProductDocuments is the search service attribute map, one entry per product id
      */
-    void applyDetailDocument(
+    private void applyDetailDocument(
             String prefix,
-            Future<Map<String, Object>> detailService,
+            Future<Map<String, ?>> detailService,
             Map<String, Document> searchServiceProductDocuments) {
         try {
             /*
              * A future stores the result of the call in the "get" method. This will timeout
              * if the service does not return within the expected timeout period.
              */
-            Map<String, Object> detailsByProduct = detailService.get(serviceTimeout, TimeUnit.MILLISECONDS);
+            Map<String, ?> detailsByProduct = detailService.get(serviceTimeout, TimeUnit.MILLISECONDS);
             if (detailService.isCancelled()) {
                 throw new Exception("parallel task was cancelled");
             }
@@ -148,14 +147,14 @@ public class DetailsServiceImpl implements DetailsService {
              * The detailsMap provided by the service call is a map of productIds and the
              * document associated with them has a map of attributeName and value.
              */
-            detailsByProduct.keySet().stream().forEach(
+            detailsByProduct.keySet().forEach(
                     productId -> addServiceResponseToSearchDocument(
                             prefix,
                             detailsByProduct.get(productId),
                             searchServiceProductDocuments.get(productId)));
 
         } catch (Exception e) {
-            LOGGER.error("applying {} detected an error: {}", prefix, e.getMessage());
+            LOGGER.error("applying {} detected an error: {}", prefix, e);
         }
     }
 

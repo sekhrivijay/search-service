@@ -1,5 +1,6 @@
 package com.ftd.services.search.bl.clients.product;
 
+import com.ftd.services.product.api.domain.response.Product;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
@@ -12,5 +13,5 @@ public interface ProductClient {
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) throws HttpClientErrorException;
 
-    Map<String, Object> buildMap(ProductServiceResponse response);
+    Map<String, Product> buildMap(ProductServiceResponse response);
 }
