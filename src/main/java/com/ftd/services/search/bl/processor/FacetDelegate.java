@@ -1,6 +1,7 @@
 package com.ftd.services.search.bl.processor;
 
 
+import com.ftd.services.search.bl.clients.MiscUtil;
 import com.ftd.services.search.config.AppConfigProperties;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -39,30 +41,21 @@ public class FacetDelegate extends BaseDelegate {
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
         String[] facetFields = searchServiceRequest.getFacetFields();
         List<String> facetList = appConfigProperties.getFacetList();
-        if (isNotEmpty(facetFields) || isNotEmpty(facetList)) {
+        if (MiscUtil.isNotEmpty(facetFields) || MiscUtil.isNotEmpty(facetList)) {
             solrQuery.setFacet(true);
             solrQuery.setFacetMinCount(1);
             solrQuery.setFacetSort(searchServiceRequest.getFacetSort());
         }
 
-        if (isNotEmpty(facetFields)) {
+        if (MiscUtil.isNotEmpty(facetFields)) {
             solrQuery.addFacetField(facetFields);
-        } else if (isNotEmpty(facetList)) {
+        } else if (MiscUtil.isNotEmpty(facetList)) {
             facetList.forEach(solrQuery::addFacetField);
         }
 
 
         return solrQuery;
     }
-
-    private boolean isNotEmpty(List<String> facetList) {
-        return facetList != null && facetList.size() > 0;
-    }
-
-    private boolean isNotEmpty(String[] facetFields) {
-        return facetFields != null && facetFields.length > 0;
-    }
-
 
     @Override
     public SearchServiceResponse postProcessResult(SearchServiceRequest searchServiceRequest,

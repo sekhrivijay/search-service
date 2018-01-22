@@ -36,6 +36,7 @@ public class ResourceUtil {
         searchServiceRequest.setQt(getFirstIfPresent(queryParams.get(GlobalConstants.QT)));
         String rows = getFirstIfPresent(queryParams.get(GlobalConstants.ROWS));
         String facetFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.FACET_FIELDS));
+        String rangeFacetFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.RANGE_FACET_FIELDS));
         String facetSortParam = getFirstIfPresent(queryParams.get(GlobalConstants.FACET_SORT));
         String groupFieldParam = getFirstIfPresent(queryParams.get(GlobalConstants.GROUP_FIELDS));
 
@@ -89,6 +90,9 @@ public class ResourceUtil {
 
         if (StringUtils.isNotEmpty(facetFieldParam)) {
             searchServiceRequest.setFacetFields(facetFieldParam.split(GlobalConstants.COMMA));
+        }
+        if (StringUtils.isNotEmpty(rangeFacetFieldParam)) {
+            searchServiceRequest.setRangeFacetFields(rangeFacetFieldParam.split(GlobalConstants.COMMA));
         }
 
         if (StringUtils.isNotEmpty(groupFieldParam)) {

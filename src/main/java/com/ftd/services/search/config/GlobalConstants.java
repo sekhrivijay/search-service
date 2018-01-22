@@ -37,10 +37,14 @@ public class GlobalConstants {
     public static final String UTF_8 = "utf-8";
     public static final String EQUAL = "=";
     public static final String UNDERSCORE = "_";
+    public static final String RIGHT_BRACKET = "[";
+    public static final String LEFT_BRACKET = "]";
+    public static final String TO = "TO";
     public static final String TILDE = "~";
     public static final String SPACE = " ";
     public static final String STAR = "*";
     public static final String FACET_FIELDS = "facet.fields";
+    public static final String RANGE_FACET_FIELDS = "range.facet.fields";
     public static final String FACET_SORT = "facet.sort";
     public static final String GROUP_FIELDS = "group.fields";
     public static final String ROWS = "rows";
@@ -125,6 +129,7 @@ public class GlobalConstants {
                 FQ,
                 BF,
                 FACET_FIELDS,
+                RANGE_FACET_FIELDS,
                 FACET_SORT,
                 GROUP_FIELDS,
                 ROWS,

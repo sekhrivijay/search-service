@@ -71,7 +71,7 @@ service:
         name: rules
       - ttl: 36000
         servers: localhost:11211
-        name: product
+        name: productn
 
 #  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
 #  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
@@ -86,6 +86,8 @@ service:
     - standard_price
   facetList:
     - categories
+  rangeFacetList:
+    - finalPrice
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1

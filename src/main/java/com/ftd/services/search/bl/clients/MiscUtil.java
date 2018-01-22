@@ -10,6 +10,8 @@ import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.bl.clients.rules.RuleClientImpl;
 import com.ftd.services.search.config.GlobalConstants;
 
+import java.util.List;
+
 
 public class MiscUtil {
 
@@ -36,6 +38,17 @@ public class MiscUtil {
         return noRedirectCase || redirectCase;
 
     }
+
+
+    public static boolean isNotEmpty(List<String> facetList) {
+        return facetList != null && facetList.size() > 0;
+    }
+
+    public static boolean isNotEmpty(String[] facetFields) {
+        return facetFields != null && facetFields.length > 0;
+    }
+
+
 
     public static String filterNonAlphaNumeric(String input, String pattern, String delimiter) {
         return StringUtils.normalizeSpace(input.replaceAll(pattern, delimiter));

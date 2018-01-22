@@ -27,6 +27,7 @@ public class SearchServiceRequest implements Serializable {
     private String siteId = GlobalConstants.FTD;
     private String facetSort = COUNT;
     private String[] facetFields;
+    private String[] rangeFacetFields;
     private String[] groupFields;
     private boolean isFuzzyCompare;
     private boolean isSpellCheck;
@@ -247,6 +248,14 @@ public class SearchServiceRequest implements Serializable {
         this.bf = bf;
     }
 
+    public String[] getRangeFacetFields() {
+        return rangeFacetFields;
+    }
+
+    public void setRangeFacetFields(String[] rangeFacetFields) {
+        this.rangeFacetFields = rangeFacetFields;
+    }
+
     @Override
     public String toString() {
         return "SearchServiceRequest{" +
@@ -264,6 +273,7 @@ public class SearchServiceRequest implements Serializable {
                 ", siteId='" + siteId + '\'' +
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
+                ", rangeFacetFields=" + Arrays.toString(rangeFacetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +
                 ", isFuzzyCompare=" + isFuzzyCompare +
                 ", isSpellCheck=" + isSpellCheck +
@@ -275,7 +285,6 @@ public class SearchServiceRequest implements Serializable {
                 ", requestType=" + requestType +
                 ", parameters=" + parameters +
                 ", parametersOriginal=" + parametersOriginal +
-
                 ", memberType=" + memberType +
                 ", availFrom=" + availFrom +
                 ", availTo=" + availTo +
@@ -301,6 +310,7 @@ public class SearchServiceRequest implements Serializable {
                 ", facetSort='" + facetSort + '\'' +
                 ", facetFields=" + Arrays.toString(facetFields) +
                 ", groupFields=" + Arrays.toString(groupFields) +
+                ", rangeFacetFields=" + Arrays.toString(rangeFacetFields) +
                 ", parameters=" + parameters +
                 '}';
     }
@@ -347,21 +357,22 @@ public class SearchServiceRequest implements Serializable {
         private String sort = GlobalConstants.ID;
         private String sortOrder = GlobalConstants.ASC;
         private int rows;
-        private SearchServiceRequest parent;
         private int start;
-        private String q = "*";
         private String[] fq;
+        private String q = "*";
         private boolean debug;
         private int round;
+        private SearchServiceRequest parent;
         private String qt;
         private String siteId = GlobalConstants.FTD;
         private String facetSort = COUNT;
         private String[] facetFields;
+        private boolean isMustMatchSeventyFivePercent;
+        private String[] rangeFacetFields;
         private String[] groupFields;
         private boolean isFuzzyCompare;
         private boolean isSpellCheck;
         private boolean isMustMatchFiftyPercent;
-        private boolean isMustMatchSeventyFivePercent;
         private From from = From.DEFAULT;
         private Domain domain = Domain.DESKTOP;
         private RequestType requestType = RequestType.SEARCH;
@@ -447,6 +458,11 @@ public class SearchServiceRequest implements Serializable {
 
         public SearchServiceRequestBuilder withFacetFields(String[] facetFields) {
             this.facetFields = facetFields;
+            return this;
+        }
+
+        public SearchServiceRequestBuilder withRangeFacetFields(String[] rangeFacetFields) {
+            this.rangeFacetFields = rangeFacetFields;
             return this;
         }
 
@@ -541,6 +557,7 @@ public class SearchServiceRequest implements Serializable {
             searchServiceRequest.setSiteId(siteId);
             searchServiceRequest.setFacetSort(facetSort);
             searchServiceRequest.setFacetFields(facetFields);
+            searchServiceRequest.setRangeFacetFields(rangeFacetFields);
             searchServiceRequest.setGroupFields(groupFields);
             searchServiceRequest.setFrom(from);
             searchServiceRequest.setDomain(domain);
@@ -552,10 +569,10 @@ public class SearchServiceRequest implements Serializable {
             searchServiceRequest.setZipCode(zipCode);
             searchServiceRequest.setAvailFrom(availFrom);
             searchServiceRequest.setAvailTo(availTo);
-            searchServiceRequest.isSpellCheck = this.isSpellCheck;
-            searchServiceRequest.isMustMatchSeventyFivePercent = this.isMustMatchSeventyFivePercent;
             searchServiceRequest.isFuzzyCompare = this.isFuzzyCompare;
+            searchServiceRequest.isMustMatchSeventyFivePercent = this.isMustMatchSeventyFivePercent;
             searchServiceRequest.isMustMatchFiftyPercent = this.isMustMatchFiftyPercent;
+            searchServiceRequest.isSpellCheck = this.isSpellCheck;
             return searchServiceRequest;
         }
     }

@@ -12,11 +12,13 @@ import java.util.Map;
 public class AppConfigProperties {
     private List<String> sortList;
     private List<String> facetList;
+    private List<String> rangeFacetList;
     private Map<String, String> sitesBfMap;
 
     AppConfigProperties() {
         this.sortList = new ArrayList<>();
         this.facetList = new ArrayList<>();
+        this.rangeFacetList = new ArrayList<>();
     }
 
     public List<String> getSortList() {
@@ -41,5 +43,13 @@ public class AppConfigProperties {
 
     public void setFacetList(List<String> facetList) {
         this.facetList = facetList;
+    }
+
+    public List<String> getRangeFacetList() {
+        return rangeFacetList;
+    }
+
+    public void setRangeFacetList(List<String> rangeFacetList) {
+        this.rangeFacetList = rangeFacetList;
     }
 }
