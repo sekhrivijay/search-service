@@ -63,6 +63,9 @@ public class DelegateInitializer {
                 || searchServiceRequest.getRequestType() == RequestType.BROWSE) {
             addSecondaryDelegates(mainDelegateList);
         }
+        if (searchServiceRequest.getRequestType() == RequestType.AUTOFILL) {
+            mainDelegateList.add(facetDelegate);
+        }
         if (searchServiceRequest.getRequestType() == RequestType.SPELL) {
             mainDelegateList.add(didYouMeanDelegate);
         }

@@ -1,22 +1,24 @@
 package com.ftd.services.search.bl.processor;
 
 
-import com.ftd.services.search.bl.clients.MiscUtil;
-import com.ftd.services.search.config.AppConfigProperties;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.QueryResponse;
-
+import com.ftd.services.search.api.request.RequestType;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.Facet;
 import com.ftd.services.search.api.response.FacetGroup;
 import com.ftd.services.search.api.response.SearchServiceResponse;
+import com.ftd.services.search.bl.clients.MiscUtil;
+import com.ftd.services.search.config.AppConfigProperties;
 import com.ftd.services.search.config.GlobalConstants;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ftd.services.search.api.request.RequestType.AUTOFILL;
 
 
 //import org.slf4j.Logger;
@@ -39,8 +41,10 @@ public class FacetDelegate extends BaseDelegate {
 
     @Override
     public SolrQuery preProcessQuery(SolrQuery solrQuery, SearchServiceRequest searchServiceRequest) {
+        RequestType requestType = searchServiceRequest.getRequestType();
         String[] facetFields = searchServiceRequest.getFacetFields();
         List<String> facetList = appConfigProperties.getFacetList();
+        List<String> autofillFacetList = appConfigProperties.getAutofillFacetList();
         if (MiscUtil.isNotEmpty(facetFields) || MiscUtil.isNotEmpty(facetList)) {
             solrQuery.setFacet(true);
             solrQuery.setFacetMinCount(1);
@@ -49,8 +53,17 @@ public class FacetDelegate extends BaseDelegate {
 
         if (MiscUtil.isNotEmpty(facetFields)) {
             solrQuery.addFacetField(facetFields);
-        } else if (MiscUtil.isNotEmpty(facetList)) {
-            facetList.forEach(solrQuery::addFacetField);
+        } else {
+            if (requestType == AUTOFILL) {
+                if (MiscUtil.isNotEmpty(autofillFacetList)) {
+                    autofillFacetList.forEach(solrQuery::addFacetField);
+                }
+            } else {
+                if (MiscUtil.isNotEmpty(facetList)) {
+                    facetList.forEach(solrQuery::addFacetField);
+                }
+            }
+
         }
 
 

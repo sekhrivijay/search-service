@@ -14,14 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Named;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -33,8 +34,7 @@ import java.util.stream.Collectors;
  *
  * @author cdegreef
  */
-//@Named("pricingClient")
-@Component("pricingClient")
+@Named("pricingClient")
 public class PricingClientImpl extends BaseClient implements PricingClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(PricingClientImpl.class);
     public static final PricingResponse FALLBACK_PRICE_RESPONSE = new PricingResponse();
@@ -117,6 +117,10 @@ public class PricingClientImpl extends BaseClient implements PricingClient {
             commandKey = "priceServiceKey",
             threadPoolKey = "priceThreadPoolKey",
             fallbackMethod = "callPriceServiceFallback")
+    @Cacheable(cacheNames = "pricing",
+            key = "T(com.ftd.services.search.bl.clients.MiscUtil).getCacheKey(#searchServiceRequest)",
+            condition = "#searchServiceRequest.from != T(com.ftd.services.search.api.request.From).INDEX",
+            unless = "T(com.ftd.services.search.bl.clients.MiscUtil).isValidResponse(#result) == false")
     public PricingResponse callPriceService(
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) throws HttpClientErrorException {

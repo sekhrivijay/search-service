@@ -1,6 +1,8 @@
 package com.ftd.services.search.bl.clients;
 
+import com.ftd.services.pricing.api.domain.response.PricingResponse;
 import com.ftd.services.product.api.domain.response.ProductServiceResponse;
+import com.ftd.services.search.bl.clients.price.PricingClientImpl;
 import com.ftd.services.search.bl.clients.product.ProductClientImpl;
 import com.ftd.services.search.bl.clients.rules.RuleServiceResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,10 @@ public class MiscUtil {
 
     public static boolean isValidResponse(ProductServiceResponse productServiceResponse) {
         return productServiceResponse != ProductClientImpl.FALLBACK_PRODUCT_RESPONSE;
+    }
+
+    public static boolean isValidResponse(PricingResponse pricingResponse) {
+        return pricingResponse != PricingClientImpl.FALLBACK_PRICE_RESPONSE;
     }
 
     public static boolean isValidResponse(SearchServiceResponse searchServiceResponse) {

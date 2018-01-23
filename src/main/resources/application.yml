@@ -71,13 +71,12 @@ service:
         name: rules
       - ttl: 36000
         servers: localhost:11211
-        name: productn
+        name: product
+      - ttl: 60
+        servers: localhost:11211
+        name: pricing
 
-#  zkEnsembleDestination : freshdapp01v1.ftdi.com:2181
-#  zkEnsembleDestination : freshdapp01v2.ftdi.com:2181
-#  collectionDestination : products
-#  zkTimeoutDestination : 20000
-#  solrQueryTimeout : 10000
+
   queryTimeAllowed : 10000
   groupLimitValue : 5
   breadCrumbList: categories
@@ -88,6 +87,8 @@ service:
     - categories
   rangeFacetList:
     - finalPrice
+  autofillFacetList:
+    - categories
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1

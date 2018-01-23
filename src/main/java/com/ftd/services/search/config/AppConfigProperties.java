@@ -12,6 +12,7 @@ import java.util.Map;
 public class AppConfigProperties {
     private List<String> sortList;
     private List<String> facetList;
+    private List<String> autofillFacetList;
     private List<String> rangeFacetList;
     private Map<String, String> sitesBfMap;
 
@@ -19,6 +20,7 @@ public class AppConfigProperties {
         this.sortList = new ArrayList<>();
         this.facetList = new ArrayList<>();
         this.rangeFacetList = new ArrayList<>();
+        this.autofillFacetList = new ArrayList<>();
     }
 
     public List<String> getSortList() {
@@ -51,5 +53,13 @@ public class AppConfigProperties {
 
     public void setRangeFacetList(List<String> rangeFacetList) {
         this.rangeFacetList = rangeFacetList;
+    }
+
+    public List<String> getAutofillFacetList() {
+        return autofillFacetList;
+    }
+
+    public void setAutofillFacetList(List<String> autofillFacetList) {
+        this.autofillFacetList = autofillFacetList;
     }
 }
