@@ -3,6 +3,7 @@ package com.ftd.services.search.bl.clients.rules;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.ftd.services.search.api.request.SearchServiceRequest;
+import com.ftd.services.search.api.response.Redirect;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.bl.clients.BaseClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -66,6 +67,7 @@ public class RuleClientImpl extends BaseClient implements RuleClient {
                 searchServiceRequest,
                 searchServiceResponse);
         if (!enabled) {
+            addDummyRedirectTest(ruleServiceResponse);
             return ruleServiceResponse;
         }
         HttpEntity<RuleServiceResponse> request = new HttpEntity<>(ruleServiceResponse);
@@ -82,5 +84,14 @@ public class RuleClientImpl extends BaseClient implements RuleClient {
             SearchServiceRequest searchServiceRequest,
             SearchServiceResponse searchServiceResponse) {
         return FALLBACK_RULE_RESPONSE;
+    }
+
+
+    private void addDummyRedirectTest(RuleServiceResponse ruleServiceResponse) {
+        if (ruleServiceResponse.getSearchServiceRequest().getQ().equals("redirecttest")) {
+            Redirect redirect = new Redirect();
+            redirect.setRedirectUrl("http://myawsonewebsite.com/redirecttest");
+            ruleServiceResponse.getSearchServiceResponse().setRedirect(redirect);
+        }
     }
 }
