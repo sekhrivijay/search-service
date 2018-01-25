@@ -1,12 +1,8 @@
 package com.ftd.services.search.bl.clients.rules;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
-import com.codahale.metrics.annotation.Timed;
-import com.ftd.services.search.api.request.SearchServiceRequest;
-import com.ftd.services.search.api.response.Redirect;
-import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.bl.clients.BaseClient;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import javax.annotation.PostConstruct;
+import javax.inject.Named;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +13,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Named;
+import com.codahale.metrics.annotation.ExceptionMetered;
+import com.codahale.metrics.annotation.Timed;
+import com.ftd.services.search.api.request.SearchServiceRequest;
+import com.ftd.services.search.api.response.Redirect;
+import com.ftd.services.search.api.response.SearchServiceResponse;
+import com.ftd.services.search.bl.clients.BaseClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @Named("ruleService")
 public class RuleClientImpl extends BaseClient implements RuleClient {
@@ -89,9 +90,8 @@ public class RuleClientImpl extends BaseClient implements RuleClient {
 
     private void addDummyRedirectTest(RuleServiceResponse ruleServiceResponse) {
         if (ruleServiceResponse.getSearchServiceRequest().getQ().equals("redirecttest")) {
-            Redirect redirect = new Redirect();
-            redirect.setRedirectUrl("http://myawsonewebsite.com/redirecttest");
-            ruleServiceResponse.getSearchServiceResponse().setRedirect(redirect);
+            ruleServiceResponse.getSearchServiceResponse()
+                    .setRedirect(new Redirect("http://myawsonewebsite.com/redirecttest"));
         }
     }
 }
