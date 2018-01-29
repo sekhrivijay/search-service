@@ -101,7 +101,7 @@ public class PricingClientImpl extends BaseClient implements PricingClient {
             url.setLength(url.length() - 1);
         }
 
-        url.append(GlobalConstants.SITE_ID_PARAM).append(siteId);
+//        url.append(GlobalConstants.SITE_ID_PARAM).append(siteId);
         if (memberType != null && memberType.trim().length() > 0) {
             url.append(GlobalConstants.MEMBER_TYPE_PARAM).append(memberType);
         }
@@ -133,7 +133,7 @@ public class PricingClientImpl extends BaseClient implements PricingClient {
         Set<String> productIds = getPids(searchServiceResponse);
         String uniquePartOfUrl = buildUniquePartOfUrl(productIds, siteId, memberId);
         StringBuilder fullUrl = new StringBuilder();
-        fullUrl.append(baseUrl);
+        fullUrl.append(baseUrl.replace(GlobalConstants.SITE_ID, siteId));
         fullUrl.append(GlobalConstants.FORWARD_SLASH);
         if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
             fullUrl.append(uniquePartOfUrl);

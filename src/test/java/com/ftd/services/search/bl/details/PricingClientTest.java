@@ -14,7 +14,7 @@ public class PricingClientTest {
         PricingClientImpl pc = new PricingClientImpl(null, "junit");
         Set<String> pIds = new HashSet<>();
         String result = pc.buildUniquePartOfUrl(pIds, "site1", "memberType1");
-        Assert.assertEquals("?siteId=site1&memberType=memberType1", result);
+        Assert.assertEquals("?&memberType=memberType1", result);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class PricingClientTest {
         Set<String> pIds = new HashSet<>();
         pIds.add("960");
         String result = pc.buildUniquePartOfUrl(pIds, "site1", "memberType1");
-        Assert.assertEquals("960?siteId=site1&memberType=memberType1", result);
+        Assert.assertEquals("960?&memberType=memberType1", result);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class PricingClientTest {
         pIds.add("960");
         pIds.add("961");
         String result = pc.buildUniquePartOfUrl(pIds, "site1", "memberType1");
-        Assert.assertEquals("960,961?siteId=site1&memberType=memberType1", result);
+        Assert.assertEquals("960,961?&memberType=memberType1", result);
     }
 
 }

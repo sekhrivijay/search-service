@@ -133,8 +133,10 @@ public class ProductClientImpl extends BaseClient implements ProductClient {
 
         Set<String> productIds = getPids(searchServiceResponse);
         String uniquePartOfUrl = buildUniquePartOfUrl(productIds);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl + GlobalConstants.FORWARD_SLASH)
-                .queryParam(GlobalConstants.SITE_ID, siteId)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
+                baseUrl.replace(GlobalConstants.SITE_ID, siteId)
+                        + GlobalConstants.FORWARD_SLASH)
+//                .queryParam(GlobalConstants.SITE_ID, siteId)
                 .path(uniquePartOfUrl);
 
         LOGGER.info("calling product service " + builder.build().encode().toUri());

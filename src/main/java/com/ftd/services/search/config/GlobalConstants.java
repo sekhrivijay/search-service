@@ -104,7 +104,8 @@ public class GlobalConstants {
             GlobalConstants.QUESTION_MARK +
                     GlobalConstants.SITE_ID +
                     GlobalConstants.EQUAL;
-    public static final String MEMBER_TYPE_PARAM = AMPERSAND + MEMBER_TYPE + EQUAL;
+    public static final String MEMBER_TYPE_PARAM = GlobalConstants.QUESTION_MARK
+            + AMPERSAND + MEMBER_TYPE + EQUAL;
 
     public static final String FQ_PREFIX = AMPERSAND +
             FQ +

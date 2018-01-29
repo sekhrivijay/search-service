@@ -140,7 +140,7 @@ public class AvailabilityClientImpl extends BaseClient implements AvailabilityCl
 
         String uniquePartOfUrl = buildUniquePartOfUrl(productIds, startDate, endDate, zipCode);
         StringBuilder fullUrl = new StringBuilder();
-        fullUrl.append(baseUrl);
+        fullUrl.append(baseUrl.replace(GlobalConstants.SITE_ID, searchServiceRequest.getSiteId()));
         if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
             fullUrl.append(GlobalConstants.QUESTION_MARK);
             fullUrl.append(URLEncoder.encode(uniquePartOfUrl, GlobalConstants.UTF_8));
