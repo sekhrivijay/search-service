@@ -128,21 +128,26 @@ public class PricingClientImpl extends BaseClient implements PricingClient {
         if (!enabled) {
             return DUMMY_PRICE_RESPONSE;
         }
-        String siteId = searchServiceRequest.getSiteId();
-        String memberId = searchServiceRequest.getMemberType();
-        Set<String> productIds = getPids(searchServiceResponse);
-        String uniquePartOfUrl = buildUniquePartOfUrl(productIds, siteId, memberId);
-        StringBuilder fullUrl = new StringBuilder();
-        fullUrl.append(baseUrl.replace(GlobalConstants.SITE_ID, siteId));
-        fullUrl.append(GlobalConstants.FORWARD_SLASH);
-        if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
-            fullUrl.append(uniquePartOfUrl);
+        try {
+            String siteId = searchServiceRequest.getSiteId();
+            String memberId = searchServiceRequest.getMemberType();
+            Set<String> productIds = getPids(searchServiceResponse);
+            String uniquePartOfUrl = buildUniquePartOfUrl(productIds, siteId, memberId);
+            StringBuilder fullUrl = new StringBuilder();
+            fullUrl.append(baseUrl.replace(GlobalConstants.SITE_ID, siteId));
+            fullUrl.append(GlobalConstants.FORWARD_SLASH);
+            if (uniquePartOfUrl != null && uniquePartOfUrl.trim().length() > 0) {
+                fullUrl.append(uniquePartOfUrl);
+            }
+            HttpEntity<PricingResponse> entity = new HttpEntity<>(createHttpHeaders(version));
+            LOGGER.info("calling pricing service " + fullUrl.toString() + " headers " + createHttpHeaders(version));
+            ResponseEntity<PricingResponse> response = restTemplate.exchange(
+                    fullUrl.toString(), HttpMethod.GET, entity, PricingResponse.class);
+            return response.getBody();
+        } catch (Exception e) {
+            LOGGER.error("pricing error ", e);
+            throw e;
         }
-        HttpEntity<PricingResponse> entity = new HttpEntity<>(createHttpHeaders(version));
-        LOGGER.info("calling pricing service " + fullUrl.toString()); // + " headers " + createHttpHeaders(version));
-        ResponseEntity<PricingResponse> response = restTemplate.exchange(
-                fullUrl.toString(), HttpMethod.GET, entity, PricingResponse.class);
-        return response.getBody();
     }
 
     public PricingResponse callPriceServiceFallback(

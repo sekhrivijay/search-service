@@ -16,6 +16,44 @@ service:
     prometheus:
       enabled: false
 
+
+
+
+hystrix:
+   command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 200000
+   command.solrCommandKey.circuitBreaker.requestVolumeThreshold: 4
+   command.solrCommandKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.solrCommandKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.solrThreadPoolKey.coreSize: 30
+   threadpool.solrThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.ruleServiceKey.execution.isolation.thread.timeoutInMilliseconds: 100000
+   command.ruleServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.ruleServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.ruleServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.ruleThreadPoolKey.coreSize: 30
+   threadpool.ruleThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.productServiceKey.execution.isolation.thread.timeoutInMilliseconds: 200000
+   command.productServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.productServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.productServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.productThreadPoolKey.coreSize: 30
+   threadpool.productThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.priceServiceKey.execution.isolation.thread.timeoutInMilliseconds: 200000
+   command.priceServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.priceServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.priceServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.priceThreadPoolKey.coreSize: 30
+   threadpool.priceThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
+
+   command.availabilityServiceKey.execution.isolation.thread.timeoutInMilliseconds: 200000
+   command.availabilityServiceKey.circuitBreaker.requestVolumeThreshold: 4
+   command.availabilityServiceKey.circuitBreaker.sleepWindowInMilliseconds: 60000
+   command.availabilityServiceKey.metrics.rollingStats.timeInMilliseconds: 180000
+   threadpool.availabilityThreadPoolKey.coreSize: 30
+   threadpool.availabilityThreadPoolKey.metrics.rollingStats.timeInMilliseconds: 180000
    
 logging:
   level:

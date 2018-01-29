@@ -127,28 +127,30 @@ public class ProductClientImpl extends BaseClient implements ProductClient {
         if (!enabled) {
             return DUMMY_PRODUCT_RESPONSE;
         }
-        String siteId = searchServiceRequest.getSiteId();
-//        final Set<String> productIds = new HashSet<>();
-//        productIds.add("960");
-
-        Set<String> productIds = getPids(searchServiceResponse);
-        String uniquePartOfUrl = buildUniquePartOfUrl(productIds);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                baseUrl.replace(GlobalConstants.SITE_ID, siteId)
-                        + GlobalConstants.FORWARD_SLASH)
+        try {
+            String siteId = searchServiceRequest.getSiteId();
+            Set<String> productIds = getPids(searchServiceResponse);
+            String uniquePartOfUrl = buildUniquePartOfUrl(productIds);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
+                    baseUrl.replace(GlobalConstants.SITE_ID, siteId)
+                            + GlobalConstants.FORWARD_SLASH)
 //                .queryParam(GlobalConstants.SITE_ID, siteId)
-                .path(uniquePartOfUrl);
+                    .path(uniquePartOfUrl);
 
-        LOGGER.info("calling product service " + builder.build().encode().toUri());
-        LOGGER.info("Headers " + createHttpHeaders(version));
-        HttpEntity<ProductServiceResponse> entity = new HttpEntity<>(createHttpHeaders(version));
-        ResponseEntity<ProductServiceResponse> response = restTemplate.exchange(
-                builder.build().encode().toUri(),
-                HttpMethod.GET,
-                entity,
-                ProductServiceResponse.class);
-        LOGGER.info("product response " + response.getBody());
-        return response.getBody();
+            LOGGER.info("calling product service " + builder.build().encode().toUri());
+            LOGGER.info("Headers " + createHttpHeaders(version));
+            HttpEntity<ProductServiceResponse> entity = new HttpEntity<>(createHttpHeaders(version));
+            ResponseEntity<ProductServiceResponse> response = restTemplate.exchange(
+                    builder.build().encode().toUri(),
+                    HttpMethod.GET,
+                    entity,
+                    ProductServiceResponse.class);
+            LOGGER.info("product response " + response.getBody());
+            return response.getBody();
+        } catch (Exception e) {
+            LOGGER.error("product error ", e);
+            throw e;
+        }
     }
 
     public ProductServiceResponse callProductServiceFallback(

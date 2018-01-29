@@ -37,11 +37,11 @@ spec:
         - name: SERVICE_MEMCACHE_ENABLED
           value: "false"
         - name: SERVICE_RULESSERVICE_BASEURL
-          value: "http://search-rules-service-group:8070/api/rules"
+          value: "http://search-rules-service-group/siteId/api/rules"
         - name: SERVICE_PRODUCTSERVICE_BASEURL
-          value: "http://product-service-group/api/products"
+          value: "http://product-service-group/siteId/api/products"
         - name: SERVICE_PRICINGSERVICE_BASEURL
-          value: "http://pricing-service-group/api/pricing"
+          value: "http://pricing-service-group/siteId/api/pricing"
         - name: JAVA_ARGS
           value: "-Dservice.memcache.configs[0].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211 -Dservice.memcache.configs[1].servers=memcached-group-0.memcached-group.default.svc.cluster.local:11211"
 
@@ -61,7 +61,7 @@ spec:
           periodSeconds: 5
         readinessProbe:
           httpGet:
-            path: "/api/search?q=*:*"
+            path: /health
             port: 8080
           initialDelaySeconds: 60
           periodSeconds: 10
