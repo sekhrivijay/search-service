@@ -74,7 +74,7 @@ public class RuleClientImpl extends BaseClient implements RuleClient {
         HttpEntity<RuleServiceResponse> request = new HttpEntity<>(ruleServiceResponse);
 //            LOGGER.info("Calling rule service with ");
         ResponseEntity<RuleServiceResponse> response = restTemplate.exchange(
-                baseUrl + "/executePre",
+                baseUrl + "/" + searchServiceRequest.getSiteId() + "/executePre",
                 HttpMethod.POST, request,
                 RuleServiceResponse.class);
         return response.getBody();
