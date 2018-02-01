@@ -17,7 +17,25 @@ service:
       enabled: false
 
 
+  rulesService:
+    enabled: false
+    baseUrl: http://localhost:8070/api/rules
+    version: 0
 
+  availabilityService:
+    enabled: false
+    baseUrl: http://35.227.193.133/siteId/api/productAvailability
+    version: 0
+
+  productService:
+    enabled: true
+    baseUrl: http://35.227.193.133/siteId/api/products
+    version: 0
+
+  pricingService:
+    enabled: true
+    baseUrl: http://35.227.252.218/siteId/api/pricing
+    version: 0
 
 hystrix:
    command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 200000

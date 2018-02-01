@@ -7,11 +7,14 @@ metadata:
     app: search
 spec:
   ports:
-  - port: 8080
-    targetPort: 8080
-    name: server
+  - port: 80
+    targetPort: 80
+    name: http
+  - port: 443
+    targetPort: 443
+    name: https
   selector:
     app: search
     ns: group
-  #type: LoadBalancer
-  type: NodePort
+  type: LoadBalancer
+  #type: NodePort

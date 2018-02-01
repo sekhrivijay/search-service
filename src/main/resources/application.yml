@@ -1,9 +1,12 @@
-#server:
-#  context-path: /${spring.application.name}
-#  tomcat:
-#    accesslog:
-#      enabled: false
-#    basedir: .
+server:
+  port: 443
+  ssl:
+    key-store: "classpath:keystore.jks"
+    key-store-password: changeit
+    enabled: true
+  http:
+    port: 80
+
 spring:
   application:
     name: search
@@ -75,7 +78,6 @@ service:
       - ttl: 60
         servers: localhost:11211
         name: pricing
-
 
   queryTimeAllowed : 10000
   groupLimitValue : 5
@@ -164,6 +166,11 @@ service:
     proflowers: proflowers_bso_order_cnt_l^3 proflowers_bso_order_amt_d^4 proflowers_bso_order_margin_d^2
     ftd: ftd_bso_order_cnt_l^3 ftd_bso_order_amt_d^4 ftd_bso_order_margin_d^2
 
+  https:
+    enabled: true
+
+
+
 
 hystrix:
    command.solrCommandKey.execution.isolation.thread.timeoutInMilliseconds: 2000
@@ -216,6 +223,8 @@ logging:
   level:
     ROOT: INFO
     org.springframework.data.redis: DEBUG
+
+
 
 #memcached:
 #  cache:
