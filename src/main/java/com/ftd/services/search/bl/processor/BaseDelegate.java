@@ -1,13 +1,12 @@
 package com.ftd.services.search.bl.processor;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-
 import com.ftd.services.search.api.request.Domain;
 import com.ftd.services.search.api.request.RequestType;
 import com.ftd.services.search.api.request.SearchServiceRequest;
 import com.ftd.services.search.api.response.SearchServiceResponse;
 import com.ftd.services.search.config.GlobalConstants;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 public abstract class BaseDelegate implements Delegate {
 

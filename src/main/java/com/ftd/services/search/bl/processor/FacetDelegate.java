@@ -112,7 +112,9 @@ public class FacetDelegate extends BaseDelegate {
         return GlobalConstants.FQ_PREFIX +
                 facetField.getName() +
                 GlobalConstants.COLON +
-                count.getName();
+                GlobalConstants.DOUBLE_QUOTE +
+                count.getName() +
+                GlobalConstants.DOUBLE_QUOTE;
     }
 }
 

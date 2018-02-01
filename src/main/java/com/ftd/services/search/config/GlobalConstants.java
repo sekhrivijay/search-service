@@ -23,6 +23,7 @@ public class GlobalConstants {
     public static final String QT = "qt";
     public static final String BF = "bf";
     public static final String ASC = "asc";
+    public static final String DOUBLE_QUOTE = "\"";
     public static final String INDEX = "index";
     public static final String DESKTOP = "desktop";
     public static final String MOBILE = "mobile";
