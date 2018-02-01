@@ -89,6 +89,8 @@ public class GlobalConstants {
     public static final String PRIMARY_IMAGE = "primaryImage";
     public static final String REGULAR_PRICE = "regularPrice";
     public static final String FINAL_PRICE = "finalPrice";
+    public static final String COLOR = "color";
+    public static final String OCCASION = "occasion";
     public static final String PRIMARY = "primary";
     public static final String VERSION = "version";
     public static final String TYPE_COLON = GlobalConstants.TYPE + GlobalConstants.COLON;

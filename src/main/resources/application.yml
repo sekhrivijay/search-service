@@ -90,7 +90,7 @@ service:
   autofillFacetList:
     - categories
     - color
-    - ocassion
+    - occasion
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
