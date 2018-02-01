@@ -84,10 +84,13 @@ service:
     - standard_price
   facetList:
     - categories
+    - occasion
   rangeFacetList:
-    - finalPrice
+    - regularPrice
   autofillFacetList:
     - categories
+    - color
+    - ocassion
   maxQueryRounds: 4
   spellCheckNumfoundThreshhold: 0
   mustMatchNumfoundThreshhold: 1
