@@ -183,6 +183,7 @@ public class QueryServiceImpl implements QueryService {
                 SearchServiceRequest spellCorrectServiceRequest = cloneRequest(serviceRequest);
                 spellCorrectServiceRequest.setFuzzyCompare(true);
                 spellCorrectServiceRequest.setSpellCheck(true);
+                spellCorrectServiceRequest.setRound(++round);
                 return query(spellCorrectServiceRequest);
             } else {
                 serviceRequest.setRound(++round);
@@ -195,6 +196,7 @@ public class QueryServiceImpl implements QueryService {
             if (!serviceRequest.isMustMatchSeventyFivePercent() && numberOfTermTokens > 1) {
                 SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
                 mustMatchServiceRequest.setMustMatchSeventyFivePercent(true);
+                mustMatchServiceRequest.setRound(++round);
                 return query(mustMatchServiceRequest);
             } else {
                 serviceRequest.setRound(++round);
@@ -205,6 +207,7 @@ public class QueryServiceImpl implements QueryService {
             if (!serviceRequest.isMustMatchFiftyPercent() && numberOfTermTokens > 1) {
                 SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
                 mustMatchServiceRequest.setMustMatchFiftyPercent(true);
+                mustMatchServiceRequest.setRound(++round);
                 return query(mustMatchServiceRequest);
             } else {
                 serviceRequest.setRound(++round);
