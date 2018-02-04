@@ -184,6 +184,7 @@ public class QueryServiceImpl implements QueryService {
             SearchServiceRequest spellCorrectServiceRequest = cloneRequest(serviceRequest);
             spellCorrectServiceRequest.setFuzzyCompare(true);
             spellCorrectServiceRequest.setSpellCheck(true);
+            spellCorrectServiceRequest.setRound(round + 1);
             return query(spellCorrectServiceRequest);
         }
 
@@ -194,6 +195,7 @@ public class QueryServiceImpl implements QueryService {
                 && numberOfTermTokens > 1) {
             SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
             mustMatchServiceRequest.setMustMatchSeventyFivePercent(true);
+            mustMatchServiceRequest.setRound(round + 1);
             return query(mustMatchServiceRequest);
 
         }
@@ -203,6 +205,7 @@ public class QueryServiceImpl implements QueryService {
                 && numberOfTermTokens > 1) {
             SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
             mustMatchServiceRequest.setMustMatchFiftyPercent(true);
+            mustMatchServiceRequest.setRound(round + 1);
             return query(mustMatchServiceRequest);
         }
 //        if (numberOfResults < spellCheckNumfoundThreshhold
