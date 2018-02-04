@@ -2,8 +2,7 @@ service:
 
   detailsTimeout: 1000000
 
-  memcache:
-    enabled: false
+
   git:
     enabled: false
   swagger:

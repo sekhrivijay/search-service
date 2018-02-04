@@ -170,7 +170,6 @@ public class QueryServiceImpl implements QueryService {
         }
         long numberOfResults = queryResponse.getResults().getNumFound();
         int round = serviceRequest.getRound();
-//        serviceRequest.setRound(++round);
         LOGGER.info("Round " + round);
         if (round >= maxQueryRounds
                 || serviceRequest.getRequestType() == RequestType.AUTOFILL
@@ -214,6 +213,7 @@ public class QueryServiceImpl implements QueryService {
 //                return query(spellCorrectServiceRequest);
 //            }
 //        }
+        serviceRequest.setRound(++round);
         return null;
     }
 
