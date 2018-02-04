@@ -91,7 +91,7 @@ public class QueryServiceImpl implements QueryService {
     public SearchServiceResponse query(SearchServiceRequest searchServiceRequest) throws Exception {
         LOGGER.info(searchServiceRequest.toString());
 
-        searchServiceRequest.setRound(searchServiceRequest.getRound() + 1);
+//        searchServiceRequest.setRound(searchServiceRequest.getRound() + 1);
 
         Map<String, List<Delegate>> delegateMapList = delegateInitializer.buildDelegateMapList(searchServiceRequest);
         Map<String, SolrQuery> solrQueryMap = new HashMap<>();
@@ -170,6 +170,7 @@ public class QueryServiceImpl implements QueryService {
         }
         long numberOfResults = queryResponse.getResults().getNumFound();
         int round = serviceRequest.getRound();
+        serviceRequest.setRound(++round);
         LOGGER.info("Round " + round);
         if (round >= maxQueryRounds
                 || serviceRequest.getRequestType() == RequestType.AUTOFILL
@@ -216,7 +217,7 @@ public class QueryServiceImpl implements QueryService {
 //                return query(spellCorrectServiceRequest);
 //            }
 //        }
-        serviceRequest.setRound(++round);
+
         return null;
     }
 
