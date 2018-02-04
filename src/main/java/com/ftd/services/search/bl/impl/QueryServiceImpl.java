@@ -1,6 +1,17 @@
 package com.ftd.services.search.bl.impl;
 
 
+import com.ftd.services.search.api.request.RequestType;
+import com.ftd.services.search.api.request.SearchServiceRequest;
+import com.ftd.services.search.api.response.SearchServiceResponse;
+import com.ftd.services.search.bl.DelegateInitializer;
+import com.ftd.services.search.bl.QueryService;
+import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
+import com.ftd.services.search.bl.clients.solr.EnhancedSolrClientImpl;
+import com.ftd.services.search.bl.clients.solr.util.SolrUtil;
+import com.ftd.services.search.bl.processor.Delegate;
+import com.ftd.services.search.bl.processor.RulesDelegate;
+import com.ftd.services.search.config.GlobalConstants;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -10,18 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import com.ftd.services.search.api.request.RequestType;
-import com.ftd.services.search.api.request.SearchServiceRequest;
-import com.ftd.services.search.api.response.SearchServiceResponse;
-import com.ftd.services.search.bl.DelegateInitializer;
-import com.ftd.services.search.bl.QueryService;
-import com.ftd.services.search.bl.processor.Delegate;
-import com.ftd.services.search.bl.processor.RulesDelegate;
-import com.ftd.services.search.bl.clients.solr.EnhancedSolrClient;
-import com.ftd.services.search.bl.clients.solr.EnhancedSolrClientImpl;
-import com.ftd.services.search.config.GlobalConstants;
-import com.ftd.services.search.bl.clients.solr.util.SolrUtil;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -180,33 +179,32 @@ public class QueryServiceImpl implements QueryService {
             return null;
         }
 
-        if (numberOfResults <= spellCheckNumfoundThreshhold && round == GlobalConstants.SPELL_CORRECT_SOLR_ROUND) {
-            if (!serviceRequest.isSpellCheck()) {
-                SearchServiceRequest spellCorrectServiceRequest = cloneRequest(serviceRequest);
-                spellCorrectServiceRequest.setFuzzyCompare(true);
-                spellCorrectServiceRequest.setSpellCheck(true);
-                return query(spellCorrectServiceRequest);
-            }
+        if (numberOfResults <= spellCheckNumfoundThreshhold
+                && round == GlobalConstants.SPELL_CORRECT_SOLR_ROUND
+                && !serviceRequest.isSpellCheck()) {
+            SearchServiceRequest spellCorrectServiceRequest = cloneRequest(serviceRequest);
+            spellCorrectServiceRequest.setFuzzyCompare(true);
+            spellCorrectServiceRequest.setSpellCheck(true);
+            return query(spellCorrectServiceRequest);
         }
 
         int numberOfTermTokens = getLength(serviceRequest);
         if (numberOfResults <= mustMatchNumfoundThreshhold
-                && round == GlobalConstants.MUST_MATCH_ROUND_1) {
-            if (!serviceRequest.isMustMatchSeventyFivePercent() && numberOfTermTokens > 1) {
-                SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
-                mustMatchServiceRequest.setMustMatchSeventyFivePercent(true);
-                return query(mustMatchServiceRequest);
-            }
+                && round == GlobalConstants.MUST_MATCH_ROUND_1
+                && !serviceRequest.isMustMatchSeventyFivePercent()
+                && numberOfTermTokens > 1) {
+            SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
+            mustMatchServiceRequest.setMustMatchSeventyFivePercent(true);
+            return query(mustMatchServiceRequest);
 
         }
         if (numberOfResults <= mustMatchNumfoundThreshhold
-                && round == GlobalConstants.MUST_MATCH_ROUND_2) {
-            if (!serviceRequest.isMustMatchFiftyPercent() && numberOfTermTokens > 1) {
-                SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
-                mustMatchServiceRequest.setMustMatchFiftyPercent(true);
-                return query(mustMatchServiceRequest);
-            }
-
+                && round == GlobalConstants.MUST_MATCH_ROUND_2
+                && !serviceRequest.isMustMatchFiftyPercent()
+                && numberOfTermTokens > 1) {
+            SearchServiceRequest mustMatchServiceRequest = cloneRequest(serviceRequest);
+            mustMatchServiceRequest.setMustMatchFiftyPercent(true);
+            return query(mustMatchServiceRequest);
         }
 //        if (numberOfResults < spellCheckNumfoundThreshhold
 // && round == GlobalConstants.SPELL_CORRECT_LANGUAGE_TOOL_ROUND) {
